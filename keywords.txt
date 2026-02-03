@@ -1,0 +1,88 @@
+#######################################
+# Class (KEYWORD1)
+#######################################
+MLR_Modem	KEYWORD1
+
+#######################################
+# Methods (KEYWORD2)
+#######################################
+begin						KEYWORD2
+DeletePacket				KEYWORD2
+FactoryReset				KEYWORD2
+GetBaudRate					KEYWORD2
+GetCarrierSenseRssiOutput	KEYWORD2
+GetChannel					KEYWORD2
+GetContactFunction			KEYWORD2
+GetDestinationID			KEYWORD2
+GetEquipmentID				KEYWORD2
+GetGroupID					KEYWORD2
+GetMode						KEYWORD2
+GetPacket					KEYWORD2
+GetRssiCurrentChannel		KEYWORD2
+GetRssiCurrentChannelAsync	KEYWORD2
+GetRssiLastRx				KEYWORD2
+GetSerialNumber				KEYWORD2
+GetSerialNumberAsync		KEYWORD2
+GetSpreadFactor				KEYWORD2
+GetUserID					KEYWORD2
+HasPacket					KEYWORD2
+SendRawCommand				KEYWORD2
+SendRawCommandAsync			KEYWORD2
+SetAsyncCallback			KEYWORD2
+SetBaudRate					KEYWORD2
+SetCarrierSenseRssiOutput	KEYWORD2
+SetChannel					KEYWORD2
+SetContactFunction			KEYWORD2
+SetDestinationID			KEYWORD2
+SetEquipmentID				KEYWORD2
+SetGroupID					KEYWORD2
+SetMode						KEYWORD2
+SetSpreadFactor				KEYWORD2
+setDebugStream				KEYWORD2
+TransmitData				KEYWORD2
+TransmitDataFireAndForget	KEYWORD2
+Work						KEYWORD2
+
+#######################################
+# Enums & Constants (LITERAL1)
+#######################################
+MLR_DEFAULT_BAUDRATE	LITERAL1
+
+MLR_Modem_Response		LITERAL1
+MLR_Modem_Error			LITERAL1
+MLR_ModemMode			LITERAL1
+MLR_ModemSpreadFactor	LITERAL1
+
+Busy					LITERAL1
+BufferTooSmall			LITERAL1
+Channel					LITERAL1
+DataReceived			LITERAL1
+Fail					LITERAL1
+FailLbt					LITERAL1
+GenericResponse			LITERAL1
+Idle					LITERAL1
+InvalidArg				LITERAL1
+Ok						LITERAL1
+ParseError				LITERAL1
+RssiCurrentChannel		LITERAL1
+RssiLastRx				LITERAL1
+SaveValue				LITERAL1
+SerialNumber			LITERAL1
+ShowMode				LITERAL1
+Timeout					LITERAL1
+MLR_Modem_DtIr			LITERAL1
+UserID					LITERAL1
+CarrierSenseRssi		LITERAL1
+BaudRate				LITERAL1
+
+FskBin					LITERAL1
+FskCmd					LITERAL1
+LoRaBin					LITERAL1
+LoRaCmd					LITERAL1
+
+Chips128				LITERAL1
+Chips256				LITERAL1
+Chips512				LITERAL1
+Chips1024				LITERAL1
+Chips2048				LITERAL1
+Chips4096				LITERAL1
