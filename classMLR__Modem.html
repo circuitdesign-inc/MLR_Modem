@@ -92,84 +92,60 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a934afa739635884354627c655d5916ce"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a934afa739635884354627c655d5916ce">begin</a> (Stream &amp;pUart, MLR_Modem_AsyncCallback pCallback=nullptr)</td></tr>
 <tr class="memdesc:a934afa739635884354627c655d5916ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the modem driver.  <br /></td></tr>
 <tr class="separator:a934afa739635884354627c655d5916ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ed201314031193b8d95527493a27281"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5ed201314031193b8d95527493a27281">SetAsyncCallback</a> (MLR_Modem_AsyncCallback pCallback)</td></tr>
-<tr class="memdesc:a5ed201314031193b8d95527493a27281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the asynchronous callback function.  <br /></td></tr>
-<tr class="separator:a5ed201314031193b8d95527493a27281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d976e5edc7904ff582160a80f862c04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5d976e5edc7904ff582160a80f862c04">setDebugStream</a> (Stream *debugStream)</td></tr>
-<tr class="memdesc:a5d976e5edc7904ff582160a80f862c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the stream for debug output.  <br /></td></tr>
-<tr class="separator:a5d976e5edc7904ff582160a80f862c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ebda005e698feee9da67b773e396a39"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a6ebda005e698feee9da67b773e396a39">GetMode</a> (MLR_ModemMode *pMode)</td></tr>
-<tr class="memdesc:a6ebda005e698feee9da67b773e396a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current wireless communication mode.  <br /></td></tr>
-<tr class="separator:a6ebda005e698feee9da67b773e396a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a165992cf69569629266c3f45a01ec1"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a4a165992cf69569629266c3f45a01ec1">SetMode</a> (MLR_ModemMode mode, bool saveValue)</td></tr>
-<tr class="memdesc:a4a165992cf69569629266c3f45a01ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the wireless communication mode (e.g., FSK or LoRa).  <br /></td></tr>
-<tr class="separator:a4a165992cf69569629266c3f45a01ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebeafd4b4d3e6f512eb3b0da0afcbca8"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#aebeafd4b4d3e6f512eb3b0da0afcbca8">GetSpreadFactor</a> (MLR_ModemSpreadFactor *pSf)</td></tr>
-<tr class="memdesc:aebeafd4b4d3e6f512eb3b0da0afcbca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current LoRa spreading factor.  <br /></td></tr>
-<tr class="separator:aebeafd4b4d3e6f512eb3b0da0afcbca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275eca46dfc1dbcaef6a0f25c86a21b7"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a275eca46dfc1dbcaef6a0f25c86a21b7">SetSpreadFactor</a> (MLR_ModemSpreadFactor sf, bool saveValue)</td></tr>
-<tr class="memdesc:a275eca46dfc1dbcaef6a0f25c86a21b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the LoRa spreading factor.  <br /></td></tr>
-<tr class="separator:a275eca46dfc1dbcaef6a0f25c86a21b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5264ffe69b2523da5315056b0d7d87bb"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5264ffe69b2523da5315056b0d7d87bb">TransmitData</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
-<tr class="memdesc:a5264ffe69b2523da5315056b0d7d87bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link.  <br /></td></tr>
-<tr class="separator:a5264ffe69b2523da5315056b0d7d87bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233be6352d536ad68483f464de032503"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a233be6352d536ad68483f464de032503">TransmitDataFireAndForget</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
-<tr class="memdesc:a233be6352d536ad68483f464de032503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link without waiting for transmission completion (*IR).  <br /></td></tr>
-<tr class="separator:a233be6352d536ad68483f464de032503"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a633d7663680b01d5b8c82a85e8d6f94f"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a633d7663680b01d5b8c82a85e8d6f94f">GetChannel</a> (uint8_t *pChannel)</td></tr>
-<tr class="memdesc:a633d7663680b01d5b8c82a85e8d6f94f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current frequency channel.  <br /></td></tr>
-<tr class="separator:a633d7663680b01d5b8c82a85e8d6f94f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3800e110ace3786dca235375a4dcfb1"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#ac3800e110ace3786dca235375a4dcfb1">SetChannel</a> (uint8_t channel, bool saveValue)</td></tr>
 <tr class="memdesc:ac3800e110ace3786dca235375a4dcfb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the frequency channel.  <br /></td></tr>
 <tr class="separator:ac3800e110ace3786dca235375a4dcfb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefab6b3e743d1d3d4eeb7b6670593f9c"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#aefab6b3e743d1d3d4eeb7b6670593f9c">GetGroupID</a> (uint8_t *pGI)</td></tr>
-<tr class="memdesc:aefab6b3e743d1d3d4eeb7b6670593f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Group ID.  <br /></td></tr>
-<tr class="separator:aefab6b3e743d1d3d4eeb7b6670593f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c5a83d438682f5877b38f3067730929"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a1c5a83d438682f5877b38f3067730929">SetGroupID</a> (uint8_t gi, bool saveValue)</td></tr>
-<tr class="memdesc:a1c5a83d438682f5877b38f3067730929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Group ID.  <br /></td></tr>
-<tr class="separator:a1c5a83d438682f5877b38f3067730929"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1e1cca359000ca1314138f025c1df33"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#ab1e1cca359000ca1314138f025c1df33">GetDestinationID</a> (uint8_t *pDI)</td></tr>
-<tr class="memdesc:ab1e1cca359000ca1314138f025c1df33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Destination ID.  <br /></td></tr>
-<tr class="separator:ab1e1cca359000ca1314138f025c1df33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c8f8fe93316e407f6428924bd7bc72b"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a9c8f8fe93316e407f6428924bd7bc72b">SetDestinationID</a> (uint8_t di, bool saveValue)</td></tr>
-<tr class="memdesc:a9c8f8fe93316e407f6428924bd7bc72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Destination ID.  <br /></td></tr>
-<tr class="separator:a9c8f8fe93316e407f6428924bd7bc72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23eb8835cfca92166eb08f4727c53637"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a23eb8835cfca92166eb08f4727c53637">GetEquipmentID</a> (uint8_t *pEI)</td></tr>
-<tr class="memdesc:a23eb8835cfca92166eb08f4727c53637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Equipment ID (self ID).  <br /></td></tr>
-<tr class="separator:a23eb8835cfca92166eb08f4727c53637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a633d7663680b01d5b8c82a85e8d6f94f"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a633d7663680b01d5b8c82a85e8d6f94f">GetChannel</a> (uint8_t *pChannel)</td></tr>
+<tr class="memdesc:a633d7663680b01d5b8c82a85e8d6f94f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current frequency channel.  <br /></td></tr>
+<tr class="separator:a633d7663680b01d5b8c82a85e8d6f94f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a165992cf69569629266c3f45a01ec1"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a4a165992cf69569629266c3f45a01ec1">SetMode</a> (MLR_ModemMode mode, bool saveValue)</td></tr>
+<tr class="memdesc:a4a165992cf69569629266c3f45a01ec1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the wireless communication mode (e.g., FSK or LoRa).  <br /></td></tr>
+<tr class="separator:a4a165992cf69569629266c3f45a01ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ebda005e698feee9da67b773e396a39"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a6ebda005e698feee9da67b773e396a39">GetMode</a> (MLR_ModemMode *pMode)</td></tr>
+<tr class="memdesc:a6ebda005e698feee9da67b773e396a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current wireless communication mode.  <br /></td></tr>
+<tr class="separator:a6ebda005e698feee9da67b773e396a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275eca46dfc1dbcaef6a0f25c86a21b7"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a275eca46dfc1dbcaef6a0f25c86a21b7">SetSpreadFactor</a> (MLR_ModemSpreadFactor sf, bool saveValue)</td></tr>
+<tr class="memdesc:a275eca46dfc1dbcaef6a0f25c86a21b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the LoRa spreading factor.  <br /></td></tr>
+<tr class="separator:a275eca46dfc1dbcaef6a0f25c86a21b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebeafd4b4d3e6f512eb3b0da0afcbca8"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#aebeafd4b4d3e6f512eb3b0da0afcbca8">GetSpreadFactor</a> (MLR_ModemSpreadFactor *pSf)</td></tr>
+<tr class="memdesc:aebeafd4b4d3e6f512eb3b0da0afcbca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current LoRa spreading factor.  <br /></td></tr>
+<tr class="separator:aebeafd4b4d3e6f512eb3b0da0afcbca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c01f29761b5f7dc1ab3ebea66c1e119"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5c01f29761b5f7dc1ab3ebea66c1e119">SetEquipmentID</a> (uint8_t ei, bool saveValue)</td></tr>
 <tr class="memdesc:a5c01f29761b5f7dc1ab3ebea66c1e119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Equipment ID (self ID).  <br /></td></tr>
 <tr class="separator:a5c01f29761b5f7dc1ab3ebea66c1e119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23eb8835cfca92166eb08f4727c53637"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a23eb8835cfca92166eb08f4727c53637">GetEquipmentID</a> (uint8_t *pEI)</td></tr>
+<tr class="memdesc:a23eb8835cfca92166eb08f4727c53637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Equipment ID (self ID).  <br /></td></tr>
+<tr class="separator:a23eb8835cfca92166eb08f4727c53637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c8f8fe93316e407f6428924bd7bc72b"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a9c8f8fe93316e407f6428924bd7bc72b">SetDestinationID</a> (uint8_t di, bool saveValue)</td></tr>
+<tr class="memdesc:a9c8f8fe93316e407f6428924bd7bc72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Destination ID.  <br /></td></tr>
+<tr class="separator:a9c8f8fe93316e407f6428924bd7bc72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1e1cca359000ca1314138f025c1df33"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#ab1e1cca359000ca1314138f025c1df33">GetDestinationID</a> (uint8_t *pDI)</td></tr>
+<tr class="memdesc:ab1e1cca359000ca1314138f025c1df33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Destination ID.  <br /></td></tr>
+<tr class="separator:ab1e1cca359000ca1314138f025c1df33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5a83d438682f5877b38f3067730929"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a1c5a83d438682f5877b38f3067730929">SetGroupID</a> (uint8_t gi, bool saveValue)</td></tr>
+<tr class="memdesc:a1c5a83d438682f5877b38f3067730929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Group ID.  <br /></td></tr>
+<tr class="separator:a1c5a83d438682f5877b38f3067730929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefab6b3e743d1d3d4eeb7b6670593f9c"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#aefab6b3e743d1d3d4eeb7b6670593f9c">GetGroupID</a> (uint8_t *pGI)</td></tr>
+<tr class="memdesc:aefab6b3e743d1d3d4eeb7b6670593f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Group ID.  <br /></td></tr>
+<tr class="separator:aefab6b3e743d1d3d4eeb7b6670593f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74612f892f78fc38ec6803db7f6566d6"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a74612f892f78fc38ec6803db7f6566d6">GetUserID</a> (uint16_t *pUserID)</td></tr>
+<tr class="memdesc:a74612f892f78fc38ec6803db7f6566d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the User ID.  <br /></td></tr>
+<tr class="separator:a74612f892f78fc38ec6803db7f6566d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2320ac50d71ba6ecc99d22034a0bf59f"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a2320ac50d71ba6ecc99d22034a0bf59f">GetRssiLastRx</a> (int16_t *pRssi)</td></tr>
 <tr class="memdesc:a2320ac50d71ba6ecc99d22034a0bf59f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the RSSI (Received Signal Strength) of the last successfully received packet.  <br /></td></tr>
 <tr class="separator:a2320ac50d71ba6ecc99d22034a0bf59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa08da9ac047197a3536c7e6dbde95e38"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#aa08da9ac047197a3536c7e6dbde95e38">GetRssiCurrentChannel</a> (int16_t *pRssi)</td></tr>
 <tr class="memdesc:aa08da9ac047197a3536c7e6dbde95e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current RSSI (noise floor) of the configured channel.  <br /></td></tr>
 <tr class="separator:aa08da9ac047197a3536c7e6dbde95e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58fcd03e0a7364567176346bf1ec7a83"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a58fcd03e0a7364567176346bf1ec7a83">GetRssiCurrentChannelAsync</a> ()</td></tr>
-<tr class="memdesc:a58fcd03e0a7364567176346bf1ec7a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asynchronously requests the current RSSI of the configured channel. The result will be delivered via the AsyncCallback.  <br /></td></tr>
-<tr class="separator:a58fcd03e0a7364567176346bf1ec7a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a101eb227995aab59410798b1bca6b62e"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a101eb227995aab59410798b1bca6b62e">GetContactFunction</a> (uint8_t *pContactFunction)</td></tr>
-<tr class="memdesc:a101eb227995aab59410798b1bca6b62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contact function for DIO1..DIO8.  <br /></td></tr>
-<tr class="separator:a101eb227995aab59410798b1bca6b62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4648da5f41a99ea71c611fbe66962a4c"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a4648da5f41a99ea71c611fbe66962a4c">SetContactFunction</a> (uint8_t contactFunction, bool saveValue)</td></tr>
-<tr class="memdesc:a4648da5f41a99ea71c611fbe66962a4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the contact function for DIO1..DIO8.  <br /></td></tr>
-<tr class="separator:a4648da5f41a99ea71c611fbe66962a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af14cb9fd39495558a54fcdc0b9d0ee78"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#af14cb9fd39495558a54fcdc0b9d0ee78">GetSerialNumber</a> (uint32_t *pSn)</td></tr>
-<tr class="memdesc:af14cb9fd39495558a54fcdc0b9d0ee78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the modem's serial number.  <br /></td></tr>
-<tr class="separator:af14cb9fd39495558a54fcdc0b9d0ee78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcb8cfc553acf7a5ba98ce91aaba207f"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#adcb8cfc553acf7a5ba98ce91aaba207f">GetSerialNumberAsync</a> ()</td></tr>
-<tr class="memdesc:adcb8cfc553acf7a5ba98ce91aaba207f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asynchronously requests the modem's serial number. The result will be delivered via the AsyncCallback.  <br /></td></tr>
-<tr class="separator:adcb8cfc553acf7a5ba98ce91aaba207f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74612f892f78fc38ec6803db7f6566d6"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a74612f892f78fc38ec6803db7f6566d6">GetUserID</a> (uint16_t *pUserID)</td></tr>
-<tr class="memdesc:a74612f892f78fc38ec6803db7f6566d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the User ID.  <br /></td></tr>
-<tr class="separator:a74612f892f78fc38ec6803db7f6566d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54d04dafa71737ab40e88cc6ab7c6707"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a54d04dafa71737ab40e88cc6ab7c6707">GetCarrierSenseRssiOutput</a> (uint8_t *pCiValue)</td></tr>
-<tr class="memdesc:a54d04dafa71737ab40e88cc6ab7c6707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Carrier Sense RSSI Output setting.  <br /></td></tr>
-<tr class="separator:a54d04dafa71737ab40e88cc6ab7c6707"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35b84583c22f692755ecc23fdbb923f3"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a35b84583c22f692755ecc23fdbb923f3">SetCarrierSenseRssiOutput</a> (uint8_t ciValue, bool saveValue)</td></tr>
 <tr class="memdesc:a35b84583c22f692755ecc23fdbb923f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Carrier Sense RSSI Output setting.  <br /></td></tr>
 <tr class="separator:a35b84583c22f692755ecc23fdbb923f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54d04dafa71737ab40e88cc6ab7c6707"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a54d04dafa71737ab40e88cc6ab7c6707">GetCarrierSenseRssiOutput</a> (uint8_t *pCiValue)</td></tr>
+<tr class="memdesc:a54d04dafa71737ab40e88cc6ab7c6707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Carrier Sense RSSI Output setting.  <br /></td></tr>
+<tr class="separator:a54d04dafa71737ab40e88cc6ab7c6707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af14cb9fd39495558a54fcdc0b9d0ee78"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#af14cb9fd39495558a54fcdc0b9d0ee78">GetSerialNumber</a> (uint32_t *pSn)</td></tr>
+<tr class="memdesc:af14cb9fd39495558a54fcdc0b9d0ee78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the modem's serial number.  <br /></td></tr>
+<tr class="separator:af14cb9fd39495558a54fcdc0b9d0ee78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfde21de330cebcfd4fde74c42b89921"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#acfde21de330cebcfd4fde74c42b89921">FactoryReset</a> ()</td></tr>
 <tr class="memdesc:acfde21de330cebcfd4fde74c42b89921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the modem to factory settings.  <br /></td></tr>
 <tr class="separator:acfde21de330cebcfd4fde74c42b89921"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,21 +155,39 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad36965b8160a115396f98f555381be4c"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#ad36965b8160a115396f98f555381be4c">SetBaudRate</a> (uint32_t baudRate, bool saveValue)</td></tr>
 <tr class="memdesc:ad36965b8160a115396f98f555381be4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the UART Baud Rate.  <br /></td></tr>
 <tr class="separator:ad36965b8160a115396f98f555381be4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#adfc0e710232fffb610dfad2e6dcb7bb3">HasPacket</a> ()</td></tr>
-<tr class="memdesc:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a new radio packet has been received.  <br /></td></tr>
-<tr class="separator:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af37a0123d4bc48638b2f4b6ea94f3835"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#af37a0123d4bc48638b2f4b6ea94f3835">GetPacket</a> (const uint8_t **ppData, uint8_t *len)</td></tr>
-<tr class="memdesc:af37a0123d4bc48638b2f4b6ea94f3835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the last received packet.  <br /></td></tr>
-<tr class="separator:af37a0123d4bc48638b2f4b6ea94f3835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a1a8a1d18bf7f0572a12c6a97fe0928ad">DeletePacket</a> ()</td></tr>
-<tr class="memdesc:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently stored received packet.  <br /></td></tr>
-<tr class="separator:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6baab42aad184aa5001184ac3bdef85e"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a6baab42aad184aa5001184ac3bdef85e">SendRawCommand</a> (const char *command, char *responseBuffer, size_t bufferSize, uint32_t timeoutMs=500)</td></tr>
 <tr class="memdesc:a6baab42aad184aa5001184ac3bdef85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a raw command string and waits synchronously for a response.  <br /></td></tr>
 <tr class="separator:a6baab42aad184aa5001184ac3bdef85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a3885d9dcd437a00228b6edd87a0ef"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a73a3885d9dcd437a00228b6edd87a0ef">SendRawCommandAsync</a> (const char *command, uint32_t timeoutMs=500)</td></tr>
 <tr class="memdesc:a73a3885d9dcd437a00228b6edd87a0ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a raw command string asynchronously. The response will be delivered via the AsyncCallback as MLR_Modem_Response::GenericResponse.  <br /></td></tr>
 <tr class="separator:a73a3885d9dcd437a00228b6edd87a0ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5264ffe69b2523da5315056b0d7d87bb"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5264ffe69b2523da5315056b0d7d87bb">TransmitData</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
+<tr class="memdesc:a5264ffe69b2523da5315056b0d7d87bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link.  <br /></td></tr>
+<tr class="separator:a5264ffe69b2523da5315056b0d7d87bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a233be6352d536ad68483f464de032503"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a233be6352d536ad68483f464de032503">TransmitDataFireAndForget</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
+<tr class="memdesc:a233be6352d536ad68483f464de032503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link without waiting for transmission completion (*IR).  <br /></td></tr>
+<tr class="separator:a233be6352d536ad68483f464de032503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58fcd03e0a7364567176346bf1ec7a83"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a58fcd03e0a7364567176346bf1ec7a83">GetRssiCurrentChannelAsync</a> ()</td></tr>
+<tr class="memdesc:a58fcd03e0a7364567176346bf1ec7a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asynchronously requests the current RSSI of the configured channel. The result will be delivered via the AsyncCallback.  <br /></td></tr>
+<tr class="separator:a58fcd03e0a7364567176346bf1ec7a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcb8cfc553acf7a5ba98ce91aaba207f"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#adcb8cfc553acf7a5ba98ce91aaba207f">GetSerialNumberAsync</a> ()</td></tr>
+<tr class="memdesc:adcb8cfc553acf7a5ba98ce91aaba207f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asynchronously requests the modem's serial number. The result will be delivered via the AsyncCallback.  <br /></td></tr>
+<tr class="separator:adcb8cfc553acf7a5ba98ce91aaba207f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af37a0123d4bc48638b2f4b6ea94f3835"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#af37a0123d4bc48638b2f4b6ea94f3835">GetPacket</a> (const uint8_t **ppData, uint8_t *len)</td></tr>
+<tr class="memdesc:af37a0123d4bc48638b2f4b6ea94f3835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the last received packet.  <br /></td></tr>
+<tr class="separator:af37a0123d4bc48638b2f4b6ea94f3835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ed201314031193b8d95527493a27281"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5ed201314031193b8d95527493a27281">SetAsyncCallback</a> (MLR_Modem_AsyncCallback pCallback)</td></tr>
+<tr class="memdesc:a5ed201314031193b8d95527493a27281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the asynchronous callback function.  <br /></td></tr>
+<tr class="separator:a5ed201314031193b8d95527493a27281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d976e5edc7904ff582160a80f862c04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5d976e5edc7904ff582160a80f862c04">setDebugStream</a> (Stream *debugStream)</td></tr>
+<tr class="memdesc:a5d976e5edc7904ff582160a80f862c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the stream for debug output.  <br /></td></tr>
+<tr class="separator:a5d976e5edc7904ff582160a80f862c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#adfc0e710232fffb610dfad2e6dcb7bb3">HasPacket</a> ()</td></tr>
+<tr class="memdesc:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a new radio packet has been received.  <br /></td></tr>
+<tr class="separator:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a1a8a1d18bf7f0572a12c6a97fe0928ad">DeletePacket</a> ()</td></tr>
+<tr class="memdesc:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently stored received packet.  <br /></td></tr>
+<tr class="separator:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42f8777e967d9cb34984140565efb2b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a42f8777e967d9cb34984140565efb2b8">Work</a> ()</td></tr>
 <tr class="memdesc:a42f8777e967d9cb34984140565efb2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main processing loop for the driver. This function must be called regularly (e.g., in the Arduino loop()) to parse incoming serial data from the modem.  <br /></td></tr>
 <tr class="separator:a42f8777e967d9cb34984140565efb2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,27 +362,6 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>MLR_Modem_Error::Ok on success. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Uses the "@CH" command. </dd></dl>
-
-</div>
-</div>
-<a id="a101eb227995aab59410798b1bca6b62e" name="a101eb227995aab59410798b1bca6b62e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a101eb227995aab59410798b1bca6b62e">&#9670;&#160;</a></span>GetContactFunction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">MLR_Modem_Error MLR_Modem::GetContactFunction </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>pContactFunction</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the contact function for DIO1..DIO8. </p>
-<dl class="section note"><dt>Note</dt><dd>This command "@PS" is not documented in the provided MLR-429 serial manual. </dd></dl>
 
 </div>
 </div>
@@ -997,37 +970,6 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>MLR_Modem_Error::Ok on success. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Uses the "@CH" command. </dd></dl>
-
-</div>
-</div>
-<a id="a4648da5f41a99ea71c611fbe66962a4c" name="a4648da5f41a99ea71c611fbe66962a4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4648da5f41a99ea71c611fbe66962a4c">&#9670;&#160;</a></span>SetContactFunction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">MLR_Modem_Error MLR_Modem::SetContactFunction </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>contactFunction</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>saveValue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the contact function for DIO1..DIO8. </p>
-<dl class="section note"><dt>Note</dt><dd>This command "@PS" is not documented in the provided MLR-429 serial manual. </dd></dl>
 
 </div>
 </div>
