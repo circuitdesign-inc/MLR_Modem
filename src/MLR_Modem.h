@@ -173,24 +173,21 @@ public: // methods
     MLR_Modem_Error begin(Stream &pUart, MLR_Modem_AsyncCallback pCallback = nullptr);
 
     /**
-     * \brief Sets the asynchronous callback function.
-     * \param pCallback The callback function. If set to nullptr, no callback will take place.
-     */
-    void SetAsyncCallback(MLR_Modem_AsyncCallback pCallback) { m_pCallback = pCallback; }
-
-    /**
-     * \brief Sets the stream for debug output.
-     * \param debugStream Pointer to the Stream object (e.g., &Serial).
-     */
-    void setDebugStream(Stream *debugStream);
-
-    /**
-     * \brief Gets the current wireless communication mode.
-     * \param pMode Pointer to store the current mode.
+     * \brief Sets the frequency channel.
+     * \param channel The channel to set (0x07 - 0x2E).
+     * \param saveValue If true, saves the setting to non-volatile memory (/W option).
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@MO" command.
+     * \note Uses the "@CH" command.
      */
-    MLR_Modem_Error GetMode(MLR_ModemMode *pMode);
+    MLR_Modem_Error SetChannel(uint8_t channel, bool saveValue);
+
+    /**
+     * \brief Gets the current frequency channel.
+     * \param pChannel Pointer to store the current channel (0x07 - 0x2E).
+     * \return MLR_Modem_Error::Ok on success.
+     * \note Uses the "@CH" command.
+     */
+    MLR_Modem_Error GetChannel(uint8_t *pChannel);
 
     /**
      * \brief Sets the wireless communication mode (e.g., FSK or LoRa).
@@ -202,12 +199,12 @@ public: // methods
     MLR_Modem_Error SetMode(MLR_ModemMode mode, bool saveValue);
 
     /**
-     * \brief Gets the current LoRa spreading factor.
-     * \param pSf Pointer to store the current spreading factor.
+     * \brief Gets the current wireless communication mode.
+     * \param pMode Pointer to store the current mode.
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@SF" command.
+     * \note Uses the "@MO" command.
      */
-    MLR_Modem_Error GetSpreadFactor(MLR_ModemSpreadFactor *pSf);
+    MLR_Modem_Error GetMode(MLR_ModemMode *pMode);
 
     /**
      * \brief Sets the LoRa spreading factor.
@@ -219,63 +216,29 @@ public: // methods
     MLR_Modem_Error SetSpreadFactor(MLR_ModemSpreadFactor sf, bool saveValue);
 
     /**
-     * \brief Transmits data over the wireless link.
-     * \param pMsg Pointer to the data payload to send.
-     * \param len Length of the data payload (0-255 bytes).
-     * \return MLR_Modem_Error::Ok on success, MLR_Modem_Error::FailLbt if carrier sense fails.
-     * \note Uses the "@DT" command.
-     */
-    MLR_Modem_Error TransmitData(const uint8_t *pMsg, uint8_t len);
-
-    /**
-     * \brief Transmits data over the wireless link without waiting for transmission completion (*IR).
-     * \param pMsg Pointer to the data payload to send.
-     * \param len Length of the data payload (0-255 bytes).
-     * \return MLR_Modem_Error::Ok on success (command accepted), MLR_Modem_Error::Busy if driver is busy.
-     */
-    MLR_Modem_Error TransmitDataFireAndForget(const uint8_t *pMsg, uint8_t len);
-
-    /**
-     * \brief Gets the current frequency channel.
-     * \param pChannel Pointer to store the current channel (0x07 - 0x2E).
+     * \brief Gets the current LoRa spreading factor.
+     * \param pSf Pointer to store the current spreading factor.
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@CH" command.
+     * \note Uses the "@SF" command.
      */
-    MLR_Modem_Error GetChannel(uint8_t *pChannel);
+    MLR_Modem_Error GetSpreadFactor(MLR_ModemSpreadFactor *pSf);
 
     /**
-     * \brief Sets the frequency channel.
-     * \param channel The channel to set (0x07 - 0x2E).
+     * \brief Sets the Equipment ID (self ID).
+     * \param ei The Equipment ID to set (0x00 - 0xFF).
      * \param saveValue If true, saves the setting to non-volatile memory (/W option).
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@CH" command.
+     * \note Uses the "@EI" command.
      */
-    MLR_Modem_Error SetChannel(uint8_t channel, bool saveValue);
+    MLR_Modem_Error SetEquipmentID(uint8_t ei, bool saveValue);
 
     /**
-     * \brief Gets the Group ID.
-     * \param pGI Pointer to store the current Group ID (0x00 - 0xFF).
+     * \brief Gets the Equipment ID (self ID).
+     * \param pEI Pointer to store the current Equipment ID (0x00 - 0xFF).
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@GI" command.
+     * \note Uses the "@EI" command.
      */
-    MLR_Modem_Error GetGroupID(uint8_t *pGI);
-
-    /**
-     * \brief Sets the Group ID.
-     * \param gi The Group ID to set (0x00 - 0xFF).
-     * \param saveValue If true, saves the setting to non-volatile memory (/W option).
-     * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@GI" command.
-     */
-    MLR_Modem_Error SetGroupID(uint8_t gi, bool saveValue);
-
-    /**
-     * \brief Gets the Destination ID.
-     * \param pDI Pointer to store the current Destination ID (0x00 - 0xFF).
-     * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@DI" command.
-     */
-    MLR_Modem_Error GetDestinationID(uint8_t *pDI);
+    MLR_Modem_Error GetEquipmentID(uint8_t *pEI);
 
     /**
      * \brief Sets the Destination ID.
@@ -287,21 +250,37 @@ public: // methods
     MLR_Modem_Error SetDestinationID(uint8_t di, bool saveValue);
 
     /**
-     * \brief Gets the Equipment ID (self ID).
-     * \param pEI Pointer to store the current Equipment ID (0x00 - 0xFF).
+     * \brief Gets the Destination ID.
+     * \param pDI Pointer to store the current Destination ID (0x00 - 0xFF).
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@EI" command.
+     * \note Uses the "@DI" command.
      */
-    MLR_Modem_Error GetEquipmentID(uint8_t *pEI);
+    MLR_Modem_Error GetDestinationID(uint8_t *pDI);
 
     /**
-     * \brief Sets the Equipment ID (self ID).
-     * \param ei The Equipment ID to set (0x00 - 0xFF).
+     * \brief Sets the Group ID.
+     * \param gi The Group ID to set (0x00 - 0xFF).
      * \param saveValue If true, saves the setting to non-volatile memory (/W option).
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@EI" command.
+     * \note Uses the "@GI" command.
      */
-    MLR_Modem_Error SetEquipmentID(uint8_t ei, bool saveValue);
+    MLR_Modem_Error SetGroupID(uint8_t gi, bool saveValue);
+
+    /**
+     * \brief Gets the Group ID.
+     * \param pGI Pointer to store the current Group ID (0x00 - 0xFF).
+     * \return MLR_Modem_Error::Ok on success.
+     * \note Uses the "@GI" command.
+     */
+    MLR_Modem_Error GetGroupID(uint8_t *pGI);
+
+    /**
+     * \brief Gets the User ID.
+     * \param pUserID Pointer to store the current User ID (0x0000 - 0xFFFF).
+     * \return MLR_Modem_Error::Ok on success.
+     * \note Uses the "@UI" command.
+     */
+    MLR_Modem_Error GetUserID(uint16_t *pUserID);
 
     /**
      * \brief Gets the RSSI (Received Signal Strength) of the last successfully received packet.
@@ -320,48 +299,13 @@ public: // methods
     MLR_Modem_Error GetRssiCurrentChannel(int16_t *pRssi);
 
     /**
-     * \brief Asynchronously requests the current RSSI of the configured channel.
-     * The result will be delivered via the AsyncCallback.
-     * \return MLR_Modem_Error::Ok if the request was sent, MLR_Modem_Error::Busy if another async operation is pending.
-     * \note Uses the "@RA" command.
-     */
-    MLR_Modem_Error GetRssiCurrentChannelAsync();
-
-    /**
-     * \brief Gets the contact function for DIO1..DIO8.
-     * \note This command "@PS" is not documented in the provided MLR-429 serial manual.
-     */
-    MLR_Modem_Error GetContactFunction(uint8_t *pContactFunction);
-
-    /**
-     * \brief Sets the contact function for DIO1..DIO8.
-     * \note This command "@PS" is not documented in the provided MLR-429 serial manual.
-     */
-    MLR_Modem_Error SetContactFunction(uint8_t contactFunction, bool saveValue);
-
-    /**
-     * \brief Gets the modem's serial number.
-     * \param pSn Pointer to store the serial number.
+     * \brief Sets the Carrier Sense RSSI Output setting.
+     * \param ciValue The setting to set ('00' = OFF, '01' = ON).
+     * \param saveValue If true, saves the setting to non-volatile memory (/W option).
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@SN" command.
+     * \note Uses the "@CI" command.
      */
-    MLR_Modem_Error GetSerialNumber(uint32_t *pSn);
-
-    /**
-     * \brief Asynchronously requests the modem's serial number.
-     * The result will be delivered via the AsyncCallback.
-     * \return MLR_Modem_Error::Ok if the request was sent, MLR_Modem_Error::Busy if another async operation is pending.
-     * \note Uses the "@SN" command.
-     */
-    MLR_Modem_Error GetSerialNumberAsync();
-
-    /**
-     * \brief Gets the User ID.
-     * \param pUserID Pointer to store the current User ID (0x0000 - 0xFFFF).
-     * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@UI" command.
-     */
-    MLR_Modem_Error GetUserID(uint16_t *pUserID);
+    MLR_Modem_Error SetCarrierSenseRssiOutput(uint8_t ciValue, bool saveValue);
 
     /**
      * \brief Gets the Carrier Sense RSSI Output setting.
@@ -372,13 +316,12 @@ public: // methods
     MLR_Modem_Error GetCarrierSenseRssiOutput(uint8_t *pCiValue);
 
     /**
-     * \brief Sets the Carrier Sense RSSI Output setting.
-     * \param ciValue The setting to set ('00' = OFF, '01' = ON).
-     * \param saveValue If true, saves the setting to non-volatile memory (/W option).
+     * \brief Gets the modem's serial number.
+     * \param pSn Pointer to store the serial number.
      * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@CI" command.
+     * \note Uses the "@SN" command.
      */
-    MLR_Modem_Error SetCarrierSenseRssiOutput(uint8_t ciValue, bool saveValue);
+    MLR_Modem_Error GetSerialNumber(uint32_t *pSn);
 
     /**
      * \brief Resets the modem to factory settings.
@@ -405,27 +348,6 @@ public: // methods
     MLR_Modem_Error SetBaudRate(uint32_t baudRate, bool saveValue);
 
     /**
-     * \brief Checks if a new radio packet has been received.
-     * \return true if a packet is available, false otherwise.
-     */
-    bool HasPacket() { return m_drMessagePresent; }
-
-    /**
-     * \brief Retrieves the last received packet.
-     * \param ppData Pointer to a const uint8_t* that will be set to the packet data.
-     *               \note The pointer `*ppData` will point to an internal library buffer. This pointer is only valid until the next call to `Work()` or `DeletePacket()`. If you need to access the data later, you must copy it to your own buffer.
-     * \param len Pointer to a uint8_t that will be set to the packet length.
-     * \return MLR_Modem_Error::Ok on success, MLR_Modem_Error::Fail if no packet is available.
-     * \note This function does not remove the packet. Use DeletePacket() to clear it.
-     */
-    MLR_Modem_Error GetPacket(const uint8_t **ppData, uint8_t *len);
-
-    /**
-     * \brief Deletes the currently stored received packet.
-     */
-    void DeletePacket() { m_drMessagePresent = false; }
-
-    /**
      * \brief Sends a raw command string and waits synchronously for a response.
      * \param command The null-terminated command string (e.g., "@FV\r\n").
      * \param responseBuffer Buffer to store the raw response line (excluding CRLF).
@@ -443,6 +365,82 @@ public: // methods
      * \return MLR_Modem_Error::Ok if the command was sent, or an error code.
      */
     MLR_Modem_Error SendRawCommandAsync(const char *command, uint32_t timeoutMs = 500);
+
+    /**
+     * \brief Transmits data over the wireless link.
+     * \param pMsg Pointer to the data payload to send.
+     * \param len Length of the data payload (0-255 bytes).
+     * \return MLR_Modem_Error::Ok on success, MLR_Modem_Error::FailLbt if carrier sense fails.
+     * \note Uses the "@DT" command.
+     */
+    MLR_Modem_Error TransmitData(const uint8_t *pMsg, uint8_t len);
+
+    /**
+     * \brief Transmits data over the wireless link without waiting for transmission completion (*IR).
+     * \param pMsg Pointer to the data payload to send.
+     * \param len Length of the data payload (0-255 bytes).
+     * \return MLR_Modem_Error::Ok on success (command accepted), MLR_Modem_Error::Busy if driver is busy.
+     */
+    MLR_Modem_Error TransmitDataFireAndForget(const uint8_t *pMsg, uint8_t len);
+
+    /**
+     * \brief Asynchronously requests the current RSSI of the configured channel.
+     * The result will be delivered via the AsyncCallback.
+     * \return MLR_Modem_Error::Ok if the request was sent, MLR_Modem_Error::Busy if another async operation is pending.
+     * \note Uses the "@RA" command.
+     */
+    MLR_Modem_Error GetRssiCurrentChannelAsync();
+
+    // /**
+    //  * \brief Gets the contact function for DIO1..DIO8.
+    //  */
+    // MLR_Modem_Error GetContactFunction(uint8_t *pContactFunction);
+
+    // /**
+    //  * \brief Sets the contact function for DIO1..DIO8.
+    //  */
+    // MLR_Modem_Error SetContactFunction(uint8_t contactFunction, bool saveValue);
+
+    /**
+     * \brief Asynchronously requests the modem's serial number.
+     * The result will be delivered via the AsyncCallback.
+     * \return MLR_Modem_Error::Ok if the request was sent, MLR_Modem_Error::Busy if another async operation is pending.
+     * \note Uses the "@SN" command.
+     */
+    MLR_Modem_Error GetSerialNumberAsync();
+
+    /**
+     * \brief Retrieves the last received packet.
+     * \param ppData Pointer to a const uint8_t* that will be set to the packet data.
+     *               \note The pointer `*ppData` will point to an internal library buffer. This pointer is only valid until the next call to `Work()` or `DeletePacket()`. If you need to access the data later, you must copy it to your own buffer.
+     * \param len Pointer to a uint8_t that will be set to the packet length.
+     * \return MLR_Modem_Error::Ok on success, MLR_Modem_Error::Fail if no packet is available.
+     * \note This function does not remove the packet. Use DeletePacket() to clear it.
+     */
+    MLR_Modem_Error GetPacket(const uint8_t **ppData, uint8_t *len);
+
+    /**
+     * \brief Sets the asynchronous callback function.
+     * \param pCallback The callback function. If set to nullptr, no callback will take place.
+     */
+    void SetAsyncCallback(MLR_Modem_AsyncCallback pCallback) { m_pCallback = pCallback; }
+
+    /**
+     * \brief Sets the stream for debug output.
+     * \param debugStream Pointer to the Stream object (e.g., &Serial).
+     */
+    void setDebugStream(Stream *debugStream);
+
+    /**
+     * \brief Checks if a new radio packet has been received.
+     * \return true if a packet is available, false otherwise.
+     */
+    bool HasPacket() { return m_drMessagePresent; }
+
+    /**
+     * \brief Deletes the currently stored received packet.
+     */
+    void DeletePacket() { m_drMessagePresent = false; }
 
     /**
      * \brief Main processing loop for the driver.
