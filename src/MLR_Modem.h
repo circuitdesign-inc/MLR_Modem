@@ -21,6 +21,9 @@ static constexpr uint32_t MLR_DEFAULT_BAUDRATE = 19200;
 
 // --- Debug Configuration ---
 // To enable debug prints for this library, define ENABLE_MLR_MODEM_DEBUG
+// Uncomment the following line to enable debug output
+// #define ENABLE_MLR_MODEM_DEBUG
+
 #ifdef ENABLE_MLR_MODEM_DEBUG
 #define MLR_DEBUG_PRINT(...) \
     if (m_pDebugStream)      \
@@ -471,7 +474,10 @@ private: // methods
     }
 
     //! Internal: write string to UART
-    void m_WriteString(const char *pString);
+    void m_WriteString(const char *pString, bool printPrefix = true);
+
+    //! Internal: write binary data to UART
+    void m_WriteData(const uint8_t *pData, uint8_t len);
 
     //! Internal: methods for reading from UART, using a one-byte buffer
     uint8_t m_ReadByte();
@@ -503,8 +509,17 @@ private: // methods
     //! Internal: Helper to set a byte value and verify response
     MLR_Modem_Error m_SetByteValue(const char *cmdPrefix, uint8_t value, bool saveValue, const char *respPrefix, size_t respLen);
 
+    //! Internal: Helper to send a command and wait for response
+    MLR_Modem_Error m_SendCmd(const char *cmd);
+
     //! Internal: Helper to get a byte value from the modem
     MLR_Modem_Error m_GetByteValue(const char *cmdString, uint8_t *pValue, const char *respPrefix, size_t respLen);
+
+    //! Internal: Generic parser for Hex values
+    MLR_Modem_Error m_ParseResponseHex(uint32_t *pValue, const char *prefix, size_t prefixLen, uint8_t hexDigits);
+
+    //! Internal: Generic parser for Decimal values with suffix
+    MLR_Modem_Error m_ParseResponseDec(int16_t *pValue, const char *prefix, size_t prefixLen, const char *suffix, size_t suffixLen);
 
     //! Internal: Helper method for responses that contain a one-byte hex value (e.g., *CH=0E)
     MLR_Modem_Error m_HandleMessageHexByte(uint8_t *pValue, uint32_t responseLen, const char *responsePrefix);
@@ -529,7 +544,8 @@ private: // methods
 
 private:                                            // data
     Stream *m_pUart;                                //!< Pointer to the Arduino serial port
-    Stream *m_pDebugStream;                         //!< Pointer to the stream for debug output.
+    Stream *m_pDebugStream = nullptr;               //!< Pointer to the stream for debug output.
+    bool m_debugRxNewLine = true;                   //!< Flag to track if we are at start of RX line
     MLR_Modem_Response m_asyncExpectedResponse;     //!< The expected response for an async call
     MLR_Modem_Response m_asyncExpectedResponses[3]; //!< Array of possible expected responses
     MLR_ModemParserState m_parserState;             //!< Current state of the parser
