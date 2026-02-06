@@ -13,17 +13,12 @@
 
 #pragma once
 #include <Arduino.h>
-// 共通Baseクラスのインクルード (パスはプロジェクト構成に合わせて調整してください)
-#include "../src/common/SerialModemBase.h"
+#include "common/SerialModemBase.h"
 
 /**
  * @brief Default baud rate for the MLR modem.
  */
 static constexpr uint32_t MLR_DEFAULT_BAUDRATE = 19200;
-
-// Debug macros are handled by SerialModemBase, but we can keep these for compatibility
-// or define them to map to base class methods if needed internally.
-// For clean refactoring, we rely on SerialModemBase's debug capabilities.
 
 /**
  * \brief Represents the type of response received from the modem.

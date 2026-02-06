@@ -295,21 +295,16 @@ MLR_Modem_Error MLR_Modem::FactoryReset()
     MLR_Modem_Error rv = waitForResponse();
     if (rv == MLR_Modem_Error::Ok)
     {
-        // Verify *WR=PS
-        // Note: setByteValue handles this, but here we do it manually or reuse logic
-        // Since this is specific command @IZ, we check manually
-        // (Or rely on waitForResponse simply returning the first line)
-        // Assuming first line is *WR=PS
-        // For cleaner implementation, we just wait for next
-        rv = waitForResponse(); // Wait for *IZ=OK
+        rv = waitForResponse();
     }
 
+    // 2. *IZ=OK
     if (rv == MLR_Modem_Error::Ok)
     {
         rv = m_HandleMessage_IZ();
     }
 
-    // Third response is "LORA MODE" or similar
+    // 3. "LORA MODE" or similar
     if (rv == MLR_Modem_Error::Ok)
     {
         m_ClearOneLine();
@@ -356,10 +351,6 @@ MLR_Modem_Error MLR_Modem::SendRawCommand(const char *command, char *responseBuf
     {
         return MLR_Modem_Error::Busy;
     }
-    // Using Base class implementation
-    // Append \r\n if not present? Original SendRawCommand took raw string, user responsible for CR/LF?
-    // Original m_WriteString added it? No, original SendRawCommand parameter "command" (e.g., "@FV\r\n").
-    // Base class sendRawCommand just sends what is given and waits.
     return sendRawCommand(command, responseBuffer, bufferSize, timeoutMs);
 }
 
@@ -869,9 +860,6 @@ MLR_Modem_Error MLR_Modem::m_HandleMessage_RA(int16_t *pRssi)
 
 MLR_Modem_Error MLR_Modem::m_HandleMessage_SN(uint32_t *pSerialNumber)
 {
-    // SN handling is tricky (Prefix "S" or not), reuse logic using base helpers if possible
-    // Original: checks for "S" prefix.
-    // Let's implement manually using buffer
     if (_rxIndex < MLR_GET_SERIAL_NUMBER_RESPONSE_LEN)
         return MLR_Modem_Error::Fail;
     if (strncmp(MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX, (char *)_rxBuffer, strlen(MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX)) != 0)

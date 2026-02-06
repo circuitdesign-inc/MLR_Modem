@@ -40,11 +40,7 @@ ModemError SerialModemBase::waitForResponse(uint32_t timeoutMs)
     // Reset timeout
     startTimeout(timeoutMs);
 
-    if (_debugStream)
-    {
-        _debugStream->print(getLogPrefix());
-        _debugStream->printf(" Wait]: Waiting up to %lu ms...\n", timeoutMs);
-    }
+    SM_DEBUG_PRINTF(" Wait]: Waiting up to %lu ms...\n", timeoutMs);
 
     while (!isTimeout())
     {
@@ -58,49 +54,25 @@ ModemError SerialModemBase::waitForResponse(uint32_t timeoutMs)
             break;
 
         case ModemParseResult::FinishedCmdResponse:
-            if (_debugStream)
-            {
-                _debugStream->print(getLogPrefix());
-                _debugStream->printf(" Wait]: CMD Response: '%.*s'\n", _rxIndex, _rxBuffer);
-            }
+            SM_DEBUG_PRINTF(" Wait]: CMD Response: '%.*s'\n", _rxIndex, _rxBuffer);
             return ModemError::Ok;
 
         case ModemParseResult::FinishedDrResponse:
-            if (_debugStream)
-            {
-                _debugStream->print(getLogPrefix());
-                _debugStream->println(" Wait]: Intervening DR received. Handling callback...");
-            }
+            SM_DEBUG_PRINTLN(" Wait]: Intervening DR received. Handling callback...");
             // Handle the asynchronous data packet
             onRxDataReceived();
             // Resume waiting for the original command response
-            if (_debugStream)
-            {
-                _debugStream->print(getLogPrefix());
-                _debugStream->println(" Wait]: Resume waiting for CMD...");
-            }
+            SM_DEBUG_PRINTLN(" Wait]: Resume waiting for CMD...");
             break;
 
         case ModemParseResult::Garbage:
         case ModemParseResult::Overflow:
-            // Depending on strictness, we might want to return Error,
-            // but usually we just keep trying or return Fail.
-            // Here we assume parse() handles cleanup.
-            // For now, treat as failure to receive correct response.
-            if (_debugStream)
-            {
-                _debugStream->print(getLogPrefix());
-                _debugStream->println(" Wait]: Error (Garbage/Overflow).");
-            }
+            SM_DEBUG_PRINTLN(" Wait]: Error (Garbage/Overflow).");
             return ModemError::Fail;
         }
     }
 
-    if (_debugStream)
-    {
-        _debugStream->print(getLogPrefix());
-        _debugStream->println(" Wait]: Timeout.");
-    }
+    SM_DEBUG_PRINTLN(" Wait]: Timeout.");
     return ModemError::Timeout;
 }
 
@@ -209,15 +181,11 @@ void SerialModemBase::writeString(const char *str, bool printPrefix)
 
     size_t len = strlen(str);
 
-    if (_debugStream)
+    if (printPrefix)
     {
-        if (printPrefix)
-        {
-            _debugStream->print(getLogPrefix());
-            _debugStream->print(" TX]: ");
-        }
-        _debugStream->write(reinterpret_cast<const uint8_t *>(str), len);
+        SM_DEBUG_PRINT(" TX]: ");
     }
+    SM_DEBUG_WRITE(reinterpret_cast<const uint8_t *>(str), len);
     _uart->write(reinterpret_cast<const uint8_t *>(str), len);
     _debugRxNewLine = true;
 }
@@ -226,10 +194,7 @@ void SerialModemBase::writeData(const uint8_t *data, size_t len)
 {
     if (!_uart)
         return;
-    if (_debugStream)
-    {
-        _debugStream->write(data, len);
-    }
+    SM_DEBUG_WRITE(data, len);
     _uart->write(data, len);
 }
 
@@ -252,26 +217,22 @@ uint8_t SerialModemBase::readByte()
     if (rcv_int != -1)
     {
         uint8_t rcv = static_cast<uint8_t>(rcv_int);
-        if (_debugStream)
+        if (_debugRxNewLine)
         {
-            if (_debugRxNewLine)
-            {
-                _debugStream->print(getLogPrefix());
-                _debugStream->print(" RX]: ");
-                _debugRxNewLine = false;
-            }
-            if (rcv >= 32 && rcv <= 126)
-                _debugStream->write(rcv);
-            else if (rcv == '\r')
-                _debugStream->print("<CR>");
-            else if (rcv == '\n')
-            {
-                _debugStream->print("<LF>\n");
-                _debugRxNewLine = true;
-            }
-            else
-                _debugStream->printf("<%02X>", rcv);
+            SM_DEBUG_PRINT(" RX]: ");
+            _debugRxNewLine = false;
         }
+        if (rcv >= 32 && rcv <= 126)
+            SM_DEBUG_WRITE(rcv);
+        else if (rcv == '\r')
+            SM_DEBUG_PRINT_RAW("<CR>");
+        else if (rcv == '\n')
+        {
+            SM_DEBUG_PRINT_RAW("<LF>\n");
+            _debugRxNewLine = true;
+        }
+        else
+            SM_DEBUG_PRINTF_RAW("<%02X>", rcv);
         return rcv;
     }
     return 0;
@@ -291,18 +252,13 @@ void SerialModemBase::flushGarbage(char keepChar)
 {
     if (!_uart)
         return;
-    if (_debugStream)
-    {
-        _debugStream->print(getLogPrefix());
-        _debugStream->print(" Flush]: Flushing garbage...");
-    }
+    SM_DEBUG_PRINT(" Flush]: Flushing garbage...");
 
     if (_oneByteBuf != -1)
     {
         if (_oneByteBuf == keepChar)
         {
-            if (_debugStream)
-                _debugStream->println(" Found keep char in buffer.");
+            SM_DEBUG_PRINTLN_RAW(" Found keep char in buffer.");
             return;
         }
         _oneByteBuf = -1;
@@ -314,13 +270,11 @@ void SerialModemBase::flushGarbage(char keepChar)
         if (c == keepChar)
         {
             unreadByte(static_cast<uint8_t>(c));
-            if (_debugStream)
-                _debugStream->print(" Found keep char.");
+            SM_DEBUG_PRINT_RAW(" Found keep char.");
             break;
         }
     }
-    if (_debugStream)
-        _debugStream->println(" Done.");
+    SM_DEBUG_PRINTLN_RAW(" Done.");
 }
 
 // --- Timeout Management ---

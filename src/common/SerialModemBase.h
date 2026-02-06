@@ -33,8 +33,11 @@ enum class ModemParseResult
     FinishedDrResponse   //!< A data reception message (DR/DS) was received
 };
 
-// --- Debug Macros ---
-// Checks _debugStream at runtime.
+// --- Debug Configuration ---
+// To enable debug prints, define ENABLE_SERIAL_MODEM_DEBUG
+// #define ENABLE_SERIAL_MODEM_DEBUG
+
+#ifdef ENABLE_SERIAL_MODEM_DEBUG
 #define SM_DEBUG_PRINT(...)                              \
     if (this->_debugStream)                              \
     {                                                    \
@@ -53,6 +56,35 @@ enum class ModemParseResult
         this->_debugStream->print(this->getLogPrefix()); \
         this->_debugStream->printf(__VA_ARGS__);         \
     }
+#define SM_DEBUG_WRITE(...)                     \
+    if (this->_debugStream)                     \
+    {                                           \
+        this->_debugStream->write(__VA_ARGS__); \
+    }
+#define SM_DEBUG_PRINT_RAW(...)                 \
+    if (this->_debugStream)                     \
+    {                                           \
+        this->_debugStream->print(__VA_ARGS__); \
+    }
+#define SM_DEBUG_PRINTLN_RAW(...)                 \
+    if (this->_debugStream)                       \
+    {                                             \
+        this->_debugStream->println(__VA_ARGS__); \
+    }
+#define SM_DEBUG_PRINTF_RAW(...)                 \
+    if (this->_debugStream)                      \
+    {                                            \
+        this->_debugStream->printf(__VA_ARGS__); \
+    }
+#else
+#define SM_DEBUG_PRINT(...)
+#define SM_DEBUG_PRINTLN(...)
+#define SM_DEBUG_PRINTF(...)
+#define SM_DEBUG_WRITE(...)
+#define SM_DEBUG_PRINT_RAW(...)
+#define SM_DEBUG_PRINTLN_RAW(...)
+#define SM_DEBUG_PRINTF_RAW(...)
+#endif
 
 /**
  * @brief Base class handling low-level serial I/O, debugging, and common transaction logic.
