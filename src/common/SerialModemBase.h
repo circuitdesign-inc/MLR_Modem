@@ -77,13 +77,34 @@ enum class ModemParseResult
         this->_debugStream->printf(__VA_ARGS__); \
     }
 #else
-#define SM_DEBUG_PRINT(...)
-#define SM_DEBUG_PRINTLN(...)
-#define SM_DEBUG_PRINTF(...)
-#define SM_DEBUG_WRITE(...)
-#define SM_DEBUG_PRINT_RAW(...)
-#define SM_DEBUG_PRINTLN_RAW(...)
-#define SM_DEBUG_PRINTF_RAW(...)
+#define SM_DEBUG_PRINT(...) \
+    do                      \
+    {                       \
+    } while (0)
+#define SM_DEBUG_PRINTLN(...) \
+    do                        \
+    {                         \
+    } while (0)
+#define SM_DEBUG_PRINTF(...) \
+    do                       \
+    {                        \
+    } while (0)
+#define SM_DEBUG_WRITE(...) \
+    do                      \
+    {                       \
+    } while (0)
+#define SM_DEBUG_PRINT_RAW(...) \
+    do                          \
+    {                           \
+    } while (0)
+#define SM_DEBUG_PRINTLN_RAW(...) \
+    do                            \
+    {                             \
+    } while (0)
+#define SM_DEBUG_PRINTF_RAW(...) \
+    do                           \
+    {                            \
+    } while (0)
 #endif
 
 /**
@@ -207,11 +228,11 @@ protected:
     uint8_t _rxBuffer[RX_BUFFER_SIZE];
     uint16_t _rxIndex = 0;
 
-private:
     // Rx internal state
     int16_t _oneByteBuf = -1;
     bool _debugRxNewLine = true;
 
+private:
     // Timeout state
     bool _bTimeout = true;
     uint32_t _startTime = 0;
