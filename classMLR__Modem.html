@@ -77,6 +77,7 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classMLR__Modem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MLR_Modem Class Reference</div></div>
 </div><!--header-->
@@ -86,6 +87,15 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
  <a href="classMLR__Modem.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="MLR__Modem_8h_source.html">MLR_Modem.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for MLR_Modem:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classMLR__Modem.png" usemap="#MLR_5FModem_map" alt=""/>
+  <map id="MLR_5FModem_map" name="MLR_5FModem_map">
+<area href="classSerialModemBase.html" title="Base class handling low-level serial I/O, debugging, and async transaction logic." alt="SerialModemBase" shape="rect" coords="0,0,114,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -164,9 +174,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5264ffe69b2523da5315056b0d7d87bb"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5264ffe69b2523da5315056b0d7d87bb">TransmitData</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
 <tr class="memdesc:a5264ffe69b2523da5315056b0d7d87bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link.  <br /></td></tr>
 <tr class="separator:a5264ffe69b2523da5315056b0d7d87bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233be6352d536ad68483f464de032503"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a233be6352d536ad68483f464de032503">TransmitDataFireAndForget</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
-<tr class="memdesc:a233be6352d536ad68483f464de032503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link without waiting for transmission completion (*IR).  <br /></td></tr>
-<tr class="separator:a233be6352d536ad68483f464de032503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc1521b3d4b91b72be1d62637eb2e06b"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#acc1521b3d4b91b72be1d62637eb2e06b">TransmitDataAsync</a> (const uint8_t *pMsg, uint8_t len)</td></tr>
+<tr class="memdesc:acc1521b3d4b91b72be1d62637eb2e06b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits data over the wireless link asynchronously. The result will be delivered via the AsyncCallback as MLR_Modem_Response::MLR_Modem_DtIr.  <br /></td></tr>
+<tr class="separator:acc1521b3d4b91b72be1d62637eb2e06b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58fcd03e0a7364567176346bf1ec7a83"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a58fcd03e0a7364567176346bf1ec7a83">GetRssiCurrentChannelAsync</a> ()</td></tr>
 <tr class="memdesc:a58fcd03e0a7364567176346bf1ec7a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asynchronously requests the current RSSI of the configured channel. The result will be delivered via the AsyncCallback.  <br /></td></tr>
 <tr class="separator:a58fcd03e0a7364567176346bf1ec7a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,18 +189,167 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ed201314031193b8d95527493a27281"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5ed201314031193b8d95527493a27281">SetAsyncCallback</a> (MLR_Modem_AsyncCallback pCallback)</td></tr>
 <tr class="memdesc:a5ed201314031193b8d95527493a27281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the asynchronous callback function.  <br /></td></tr>
 <tr class="separator:a5ed201314031193b8d95527493a27281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d976e5edc7904ff582160a80f862c04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a5d976e5edc7904ff582160a80f862c04">setDebugStream</a> (Stream *debugStream)</td></tr>
-<tr class="memdesc:a5d976e5edc7904ff582160a80f862c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the stream for debug output.  <br /></td></tr>
-<tr class="separator:a5d976e5edc7904ff582160a80f862c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#adfc0e710232fffb610dfad2e6dcb7bb3">HasPacket</a> ()</td></tr>
 <tr class="memdesc:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a new radio packet has been received.  <br /></td></tr>
 <tr class="separator:adfc0e710232fffb610dfad2e6dcb7bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a1a8a1d18bf7f0572a12c6a97fe0928ad">DeletePacket</a> ()</td></tr>
 <tr class="memdesc:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently stored received packet.  <br /></td></tr>
 <tr class="separator:a1a8a1d18bf7f0572a12c6a97fe0928ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcaad29cac9a0b4a9415b17699b198f8"><td class="memItemLeft" align="right" valign="top">MLR_Modem_Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#abcaad29cac9a0b4a9415b17699b198f8">SoftReset</a> ()</td></tr>
+<tr class="memdesc:abcaad29cac9a0b4a9415b17699b198f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a software reset of the modem.  <br /></td></tr>
+<tr class="separator:abcaad29cac9a0b4a9415b17699b198f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42f8777e967d9cb34984140565efb2b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a42f8777e967d9cb34984140565efb2b8">Work</a> ()</td></tr>
-<tr class="memdesc:a42f8777e967d9cb34984140565efb2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main processing loop for the driver. This function must be called regularly (e.g., in the Arduino loop()) to parse incoming serial data from the modem.  <br /></td></tr>
+<tr class="memdesc:a42f8777e967d9cb34984140565efb2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main processing loop for the driver. This function must be called regularly (e.g., in the Arduino loop()) to parse incoming serial data from the modem. Now calls <a class="el" href="classSerialModemBase.html#a6379a71afa895ca5a974e67cfecae4ce" title="Main processing loop. Must be called frequently. Handles command queue, transmission,...">SerialModemBase::update()</a> internally.  <br /></td></tr>
 <tr class="separator:a42f8777e967d9cb34984140565efb2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSerialModemBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSerialModemBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSerialModemBase.html">SerialModemBase</a></td></tr>
+<tr class="memitem:a721d7d491c855fdaf7fb6ac25cac7845 inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a721d7d491c855fdaf7fb6ac25cac7845">SerialModemBase</a> ()</td></tr>
+<tr class="separator:a721d7d491c855fdaf7fb6ac25cac7845 inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92176561a6bc6194cb486b823ab4a3a5 inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a92176561a6bc6194cb486b823ab4a3a5">~SerialModemBase</a> ()=default</td></tr>
+<tr class="separator:a92176561a6bc6194cb486b823ab4a3a5 inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a938b49690a372fcd516ae717316dd69d inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a938b49690a372fcd516ae717316dd69d">setDebugStream</a> (Stream *debugStream)</td></tr>
+<tr class="memdesc:a938b49690a372fcd516ae717316dd69d inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the debug stream.  <br /></td></tr>
+<tr class="separator:a938b49690a372fcd516ae717316dd69d inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6379a71afa895ca5a974e67cfecae4ce inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a6379a71afa895ca5a974e67cfecae4ce">update</a> ()</td></tr>
+<tr class="memdesc:a6379a71afa895ca5a974e67cfecae4ce inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main processing loop. Must be called frequently. Handles command queue, transmission, and response parsing.  <br /></td></tr>
+<tr class="separator:a6379a71afa895ca5a974e67cfecae4ce inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2742096334dffac539fec2245d06b0e8 inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a2742096334dffac539fec2245d06b0e8">isIdle</a> () const</td></tr>
+<tr class="memdesc:a2742096334dffac539fec2245d06b0e8 inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the internal engine is currently idle (no command processing).  <br /></td></tr>
+<tr class="separator:a2742096334dffac539fec2245d06b0e8 inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a569e64d66f8153d2ff5d1132f6113aa1 inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a569e64d66f8153d2ff5d1132f6113aa1">isLastCommandComplete</a> () const</td></tr>
+<tr class="memdesc:a569e64d66f8153d2ff5d1132f6113aa1 inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the last processed command has finished. Useful for implementing synchronous wrappers.  <br /></td></tr>
+<tr class="separator:a569e64d66f8153d2ff5d1132f6113aa1 inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab502aab6b4954bb68da44cf7b129459d inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ab502aab6b4954bb68da44cf7b129459d">getLastCommandResult</a> () const</td></tr>
+<tr class="memdesc:ab502aab6b4954bb68da44cf7b129459d inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the result of the last processed command.  <br /></td></tr>
+<tr class="separator:ab502aab6b4954bb68da44cf7b129459d inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7febfbea4cd126a4952f0e8d9e927b95 inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a7febfbea4cd126a4952f0e8d9e927b95">getRxBuffer</a> () const</td></tr>
+<tr class="memdesc:a7febfbea4cd126a4952f0e8d9e927b95 inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accessor for the shared RX buffer.  <br /></td></tr>
+<tr class="separator:a7febfbea4cd126a4952f0e8d9e927b95 inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdaea338042a56fccd7e4944c1daeb6f inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#afdaea338042a56fccd7e4944c1daeb6f">getRxIndex</a> () const</td></tr>
+<tr class="separator:afdaea338042a56fccd7e4944c1daeb6f inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b1dc4f0421d790972c5a9e61f577207 inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a6b1dc4f0421d790972c5a9e61f577207">isQueueFull</a> () const</td></tr>
+<tr class="memdesc:a6b1dc4f0421d790972c5a9e61f577207 inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the command queue is full.  <br /></td></tr>
+<tr class="separator:a6b1dc4f0421d790972c5a9e61f577207 inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7b88289f19d571377fcd8f39a010d1d inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#aa7b88289f19d571377fcd8f39a010d1d">isQueueEmpty</a> () const</td></tr>
+<tr class="memdesc:aa7b88289f19d571377fcd8f39a010d1d inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the command queue is empty.  <br /></td></tr>
+<tr class="separator:aa7b88289f19d571377fcd8f39a010d1d inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9c4b2aad658674f0cf16f0b0d12475d inherit pub_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ab9c4b2aad658674f0cf16f0b0d12475d">getQueueCount</a> () const</td></tr>
+<tr class="memdesc:ab9c4b2aad658674f0cf16f0b0d12475d inherit pub_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of commands currently in the queue.  <br /></td></tr>
+<tr class="separator:ab9c4b2aad658674f0cf16f0b0d12475d inherit pub_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3965ff6cc9f3d588063b51ad99ea2ff9"><td class="memItemLeft" align="right" valign="top">ModemParseResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a3965ff6cc9f3d588063b51ad99ea2ff9">parse</a> () override</td></tr>
+<tr class="memdesc:a3965ff6cc9f3d588063b51ad99ea2ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main parser state machine step. Must use <a class="el" href="classSerialModemBase.html#af6359d9f6c622d523f0c8155190c3560">readByte()</a> and update _rxBuffer / _rxIndex.  <br /></td></tr>
+<tr class="separator:a3965ff6cc9f3d588063b51ad99ea2ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd4af2cd71b9572d29e9223a78d2faca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#acd4af2cd71b9572d29e9223a78d2faca">onRxDataReceived</a> () override</td></tr>
+<tr class="separator:acd4af2cd71b9572d29e9223a78d2faca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a043d6c032d4b08d72341c7221acff5de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a043d6c032d4b08d72341c7221acff5de">onCommandComplete</a> (ModemError result) override</td></tr>
+<tr class="memdesc:a043d6c032d4b08d72341c7221acff5de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional hook called when a queued command finishes.  <br /></td></tr>
+<tr class="separator:a043d6c032d4b08d72341c7221acff5de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eb3fa92667994082ab5f86da9cc3cf9"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMLR__Modem.html#a1eb3fa92667994082ab5f86da9cc3cf9">getLogPrefix</a> () const override</td></tr>
+<tr class="separator:a1eb3fa92667994082ab5f86da9cc3cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSerialModemBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSerialModemBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSerialModemBase.html">SerialModemBase</a></td></tr>
+<tr class="memitem:a90001afb9989a22eef12a7bec84c0b92 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a90001afb9989a22eef12a7bec84c0b92">initSerial</a> (Stream &amp;stream)</td></tr>
+<tr class="memdesc:a90001afb9989a22eef12a7bec84c0b92 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the UART stream to use for modem communication.  <br /></td></tr>
+<tr class="separator:a90001afb9989a22eef12a7bec84c0b92 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2acddc58d3a5e2de5d0bc0e35f9d87 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a6f2acddc58d3a5e2de5d0bc0e35f9d87">enqueueCommand</a> (const char *cmd, CommandType type, uint32_t timeoutMs=1000)</td></tr>
+<tr class="memdesc:a6f2acddc58d3a5e2de5d0bc0e35f9d87 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enqueues a command for processing. Non-blocking.  <br /></td></tr>
+<tr class="separator:a6f2acddc58d3a5e2de5d0bc0e35f9d87 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62559c5e79c97e189bc533e6e519476d inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a62559c5e79c97e189bc533e6e519476d">enqueueTxCommand</a> (const char *cmdHeader, const uint8_t *payload, uint8_t len, const char *suffix=nullptr, uint32_t timeoutMs=2000)</td></tr>
+<tr class="memdesc:a62559c5e79c97e189bc533e6e519476d inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enqueues a data transmission command with payload.  <br /></td></tr>
+<tr class="separator:a62559c5e79c97e189bc533e6e519476d inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c733e4185493aa3e383fe64247940c inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#aa6c733e4185493aa3e383fe64247940c">setByteValue</a> (const char *cmd, uint8_t value, bool save, const char *respPrefix, size_t respLen)</td></tr>
+<tr class="memdesc:aa6c733e4185493aa3e383fe64247940c inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to set a 1-byte value (e.g., @CH0E) and verify the response.  <br /></td></tr>
+<tr class="separator:aa6c733e4185493aa3e383fe64247940c inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0376336f4d71edfd68fd9e16bd2bb356 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a0376336f4d71edfd68fd9e16bd2bb356">getByteValue</a> (const char *cmd, uint8_t *pValue, const char *respPrefix, size_t respLen)</td></tr>
+<tr class="memdesc:a0376336f4d71edfd68fd9e16bd2bb356 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to get a 1-byte value.  <br /></td></tr>
+<tr class="separator:a0376336f4d71edfd68fd9e16bd2bb356 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ac70846ba74ce3fa3aef67424058a38 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a7ac70846ba74ce3fa3aef67424058a38">setBoolValue</a> (const char *baseCmd, bool enabled, bool save, const char *respPrefix)</td></tr>
+<tr class="memdesc:a7ac70846ba74ce3fa3aef67424058a38 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to set a boolean value (ON/OF).  <br /></td></tr>
+<tr class="separator:a7ac70846ba74ce3fa3aef67424058a38 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037bdc3e12c26a97b58d43e178d61005 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a037bdc3e12c26a97b58d43e178d61005">getBoolValue</a> (const char *cmd, bool *pValue, const char *respPrefix)</td></tr>
+<tr class="memdesc:a037bdc3e12c26a97b58d43e178d61005 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to get a boolean value (ON/OF).  <br /></td></tr>
+<tr class="separator:a037bdc3e12c26a97b58d43e178d61005 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d5b808ae113cd332e75eb84780665a9 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a2d5b808ae113cd332e75eb84780665a9">sendRawCommand</a> (const char *command, char *responseBuffer, size_t bufferSize, uint32_t timeoutMs)</td></tr>
+<tr class="memdesc:a2d5b808ae113cd332e75eb84780665a9 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a raw command string and fills the provided buffer with the response.  <br /></td></tr>
+<tr class="separator:a2d5b808ae113cd332e75eb84780665a9 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91ca8ae2b9ee8349a17b14a9322b567a inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a91ca8ae2b9ee8349a17b14a9322b567a">waitForSyncComplete</a> (uint32_t timeoutMs)</td></tr>
+<tr class="memdesc:a91ca8ae2b9ee8349a17b14a9322b567a inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to wait for the current command to finish (Pseudo-blocking). Calls <a class="el" href="classSerialModemBase.html#a6379a71afa895ca5a974e67cfecae4ce" title="Main processing loop. Must be called frequently. Handles command queue, transmission,...">update()</a> internally.  <br /></td></tr>
+<tr class="separator:a91ca8ae2b9ee8349a17b14a9322b567a inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1a5a8e4c50afee52ff9ced7ebe547c inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a9c1a5a8e4c50afee52ff9ced7ebe547c">writeString</a> (const char *str, bool printPrefix=true)</td></tr>
+<tr class="separator:a9c1a5a8e4c50afee52ff9ced7ebe547c inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedfe8da8ddd9f191ee0db34708cf2cd7 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#aedfe8da8ddd9f191ee0db34708cf2cd7">writeData</a> (const uint8_t *data, size_t len)</td></tr>
+<tr class="separator:aedfe8da8ddd9f191ee0db34708cf2cd7 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6359d9f6c622d523f0c8155190c3560 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#af6359d9f6c622d523f0c8155190c3560">readByte</a> ()</td></tr>
+<tr class="separator:af6359d9f6c622d523f0c8155190c3560 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac35e6a4eb3d760c6d918f2842cb653a8 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ac35e6a4eb3d760c6d918f2842cb653a8">unreadByte</a> (uint8_t c)</td></tr>
+<tr class="separator:ac35e6a4eb3d760c6d918f2842cb653a8 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72c19051d58c52cde545f5d9b7a406e2 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a72c19051d58c52cde545f5d9b7a406e2">clearUnreadByte</a> ()</td></tr>
+<tr class="separator:a72c19051d58c52cde545f5d9b7a406e2 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4f93fac59aa23311a1ac005d5d9248f inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ae4f93fac59aa23311a1ac005d5d9248f">flushGarbage</a> (char keepChar=' *')</td></tr>
+<tr class="separator:ae4f93fac59aa23311a1ac005d5d9248f inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a014b74a55c323917455166aa4f8bf0c9 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a014b74a55c323917455166aa4f8bf0c9">startTimeout</a> (uint32_t ms)</td></tr>
+<tr class="separator:a014b74a55c323917455166aa4f8bf0c9 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecf4e795e387b3b1e808cd007b0e042d inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#aecf4e795e387b3b1e808cd007b0e042d">isTimeout</a> ()</td></tr>
+<tr class="separator:aecf4e795e387b3b1e808cd007b0e042d inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7129047f2aaa164b385f2243248e8dc4 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a7129047f2aaa164b385f2243248e8dc4">parseResponseHex</a> (const uint8_t *buffer, size_t length, const char *prefix, uint8_t hexDigits, uint32_t *pResult)</td></tr>
+<tr class="separator:a7129047f2aaa164b385f2243248e8dc4 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c31ffdb564b1a19fcf983fcf536a445 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">ModemError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a4c31ffdb564b1a19fcf983fcf536a445">parseResponseDec</a> (const uint8_t *buffer, size_t length, const char *prefix, const char *suffix, size_t suffixLen, int32_t *pResult)</td></tr>
+<tr class="separator:a4c31ffdb564b1a19fcf983fcf536a445 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22317dbeea2625b628b54ab3ad80f8e7 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">virtual ModemParseResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a22317dbeea2625b628b54ab3ad80f8e7">parse</a> ()=0</td></tr>
+<tr class="memdesc:a22317dbeea2625b628b54ab3ad80f8e7 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main parser state machine step. Must use <a class="el" href="classSerialModemBase.html#af6359d9f6c622d523f0c8155190c3560">readByte()</a> and update _rxBuffer / _rxIndex.  <br /></td></tr>
+<tr class="separator:a22317dbeea2625b628b54ab3ad80f8e7 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a965cb93670f444edd823236e77ff7 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ad5a965cb93670f444edd823236e77ff7">onRxDataReceived</a> ()=0</td></tr>
+<tr class="separator:ad5a965cb93670f444edd823236e77ff7 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f23867fecd9dd11d1c7f3abaaaf6a9f inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a4f23867fecd9dd11d1c7f3abaaaf6a9f">getLogPrefix</a> () const =0</td></tr>
+<tr class="separator:a4f23867fecd9dd11d1c7f3abaaaf6a9f inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092f06bfbced5de912078b554ce6eff9 inherit pro_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a092f06bfbced5de912078b554ce6eff9">onCommandComplete</a> (ModemError result)</td></tr>
+<tr class="memdesc:a092f06bfbced5de912078b554ce6eff9 inherit pro_methods_classSerialModemBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional hook called when a queued command finishes.  <br /></td></tr>
+<tr class="separator:a092f06bfbced5de912078b554ce6eff9 inherit pro_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_static_methods_classSerialModemBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSerialModemBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSerialModemBase.html">SerialModemBase</a></td></tr>
+<tr class="memitem:a193725b12d94adcbfa185176a3d1c548 inherit pro_static_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a193725b12d94adcbfa185176a3d1c548">parseHex</a> (const uint8_t *pData, size_t len, uint32_t *pResult)</td></tr>
+<tr class="separator:a193725b12d94adcbfa185176a3d1c548 inherit pro_static_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e2f5fa62589053128efb5f01d06b9e5 inherit pro_static_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a6e2f5fa62589053128efb5f01d06b9e5">parseDec</a> (const uint8_t *pData, size_t len, uint32_t *pResult)</td></tr>
+<tr class="separator:a6e2f5fa62589053128efb5f01d06b9e5 inherit pro_static_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c0601401ea0a17514bde32404c3ef39 inherit pro_static_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a2c0601401ea0a17514bde32404c3ef39">appendStr</a> (char *dest, const char *src, const char *destEnd)</td></tr>
+<tr class="separator:a2c0601401ea0a17514bde32404c3ef39 inherit pro_static_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b5ca2224740d2dd54b36b7e7bccdbfd inherit pro_static_methods_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a9b5ca2224740d2dd54b36b7e7bccdbfd">appendHex2</a> (char *dest, uint8_t val, const char *destEnd)</td></tr>
+<tr class="separator:a9b5ca2224740d2dd54b36b7e7bccdbfd inherit pro_static_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad51146522e52891aed90d67bda82f028 inherit pro_static_methods_classSerialModemBase"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
+<tr class="memitem:ad51146522e52891aed90d67bda82f028 inherit pro_static_methods_classSerialModemBase"><td class="memTemplItemLeft" align="right" valign="top">static char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ad51146522e52891aed90d67bda82f028">appendStr</a> (char(&amp;destBuf)[N], char *currentPtr, const char *src)</td></tr>
+<tr class="separator:ad51146522e52891aed90d67bda82f028 inherit pro_static_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37c07ca4a66d4f31f44447c4fe0d80cf inherit pro_static_methods_classSerialModemBase"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
+<tr class="memitem:a37c07ca4a66d4f31f44447c4fe0d80cf inherit pro_static_methods_classSerialModemBase"><td class="memTemplItemLeft" align="right" valign="top">static char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a37c07ca4a66d4f31f44447c4fe0d80cf">appendHex2</a> (char(&amp;destBuf)[N], char *currentPtr, uint8_t val)</td></tr>
+<tr class="separator:a37c07ca4a66d4f31f44447c4fe0d80cf inherit pro_static_methods_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSerialModemBase"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSerialModemBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSerialModemBase.html">SerialModemBase</a></td></tr>
+<tr class="memitem:a32352cff59cdde60addf40436c0436bb inherit pro_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">Stream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a32352cff59cdde60addf40436c0436bb">_uart</a> = nullptr</td></tr>
+<tr class="separator:a32352cff59cdde60addf40436c0436bb inherit pro_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23917df1f4443acd603d143c55be585d inherit pro_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">Stream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a23917df1f4443acd603d143c55be585d">_debugStream</a> = nullptr</td></tr>
+<tr class="separator:a23917df1f4443acd603d143c55be585d inherit pro_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af598b0d59e607ca4ab8f7499401374a1 inherit pro_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#af598b0d59e607ca4ab8f7499401374a1">_rxBuffer</a> [<a class="el" href="classSerialModemBase.html#a446cc6fec54d1514689efb111289324f">RX_BUFFER_SIZE</a>]</td></tr>
+<tr class="separator:af598b0d59e607ca4ab8f7499401374a1 inherit pro_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a660cde54b0cd8a5486f8e3c2b97a81a4 inherit pro_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a660cde54b0cd8a5486f8e3c2b97a81a4">_rxIndex</a> = 0</td></tr>
+<tr class="separator:a660cde54b0cd8a5486f8e3c2b97a81a4 inherit pro_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971b24470bc03cb6f1af64d0afa70ca1 inherit pro_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a971b24470bc03cb6f1af64d0afa70ca1">_oneByteBuf</a> = -1</td></tr>
+<tr class="separator:a971b24470bc03cb6f1af64d0afa70ca1 inherit pro_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25739d83e21f214315ec1e3dbb9598de inherit pro_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a25739d83e21f214315ec1e3dbb9598de">_debugRxNewLine</a> = true</td></tr>
+<tr class="separator:a25739d83e21f214315ec1e3dbb9598de inherit pro_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classSerialModemBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classSerialModemBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classSerialModemBase.html">SerialModemBase</a></td></tr>
+<tr class="memitem:acec4c7a18d9bf7eb0287214c31df2fa0 inherit pro_static_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#acec4c7a18d9bf7eb0287214c31df2fa0">CD_WRITE_OK_RESPONSE</a> [] = &quot;*WR=PS&quot;</td></tr>
+<tr class="separator:acec4c7a18d9bf7eb0287214c31df2fa0 inherit pro_static_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b99e1c6a57e007ffb2251de4a58ff6 inherit pro_static_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a11b99e1c6a57e007ffb2251de4a58ff6">CD_WRITE_OK_RESPONSE_LEN</a> = 6</td></tr>
+<tr class="separator:a11b99e1c6a57e007ffb2251de4a58ff6 inherit pro_static_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7ba8a282229b25cd00193355dc79dad inherit pro_static_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#aa7ba8a282229b25cd00193355dc79dad">CD_VAL_ON</a> [] = &quot;ON&quot;</td></tr>
+<tr class="separator:aa7ba8a282229b25cd00193355dc79dad inherit pro_static_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89355ce4236571ae431f842acc497bc inherit pro_static_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#aa89355ce4236571ae431f842acc497bc">CD_VAL_OFF</a> [] = &quot;OF&quot;</td></tr>
+<tr class="separator:aa89355ce4236571ae431f842acc497bc inherit pro_static_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab774f2f050e3e11d5ab3c88eaabaf916 inherit pro_static_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#ab774f2f050e3e11d5ab3c88eaabaf916">CD_CMD_WRITE_SUFFIX</a> [] = &quot;/W&quot;</td></tr>
+<tr class="separator:ab774f2f050e3e11d5ab3c88eaabaf916 inherit pro_static_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a446cc6fec54d1514689efb111289324f inherit pro_static_attribs_classSerialModemBase"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSerialModemBase.html#a446cc6fec54d1514689efb111289324f">RX_BUFFER_SIZE</a> = 300</td></tr>
+<tr class="separator:a446cc6fec54d1514689efb111289324f inherit pro_static_attribs_classSerialModemBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main class for interfacing with the MLR Modem. </p>
@@ -446,6 +605,33 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>MLR_Modem_Error::Ok on success. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Uses the "@GI" command. </dd></dl>
+
+</div>
+</div>
+<a id="a1eb3fa92667994082ab5f86da9cc3cf9" name="a1eb3fa92667994082ab5f86da9cc3cf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eb3fa92667994082ab5f86da9cc3cf9">&#9670;&#160;</a></span>getLogPrefix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * MLR_Modem::getLogPrefix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classSerialModemBase.html#a4f23867fecd9dd11d1c7f3abaaaf6a9f">SerialModemBase</a>.</p>
 
 </div>
 </div>
@@ -732,6 +918,93 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a043d6c032d4b08d72341c7221acff5de" name="a043d6c032d4b08d72341c7221acff5de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a043d6c032d4b08d72341c7221acff5de">&#9670;&#160;</a></span>onCommandComplete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MLR_Modem::onCommandComplete </td>
+          <td>(</td>
+          <td class="paramtype">ModemError&#160;</td>
+          <td class="paramname"><em>result</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Optional hook called when a queued command finishes. </p>
+
+<p>Reimplemented from <a class="el" href="classSerialModemBase.html#a092f06bfbced5de912078b554ce6eff9">SerialModemBase</a>.</p>
+
+</div>
+</div>
+<a id="acd4af2cd71b9572d29e9223a78d2faca" name="acd4af2cd71b9572d29e9223a78d2faca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd4af2cd71b9572d29e9223a78d2faca">&#9670;&#160;</a></span>onRxDataReceived()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MLR_Modem::onRxDataReceived </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classSerialModemBase.html#ad5a965cb93670f444edd823236e77ff7">SerialModemBase</a>.</p>
+
+</div>
+</div>
+<a id="a3965ff6cc9f3d588063b51ad99ea2ff9" name="a3965ff6cc9f3d588063b51ad99ea2ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3965ff6cc9f3d588063b51ad99ea2ff9">&#9670;&#160;</a></span>parse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ModemParseResult MLR_Modem::parse </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Main parser state machine step. Must use <a class="el" href="classSerialModemBase.html#af6359d9f6c622d523f0c8155190c3560">readByte()</a> and update _rxBuffer / _rxIndex. </p>
+<dl class="section return"><dt>Returns</dt><dd>Current status of parsing. </dd></dl>
+
+<p>Implements <a class="el" href="classSerialModemBase.html#a22317dbeea2625b628b54ab3ad80f8e7">SerialModemBase</a>.</p>
+
+</div>
+</div>
 <a id="a6baab42aad184aa5001184ac3bdef85e" name="a6baab42aad184aa5001184ac3bdef85e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6baab42aad184aa5001184ac3bdef85e">&#9670;&#160;</a></span>SendRawCommand()</h2>
 
@@ -973,32 +1246,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5d976e5edc7904ff582160a80f862c04" name="a5d976e5edc7904ff582160a80f862c04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d976e5edc7904ff582160a80f862c04">&#9670;&#160;</a></span>setDebugStream()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MLR_Modem::setDebugStream </td>
-          <td>(</td>
-          <td class="paramtype">Stream *&#160;</td>
-          <td class="paramname"><em>debugStream</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the stream for debug output. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">debugStream</td><td>Pointer to the Stream object (e.g., &amp;Serial). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a9c8f8fe93316e407f6428924bd7bc72b" name="a9c8f8fe93316e407f6428924bd7bc72b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c8f8fe93316e407f6428924bd7bc72b">&#9670;&#160;</a></span>SetDestinationID()</h2>
 
@@ -1194,6 +1441,27 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="abcaad29cac9a0b4a9415b17699b198f8" name="abcaad29cac9a0b4a9415b17699b198f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcaad29cac9a0b4a9415b17699b198f8">&#9670;&#160;</a></span>SoftReset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MLR_Modem_Error MLR_Modem::SoftReset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Performs a software reset of the modem. </p>
+<dl class="section return"><dt>Returns</dt><dd>MLR_Modem_Error::Ok on success. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Uses the "@SR" command. </dd></dl>
+
+</div>
+</div>
 <a id="a5264ffe69b2523da5315056b0d7d87bb" name="a5264ffe69b2523da5315056b0d7d87bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5264ffe69b2523da5315056b0d7d87bb">&#9670;&#160;</a></span>TransmitData()</h2>
 
@@ -1233,14 +1501,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a233be6352d536ad68483f464de032503" name="a233be6352d536ad68483f464de032503"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a233be6352d536ad68483f464de032503">&#9670;&#160;</a></span>TransmitDataFireAndForget()</h2>
+<a id="acc1521b3d4b91b72be1d62637eb2e06b" name="acc1521b3d4b91b72be1d62637eb2e06b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc1521b3d4b91b72be1d62637eb2e06b">&#9670;&#160;</a></span>TransmitDataAsync()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">MLR_Modem_Error MLR_Modem::TransmitDataFireAndForget </td>
+          <td class="memname">MLR_Modem_Error MLR_Modem::TransmitDataAsync </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>pMsg</em>, </td>
@@ -1259,7 +1527,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Transmits data over the wireless link without waiting for transmission completion (*IR). </p>
+<p>Transmits data over the wireless link asynchronously. The result will be delivered via the AsyncCallback as MLR_Modem_Response::MLR_Modem_DtIr. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pMsg</td><td>Pointer to the data payload to send. </td></tr>
@@ -1267,7 +1535,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>MLR_Modem_Error::Ok on success (command accepted), MLR_Modem_Error::Busy if driver is busy. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>MLR_Modem_Error::Ok if the command was sent, MLR_Modem_Error::Busy if another async operation is pending. </dd></dl>
 
 </div>
 </div>
@@ -1276,6 +1544,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void MLR_Modem::Work </td>
@@ -1284,9 +1555,14 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Main processing loop for the driver. This function must be called regularly (e.g., in the Arduino loop()) to parse incoming serial data from the modem. </p>
+<p>Main processing loop for the driver. This function must be called regularly (e.g., in the Arduino loop()) to parse incoming serial data from the modem. Now calls <a class="el" href="classSerialModemBase.html#a6379a71afa895ca5a974e67cfecae4ce" title="Main processing loop. Must be called frequently. Handles command queue, transmission,...">SerialModemBase::update()</a> internally. </p>
 
 </div>
 </div>

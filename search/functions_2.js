@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['factoryreset_0',['FactoryReset',['../classMLR__Modem.html#acfde21de330cebcfd4fde74c42b89921',1,'MLR_Modem']]]
+  ['clearunreadbyte_0',['clearUnreadByte',['../classSerialModemBase.html#a72c19051d58c52cde545f5d9b7a406e2',1,'SerialModemBase']]]
 ];
