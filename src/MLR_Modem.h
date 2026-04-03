@@ -92,9 +92,37 @@ enum class MLR_ModemParserState
 };
 
 /**
+ * \brief Represents an event from the modem.
+ */
+struct MLR_Modem_Event
+{
+    MLR_Modem_Error error;   //!< Error code
+    MLR_Modem_Response type; //!< Type of response
+    int32_t value;           //!< Numerical value associated with the response
+    const uint8_t *pPayload; //!< Pointer to payload data (e.g., for DataReceived)
+    uint16_t payloadLen;     //!< Length of payload data
+
+    // --- Constructors ---
+    // 1. Default
+    MLR_Modem_Event() : error(ModemError::Ok), type(MLR_Modem_Response::Idle), value(0), pPayload(nullptr), payloadLen(0) {}
+
+    // 2. Helper for simple status events
+    MLR_Modem_Event(ModemError err, MLR_Modem_Response t)
+        : error(err), type(t), value(0), pPayload(nullptr), payloadLen(0) {}
+
+    // 3. Helper for events with a value (RSSI, SN, etc.)
+    MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val)
+        : error(err), type(t), value(val), pPayload(nullptr), payloadLen(0) {}
+
+    // 4. Helper for data reception
+    MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val, const uint8_t *p, uint16_t l)
+        : error(err), type(t), value(val), pPayload(p), payloadLen(l) {}
+};
+
+/**
  * \brief Callback for asynchronous calls and Radio Message Received events.
  */
-typedef void (*MLR_Modem_AsyncCallback)(MLR_Modem_Error error, MLR_Modem_Response responseType, int32_t value, const uint8_t *pPayload, uint16_t len);
+typedef void (*MLR_Modem_AsyncCallback)(const MLR_Modem_Event &event);
 
 /**
  * \brief Main class for interfacing with the MLR Modem.
@@ -314,12 +342,13 @@ public: // methods
     MLR_Modem_Error TransmitData(const uint8_t *pMsg, uint8_t len);
 
     /**
-     * \brief Transmits data over the wireless link without waiting for transmission completion (*IR).
+     * \brief Transmits data over the wireless link asynchronously.
+     * The result will be delivered via the AsyncCallback as MLR_Modem_Response::MLR_Modem_DtIr.
      * \param pMsg Pointer to the data payload to send.
      * \param len Length of the data payload (0-255 bytes).
-     * \return MLR_Modem_Error::Ok on success (command accepted), MLR_Modem_Error::Busy if driver is busy.
+     * \return MLR_Modem_Error::Ok if the command was sent, MLR_Modem_Error::Busy if another async operation is pending.
      */
-    MLR_Modem_Error TransmitDataFireAndForget(const uint8_t *pMsg, uint8_t len);
+    MLR_Modem_Error TransmitDataAsync(const uint8_t *pMsg, uint8_t len);
 
     /**
      * \brief Asynchronously requests the current RSSI of the configured channel.
@@ -375,57 +404,70 @@ public: // methods
     void DeletePacket() { m_drMessagePresent = false; }
 
     /**
+     * \brief Performs a software reset of the modem.
+     * \return MLR_Modem_Error::Ok on success.
+     * \note Uses the "@SR" command.
+     */
+    MLR_Modem_Error SoftReset();
+
+    /**
      * \brief Main processing loop for the driver.
      * This function must be called regularly (e.g., in the Arduino loop())
      * to parse incoming serial data from the modem.
+     * Now calls SerialModemBase::update() internally.
      */
-    void Work();
+    void Work() { update(); }
 
 protected:
     // --- SerialModemBase Virtual Overrides ---
     ModemParseResult parse() override;
     void onRxDataReceived() override;
+    void onCommandComplete(ModemError result) override;
     const char *getLogPrefix() const override { return "[MLR"; }
 
 private: // methods
-    // Internal parser state machine function (Implemented inside parse())
+    // Internal parser state machine handlers
+    ModemParseResult m_HandleReadStart();
+    ModemParseResult m_HandleReadCmdFirstLetter();
+    ModemParseResult m_HandleReadCmdSecondLetter();
+    ModemParseResult m_HandleReadCmdParam();
+    ModemParseResult m_HandleRadioDrSize();
+    ModemParseResult m_HandleRadioDrPayload();
+    ModemParseResult m_HandleReadCmdUntilCR();
+    ModemParseResult m_HandleReadCmdUntilLF();
 
-    // Internal: Dispatches a received command response to the async callback
-    MLR_Modem_Error m_DispatchCmdResponseAsync();
-
-    // Internal: Handles the "*WR=PS" response (Now handled mostly by Base, kept for specific flows if needed)
-    // MLR_Modem_Error m_HandleMessage_WR(); // Removed, used Base implementation
+    // Internal: Dispatches an event to the async callback
+    void dispatchAsyncEvent(ModemError error, MLR_Modem_Response responseType, int32_t value = 0, const uint8_t *pPayload = nullptr, uint16_t len = 0);
 
     // Internal helpers using Base methods
     //! Internal: Helper method for responses that contain a one-byte hex value (e.g., *CH=0E)
-    MLR_Modem_Error m_HandleMessageHexByte(uint8_t *pValue, uint32_t responseLen, const char *responsePrefix);
+    ModemError m_HandleMessageHexByte(uint8_t *pValue, uint32_t responseLen, const char *responsePrefix);
     //! Internal: Helper method for responses that contain a two-byte hex value (e.g., *UI=0000)
-    MLR_Modem_Error m_HandleMessageHexWord(uint16_t *pValue, uint32_t responseLen, const char *responsePrefix);
+    ModemError m_HandleMessageHexWord(uint16_t *pValue, uint32_t responseLen, const char *responsePrefix);
 
     //! Internal: Handles the "*RS=...dBm" response
-    MLR_Modem_Error m_HandleMessage_RS(int16_t *pRssi);
+    ModemError m_HandleMessage_RS(int16_t *pRssi);
     //! Internal: Handles the "*RA=...dBm" response
-    MLR_Modem_Error m_HandleMessage_RA(int16_t *pRssi);
+    ModemError m_HandleMessage_RA(int16_t *pRssi);
 
     //! Internal: Handles the "*SN=..." response
-    MLR_Modem_Error m_HandleMessage_SN(uint32_t *pSerialNumber);
+    ModemError m_HandleMessage_SN(uint32_t *pSerialNumber);
     // check if the received message is "*IZ=OK"
-    MLR_Modem_Error m_HandleMessage_IZ();
-
-    //! Internal: Clears one line (up to \n) from the serial buffer
-    void m_ClearOneLine();
+    ModemError m_HandleMessage_IZ();
 
 private: // data
-    // _uart and _debugStream are in Base class
     MLR_Modem_Response m_asyncExpectedResponse; //!< The expected response for an async call
     MLR_ModemParserState m_parserState;         //!< Current state of the parser
-
-    // _rxBuffer and _rxIndex are in Base class
 
     // special receive buffer and data for '@DR' command
     bool m_drMessagePresent;             //!< Flag indicating a *DR packet is ready
     uint8_t m_drMessageLen;              //!< Length of the received *DR packet
     uint8_t m_drMessage[300];            //!< Buffer for the received *DR packet payload
+
+    // information response (*IR=...)
+    bool m_irMessagePresent;             //!< Flag indicating an *IR response is ready
+    uint8_t m_irValue;                   //!< The value of the *IR response
+
     MLR_ModemMode m_mode;                //!< Cached modem mode
     MLR_Modem_AsyncCallback m_pCallback; //!< Pointer to the user's callback function
 };

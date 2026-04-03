@@ -34,44 +34,40 @@ MLR_Modem modem;
 /**
  * @brief モデムからの非同期イベントを処理するコールバック関数
  *
- * @param error エラーコード
- * @param responseType 応答の種類
- * @param value 応答に含まれる数値
- * @param pPayload 受信したデータのペイロードへのポインタ
- * @param len ペイロードの長さ (バイト単位)
+ * @param event モデムイベント構造体 (MLR_Modem_Event)
  */
-void modemCallback(MLR_Modem_Error error, MLR_Modem_Response responseType, int32_t value, const uint8_t *pPayload, uint16_t len)
+void modemCallback(const MLR_Modem_Event &event)
 {
-  if (error != MLR_Modem_Error::Ok)
+  if (event.error != MLR_Modem_Error::Ok)
   {
-    Serial.printf("[コールバック] エラー発生 Type: %d, Error: %d\n", (int)responseType, (int)error);
+    Serial.printf("[コールバック] エラー発生 Type: %d, Error: %d\n", (int)event.type, (int)event.error);
     return;
   }
 
   // --- 非同期RAWコマンドの応答処理 ---
-  if (responseType == MLR_Modem_Response::GenericResponse)
+  if (event.type == MLR_Modem_Response::GenericResponse)
   {
     Serial.print("[非同期RAW応答] 受信 (");
-    Serial.print(len);
+    Serial.print(event.payloadLen);
     Serial.print(" バイト): ");
 
     // pPayloadは応答文字列 (終端ヌル文字なし)
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < event.payloadLen; i++)
     {
-      Serial.write(pPayload[i]);
+      Serial.write(event.pPayload[i]);
     }
     Serial.println();
   }
   // --- 通常のデータ受信処理 ---
-  else if (responseType == MLR_Modem_Response::DataReceived)
+  else if (event.type == MLR_Modem_Response::DataReceived)
   {
     Serial.print("\n[データ受信] (");
-    Serial.print(len);
+    Serial.print(event.payloadLen);
     Serial.print(" バイト): ");
 
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < event.payloadLen; i++)
     {
-      Serial.write(pPayload[i]);
+      Serial.write(event.pPayload[i]);
     }
     Serial.println();
 
