@@ -38,31 +38,27 @@ volatile uint16_t g_receivedLen = 0;
 /**
  * @brief モデムからの非同期イベントを処理するコールバック関数
  *
- * @param error エラーコード (MLR_Modem_Error)
- * @param responseType 応答の種類 (MLR_Modem_Response)
- * @param value 応答に含まれる数値
- * @param pPayload 受信したデータのペイロードへのポインタ (DataReceived時のみ有効)
- * @param len ペイロードの長さ (バイト単位) (DataReceived時のみ有効)
+ * @param event モデムイベント構造体 (MLR_Modem_Event)
  */
-void modemCallback(MLR_Modem_Error error, MLR_Modem_Response responseType, int32_t value, const uint8_t *pPayload, uint16_t len)
+void modemCallback(const MLR_Modem_Event &event)
 {
   // データ受信イベントかを確認
-  if (responseType == MLR_Modem_Response::DataReceived)
+  if (event.type == MLR_Modem_Response::DataReceived)
   {
-    if (error == MLR_Modem_Error::Ok)
+    if (event.error == MLR_Modem_Error::Ok)
     {
       Serial.println("\n[コールバック] データを受信しました！");
       // loop()で処理するために、受信データをグローバル変数にコピーしてフラグを立てる
-      if (len > 0 && len <= sizeof(g_receivedPayload))
+      if (event.payloadLen > 0 && event.payloadLen <= sizeof(g_receivedPayload))
       {
-        memcpy(g_receivedPayload, pPayload, len);
-        g_receivedLen = len;
+        memcpy(g_receivedPayload, event.pPayload, event.payloadLen);
+        g_receivedLen = event.payloadLen;
         g_packetReceived = true;
       }
     }
     else
     {
-      Serial.printf("[コールバック] データ受信エラー: %d\n", (int)error);
+      Serial.printf("[コールバック] データ受信エラー: %d\n", (int)event.error);
     }
   }
 }

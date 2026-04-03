@@ -19,190 +19,109 @@
 #include <array>
 
 // string codes for SLR/MLR modem
-// @W (Write to NVM)
-static constexpr char MLR_WRITE_VALUE_RESPONSE_PREFIX[] = "*WR=PS";
-static constexpr size_t MLR_WRITE_VALUE_RESPONSE_LEN = 6; // length of "*WR=PS" excluding "\r\n"
+// @W (Write to NVM) -> Handled by Base class (CD_WRITE_OK_RESPONSE)
 
 // @CH (Channel Frequency)
 static constexpr char MLR_CMD_CHANNEL[] = "@CH";
 static constexpr char MLR_SET_CHANNEL_RESPONSE_PREFIX[] = "*CH=";
-static constexpr size_t MLR_SET_CHANNEL_RESPONSE_LEN = 6;     // length of "*CH=0E" excluding "\r\n"
-static constexpr uint8_t MLR_SET_CHANNEL_MIN_VALUE_JP = 0x07; // channel 7
-static constexpr uint8_t MLR_SET_CHANNEL_MAX_VALUE_JP = 0x2E; // channel 46
+static constexpr size_t MLR_SET_CHANNEL_RESPONSE_LEN = 6;
+static constexpr uint8_t MLR_SET_CHANNEL_MIN_VALUE_JP = 0x07;
+static constexpr uint8_t MLR_SET_CHANNEL_MAX_VALUE_JP = 0x2E;
 
 // @MO (Modem Mode)
 static constexpr char MLR_CMD_MODE[] = "@MO";
 static constexpr char MLR_SET_MODE_RESPONSE_PREFIX[] = "*MO=";
-static constexpr size_t MLR_SET_MODE_RESPONSE_LEN = 6; // length of "*MO=01" excluding "\r\n"
+static constexpr size_t MLR_SET_MODE_RESPONSE_LEN = 6;
 
 // @SF (Spreading Factor)
 static constexpr char MLR_CMD_SF[] = "@SF";
 static constexpr char MLR_SET_SF_RESPONSE_PREFIX[] = "*SF=";
-static constexpr size_t MLR_SET_SF_RESPONSE_LEN = 6; // length of "*SF=00" excluding "\r\n"
+static constexpr size_t MLR_SET_SF_RESPONSE_LEN = 6;
 static constexpr uint8_t MLR_SET_SF_MIN_VALUE = 0x00;
 static constexpr uint8_t MLR_SET_SF_MAX_VALUE = 0x05;
 
 // @EI (Equipment ID)
 static constexpr char MLR_CMD_EQUIPMENT_ID[] = "@EI";
 static constexpr char MLR_SET_EQUIPMENT_RESPONSE_PREFIX[] = "*EI=";
-static constexpr size_t MLR_SET_EQUIPMENT_RESPONSE_LEN = 6; // length of "*EI=0E" excluding "\r\n"
+static constexpr size_t MLR_SET_EQUIPMENT_RESPONSE_LEN = 6;
 
 // @DI (Destination ID)
 static constexpr char MLR_CMD_DESTINATION_ID[] = "@DI";
 static constexpr char MLR_SET_DESTINATION_RESPONSE_PREFIX[] = "*DI=";
-static constexpr size_t MLR_SET_DESTINATION_RESPONSE_LEN = 6; // length of "*DI=0E" excluding "\r\n"
+static constexpr size_t MLR_SET_DESTINATION_RESPONSE_LEN = 6;
 
 // @GI (Group ID)
 static constexpr char MLR_CMD_GROUP_ID[] = "@GI";
 static constexpr char MLR_SET_GROUP_RESPONSE_PREFIX[] = "*GI=";
-static constexpr size_t MLR_SET_GROUP_RESPONSE_LEN = 6; // length of "*GI=0E" excluding "\r\n"
+static constexpr size_t MLR_SET_GROUP_RESPONSE_LEN = 6;
 
 // @UI (User ID)
 static constexpr char MLR_GET_USERID_STRING[] = "@UI";
 static constexpr char MLR_GET_USERID_RESPONSE_PREFIX[] = "*UI=";
-static constexpr size_t MLR_GET_USERID_RESPONSE_LEN = 8; // length of "*UI=0000" excluding "\r\n"
+static constexpr size_t MLR_GET_USERID_RESPONSE_LEN = 8;
 
 // @RS (RSSI of Last Received Packet)
 static constexpr char MLR_GET_RSSI_LAST_RX_STRING[] = "@RS";
 static constexpr char MLR_GET_RSSI_LAST_RX_RESPONSE_PREFIX[] = "*RS=";
-static constexpr size_t MLR_GET_RSSI_LAST_RX_RESPONSE_MIN_LEN = 10; // length of "*RS=-12dBm" excluding "\r\n"
-static constexpr size_t MLR_GET_RSSI_LAST_RX_RESPONSE_MAX_LEN = 11; // length of "*RS=-123dBm" excluding "\r\n"
 
 // @RA (RSSI of Current Channel)
 static constexpr char MLR_GET_RSSI_CURRENT_CHANNEL_STRING[] = "@RA";
 static constexpr char MLR_GET_RSSI_CURRENT_CHANNEL_RESPONSE_PREFIX[] = "*RA=";
-static constexpr size_t MLR_GET_RSSI_CURRENT_CHANNEL_RESPONSE_MIN_LEN = 10; // length of "*RA=-12dBm" excluding "\r\n"
-static constexpr size_t MLR_GET_RSSI_CURRENT_CHANNEL_RESPONSE_MAX_LEN = 11; // length of "*RA=-123dBm" excluding "\r\n"
 
 // @CI (Carrier Sense RSSI Output)
 static constexpr char MLR_CMD_CI[] = "@CI";
 static constexpr char MLR_SET_CI_RESPONSE_PREFIX[] = "*CI=";
-static constexpr size_t MLR_SET_CI_RESPONSE_LEN = 6; // length of "*CI=01" excluding "\r\n"
+static constexpr size_t MLR_SET_CI_RESPONSE_LEN = 6;
 
 // @SN (Serial Number)
 static constexpr char MLR_GET_SERIAL_NUMBER_STRING[] = "@SN";
 static constexpr char MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX[] = "*SN=";
-static constexpr size_t MLR_GET_SERIAL_NUMBER_RESPONSE_LEN = 12; // length of "*SN=A1234567" excluding "\r\n"
+static constexpr size_t MLR_GET_SERIAL_NUMBER_RESPONSE_LEN = 12;
 
 // @IZ (Factory Reset)
 static constexpr char MLR_CMD_IZ[] = "@IZ";
 static constexpr char MLR_SET_IZ_RESPONSE_PREFIX_OK[] = "*IZ=OK";
-static constexpr size_t MLR_SET_IZ_RESPONSE_LEN_OK = 6; // length of "*IZ=OK" excluding "\r\n"
+static constexpr size_t MLR_SET_IZ_RESPONSE_LEN_OK = 6;
 
 // @BR (Baud Rate)
 static constexpr char MLR_CMD_BAUDRATE[] = "@BR";
 static constexpr char MLR_SET_BAUDRATE_RESPONSE_PREFIX[] = "*BR=";
-static constexpr size_t MLR_SET_BAUDRATE_RESPONSE_LEN = 6; // length of "*BR=19" excluding "\r\n"
+static constexpr size_t MLR_SET_BAUDRATE_RESPONSE_LEN = 6;
 
 // @DT (Data Transmission)
 static constexpr char MLR_TRANSMISSION_PREFIX_STRING[] = "@DT";
 static constexpr char MLR_TRANSMISSION_RESPONSE_PREFIX[] = "*DT=";
-static constexpr size_t MLR_TRANSMISSION_RESPONSE_LEN = 6; // length of "*DT=06" excluding "\r\n"
-
-// // @PS (Contact Function for SLR429)
-// static constexpr char MLR_GET_CONTACT_FUNCTION_STRING[] = "@PS\r\n";
-// static constexpr char MLR_SET_CONTACT_FUNCTION_PREFIX_STRING[] = "@PS";
-// static constexpr char MLR_SET_CONTACT_FUNCTION_RESPONSE_PREFIX[] = "*PS=";
-// static constexpr size_t MLR_SET_CONTACT_FUNCTION_RESPONSE_LEN = 6; // length of "*PS=0F" excluding "\r\n"
+static constexpr size_t MLR_TRANSMISSION_RESPONSE_LEN = 6;
 
 // *IR (Information Response)
 static constexpr char MLR_INFORMATION_RESPONSE_PREFIX[] = "*IR=";
-static constexpr size_t MLR_INFORMATION_RESPONSE_LEN = 6;              // length of "*IR=03" excluding "\r\n"
-static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_NO_TX = 1;       // data transmission is not possible (for unknown reasons)
-static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES = 2; // data transmission is not possible because of presence of other LoRa modules
-static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OK = 3;          // data transmission complete
-
-// string length calculated at compile time
-template <uint16_t N>
-
-uint16_t static_strlen(const char (&cstr)[N])
-{
-    for (uint16_t i = 0; i < N; i++)
-    {
-        if (cstr[i] == 0)
-            return i;
-    }
-
-    return 0xFFFF;
-}
-
-static bool s_ParseHex(const uint8_t *pData, uint8_t len, uint32_t *pResult)
-{
-    if (!pData || !pResult)
-        return false;
-    *pResult = 0;
-
-    for (uint8_t i = 0; i < len; ++i)
-    {
-        *pResult <<= 4;
-        uint8_t c = pData[i];
-        if (c >= '0' && c <= '9')
-        {
-            *pResult |= (c - '0');
-        }
-        else if (c >= 'a' && c <= 'f')
-        {
-            *pResult |= (c - 'a' + 10);
-        }
-        else if (c >= 'A' && c <= 'F')
-        {
-            *pResult |= (c - 'A' + 10);
-        }
-        else
-        {
-            // Invalid character
-            *pResult = 0; // Reset result on error
-            return false;
-        }
-    }
-    return true;
-}
-
-static bool s_ParseDec(const uint8_t *pData, uint8_t len, uint32_t *pResult)
-{
-    if (!pData || !pResult)
-        return false;
-
-    *pResult = 0;
-
-    for (uint8_t i = 0; i < len; ++i)
-    {
-        *pResult = *pResult * 10;
-        uint8_t c = pData[i];
-        if (c >= '0' && c <= '9')
-        {
-            *pResult += (c - '0');
-        }
-        else
-        {
-            *pResult = 0;
-            return false;
-        }
-    }
-
-    return true;
-}
+static constexpr size_t MLR_INFORMATION_RESPONSE_LEN = 6;
+static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_NO_TX = 1;
+static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES = 2;
+static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OK = 3;
 
 MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_AsyncCallback pCallback)
 {
+    initSerial(pUart); // Base class init
+
     m_asyncExpectedResponse = MLR_Modem_Response::Idle;
     m_pCallback = pCallback;
-    m_pUart = &pUart;
-    m_rxIdx = 0;
     m_parserState = MLR_ModemParserState::Start;
     m_drMessagePresent = false;
     m_drMessageLen = 0;
-    m_ResetParser();
+    m_irMessagePresent = false;
+    m_irValue = 0;
 
-    MLR_DEBUG_PRINTLN("[MLR Modem] begin: Getting current mode...");
-    MLR_Modem_Error err = GetMode(&m_mode); // Get and cache the current mode
+    SM_DEBUG_PRINTLN(" Modem] begin: Getting current mode...");
+
+    MLR_Modem_Error err = GetMode(&m_mode);
     if (err != MLR_Modem_Error::Ok)
     {
-        MLR_DEBUG_PRINTF("[MLR Modem] begin: GetMode failed! err=%d\n", (int)err);
-        return err; // Return error if GetMode fails
+        SM_DEBUG_PRINTF(" Modem] begin: GetMode failed! err=%d\n", (int)err);
+        return err;
     }
 
-    MLR_DEBUG_PRINTF("[MLR Modem] begin: Initialization successful. Mode=%d\n", (int)m_mode);
+    SM_DEBUG_PRINTF(" Modem] begin: Initialization successful. Mode=%d\n", (int)m_mode);
     return MLR_Modem_Error::Ok;
 }
 
@@ -212,37 +131,33 @@ MLR_Modem_Error MLR_Modem::SetChannel(uint8_t channel, bool saveValue)
     {
         return MLR_Modem_Error::InvalidArg;
     }
-
-    return m_SetByteValue(MLR_CMD_CHANNEL, channel, saveValue, MLR_SET_CHANNEL_RESPONSE_PREFIX, MLR_SET_CHANNEL_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_CHANNEL, channel, saveValue, MLR_SET_CHANNEL_RESPONSE_PREFIX, MLR_SET_CHANNEL_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetChannel(uint8_t *pChannel)
 {
-    return m_GetByteValue(MLR_CMD_CHANNEL, pChannel, MLR_SET_CHANNEL_RESPONSE_PREFIX, MLR_SET_CHANNEL_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_CHANNEL, pChannel, MLR_SET_CHANNEL_RESPONSE_PREFIX, MLR_SET_CHANNEL_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::SetMode(MLR_ModemMode mode, bool saveValue)
 {
     if (mode == MLR_ModemMode::FskBin || mode == MLR_ModemMode::LoRaBin)
     {
-        // binary modes currently not supported
         return MLR_Modem_Error::InvalidArg;
     }
 
-    MLR_Modem_Error rv = m_SetByteValue(MLR_CMD_MODE, static_cast<uint8_t>(mode), saveValue, MLR_SET_MODE_RESPONSE_PREFIX, MLR_SET_MODE_RESPONSE_LEN);
+    MLR_Modem_Error rv = setByteValue(MLR_CMD_MODE, static_cast<uint8_t>(mode), saveValue, MLR_SET_MODE_RESPONSE_PREFIX, MLR_SET_MODE_RESPONSE_LEN);
 
     if (rv == MLR_Modem_Error::Ok)
     {
         m_mode = mode;
-        // Handle messages "FSK CMD MODE" etc.
-        m_ClearOneLine();
     }
     return rv;
 }
 
 MLR_Modem_Error MLR_Modem::GetMode(MLR_ModemMode *pMode)
 {
-    return m_GetByteValue(MLR_CMD_MODE, reinterpret_cast<uint8_t *>(pMode), MLR_SET_MODE_RESPONSE_PREFIX, MLR_SET_MODE_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_MODE, reinterpret_cast<uint8_t *>(pMode), MLR_SET_MODE_RESPONSE_PREFIX, MLR_SET_MODE_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::SetSpreadFactor(MLR_ModemSpreadFactor sf, bool saveValue)
@@ -252,398 +167,256 @@ MLR_Modem_Error MLR_Modem::SetSpreadFactor(MLR_ModemSpreadFactor sf, bool saveVa
     {
         return MLR_Modem_Error::InvalidArg;
     }
-    return m_SetByteValue(MLR_CMD_SF, sfValue, saveValue, MLR_SET_SF_RESPONSE_PREFIX, MLR_SET_SF_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_SF, sfValue, saveValue, MLR_SET_SF_RESPONSE_PREFIX, MLR_SET_SF_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetSpreadFactor(MLR_ModemSpreadFactor *pSf)
 {
-    return m_GetByteValue(MLR_CMD_SF, reinterpret_cast<uint8_t *>(pSf), MLR_SET_SF_RESPONSE_PREFIX, MLR_SET_SF_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_SF, reinterpret_cast<uint8_t *>(pSf), MLR_SET_SF_RESPONSE_PREFIX, MLR_SET_SF_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::SetEquipmentID(uint8_t ei, bool saveValue)
 {
-    return m_SetByteValue(MLR_CMD_EQUIPMENT_ID, ei, saveValue, MLR_SET_EQUIPMENT_RESPONSE_PREFIX, MLR_SET_EQUIPMENT_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_EQUIPMENT_ID, ei, saveValue, MLR_SET_EQUIPMENT_RESPONSE_PREFIX, MLR_SET_EQUIPMENT_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetEquipmentID(uint8_t *pEI)
 {
-    return m_GetByteValue(MLR_CMD_EQUIPMENT_ID, pEI, MLR_SET_EQUIPMENT_RESPONSE_PREFIX, MLR_SET_EQUIPMENT_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_EQUIPMENT_ID, pEI, MLR_SET_EQUIPMENT_RESPONSE_PREFIX, MLR_SET_EQUIPMENT_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::SetDestinationID(uint8_t di, bool saveValue)
 {
-    return m_SetByteValue(MLR_CMD_DESTINATION_ID, di, saveValue, MLR_SET_DESTINATION_RESPONSE_PREFIX, MLR_SET_DESTINATION_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_DESTINATION_ID, di, saveValue, MLR_SET_DESTINATION_RESPONSE_PREFIX, MLR_SET_DESTINATION_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetDestinationID(uint8_t *pDI)
 {
-    return m_GetByteValue(MLR_CMD_DESTINATION_ID, pDI, MLR_SET_DESTINATION_RESPONSE_PREFIX, MLR_SET_DESTINATION_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_DESTINATION_ID, pDI, MLR_SET_DESTINATION_RESPONSE_PREFIX, MLR_SET_DESTINATION_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::SetGroupID(uint8_t gi, bool saveValue)
 {
-    return m_SetByteValue(MLR_CMD_GROUP_ID, gi, saveValue, MLR_SET_GROUP_RESPONSE_PREFIX, MLR_SET_GROUP_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_GROUP_ID, gi, saveValue, MLR_SET_GROUP_RESPONSE_PREFIX, MLR_SET_GROUP_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetGroupID(uint8_t *pGI)
 {
-    return m_GetByteValue(MLR_CMD_GROUP_ID, pGI, MLR_SET_GROUP_RESPONSE_PREFIX, MLR_SET_GROUP_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_GROUP_ID, pGI, MLR_SET_GROUP_RESPONSE_PREFIX, MLR_SET_GROUP_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetUserID(uint16_t *pUserID)
 {
-    MLR_Modem_Error rv = m_SendCmd(MLR_GET_USERID_STRING);
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessageHexWord(pUserID, MLR_GET_USERID_RESPONSE_LEN, MLR_GET_USERID_RESPONSE_PREFIX);
-    }
+    char buf[16];
+    char *p = appendStr(buf, buf, MLR_GET_USERID_STRING);
+    appendStr(buf, p, "\r\n");
 
-    return rv;
+    MLR_Modem_Error err = enqueueCommand(buf, CommandType::Simple);
+    if (err != MLR_Modem_Error::Ok) return err;
+
+    err = waitForSyncComplete(500);
+    if (err == MLR_Modem_Error::Ok)
+    {
+        err = m_HandleMessageHexWord(pUserID, MLR_GET_USERID_RESPONSE_LEN, MLR_GET_USERID_RESPONSE_PREFIX);
+    }
+    return err;
 }
 
 MLR_Modem_Error MLR_Modem::GetRssiLastRx(int16_t *pRssi)
 {
-    MLR_Modem_Error rv = m_SendCmd(MLR_GET_RSSI_LAST_RX_STRING);
+    char buf[16];
+    char *p = appendStr(buf, buf, MLR_GET_RSSI_LAST_RX_STRING);
+    appendStr(buf, p, "\r\n");
 
-    if (rv == MLR_Modem_Error::Ok)
+    MLR_Modem_Error err = enqueueCommand(buf, CommandType::Simple);
+    if (err != MLR_Modem_Error::Ok) return err;
+
+    err = waitForSyncComplete(500);
+    if (err == MLR_Modem_Error::Ok)
     {
-        rv = m_HandleMessage_RS(pRssi);
+        err = m_HandleMessage_RS(pRssi);
     }
-
-    return rv;
+    return err;
 }
 
 MLR_Modem_Error MLR_Modem::GetRssiCurrentChannel(int16_t *pRssi)
 {
-    MLR_Modem_Error rv = m_SendCmd(MLR_GET_RSSI_CURRENT_CHANNEL_STRING);
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessage_RA(pRssi);
-    }
+    char buf[16];
+    char *p = appendStr(buf, buf, MLR_GET_RSSI_CURRENT_CHANNEL_STRING);
+    appendStr(buf, p, "\r\n");
 
-    return rv;
+    MLR_Modem_Error err = enqueueCommand(buf, CommandType::Simple);
+    if (err != MLR_Modem_Error::Ok) return err;
+
+    err = waitForSyncComplete(500);
+    if (err == MLR_Modem_Error::Ok)
+    {
+        err = m_HandleMessage_RA(pRssi);
+    }
+    return err;
 }
 
 MLR_Modem_Error MLR_Modem::SetCarrierSenseRssiOutput(uint8_t ciValue, bool saveValue)
 {
-    return m_SetByteValue(MLR_CMD_CI, ciValue, saveValue, MLR_SET_CI_RESPONSE_PREFIX, MLR_SET_CI_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_CI, ciValue, saveValue, MLR_SET_CI_RESPONSE_PREFIX, MLR_SET_CI_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetCarrierSenseRssiOutput(uint8_t *pCiValue)
 {
-    return m_GetByteValue(MLR_CMD_CI, pCiValue, MLR_SET_CI_RESPONSE_PREFIX, MLR_SET_CI_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_CI, pCiValue, MLR_SET_CI_RESPONSE_PREFIX, MLR_SET_CI_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::GetSerialNumber(uint32_t *pSerialNumber)
 {
-    MLR_Modem_Error rv = m_SendCmd(MLR_GET_SERIAL_NUMBER_STRING);
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessage_SN(pSerialNumber);
-    }
+    char buf[16];
+    char *p = appendStr(buf, buf, MLR_GET_SERIAL_NUMBER_STRING);
+    appendStr(buf, p, "\r\n");
 
-    return rv;
+    MLR_Modem_Error err = enqueueCommand(buf, CommandType::Simple);
+    if (err != MLR_Modem_Error::Ok) return err;
+
+    err = waitForSyncComplete(500);
+    if (err == MLR_Modem_Error::Ok)
+    {
+        err = m_HandleMessage_SN(pSerialNumber);
+    }
+    return err;
 }
 
 MLR_Modem_Error MLR_Modem::FactoryReset()
 {
-    // First response is *WR=PS
-    MLR_Modem_Error rv = m_SendCmd(MLR_CMD_IZ);
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessage_WR();
-    }
+    MLR_Modem_Error err = enqueueCommand(MLR_CMD_IZ, CommandType::NvmSave);
+    if (err != MLR_Modem_Error::Ok) return err;
 
-    // Second response is *IZ=OK
-    if (rv == MLR_Modem_Error::Ok)
+    err = waitForSyncComplete(2000);
+    if (err == MLR_Modem_Error::Ok)
     {
-        rv = m_WaitCmdResponse();
+        err = m_HandleMessage_IZ();
     }
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessage_IZ();
-    }
-
-    // Third response is "LORA MODE" or similar
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        m_ClearOneLine();
-    }
-
-    return rv;
+    return err;
 }
 
 MLR_Modem_Error MLR_Modem::GetBaudRate(uint8_t *pBaudRate)
 {
-    return m_GetByteValue(MLR_CMD_BAUDRATE, pBaudRate, MLR_SET_BAUDRATE_RESPONSE_PREFIX, MLR_SET_BAUDRATE_RESPONSE_LEN);
+    return getByteValue(MLR_CMD_BAUDRATE, pBaudRate, MLR_SET_BAUDRATE_RESPONSE_PREFIX, MLR_SET_BAUDRATE_RESPONSE_LEN);
 }
 
 MLR_Modem_Error MLR_Modem::SetBaudRate(uint32_t baudRate, bool saveValue)
 {
-    // Convert baud rate (BPS) to modem command code
     uint8_t baudCode;
     switch (baudRate)
     {
-    case 1200:
-        baudCode = 0x12;
-        break;
-    case 2400:
-        baudCode = 0x24;
-        break;
-    case 4800:
-        baudCode = 0x48;
-        break;
-    case 9600:
-        baudCode = 0x96;
-        break;
-    case 19200:
-        baudCode = 0x19;
-        break;
-    default:
-        return MLR_Modem_Error::InvalidArg; // Invalid baud rate specified
+    case 1200: baudCode = 0x12; break;
+    case 2400: baudCode = 0x24; break;
+    case 4800: baudCode = 0x48; break;
+    case 9600: baudCode = 0x96; break;
+    case 19200: baudCode = 0x19; break;
+    default: return MLR_Modem_Error::InvalidArg;
     }
 
-    return m_SetByteValue(MLR_CMD_BAUDRATE, baudCode, saveValue, MLR_SET_BAUDRATE_RESPONSE_PREFIX, MLR_SET_BAUDRATE_RESPONSE_LEN);
+    return setByteValue(MLR_CMD_BAUDRATE, baudCode, saveValue, MLR_SET_BAUDRATE_RESPONSE_PREFIX, MLR_SET_BAUDRATE_RESPONSE_LEN);
 }
 
-// MLR_Modem_Error MLR_Modem::GetContactFunction(uint8_t *pContactFunction)
-// {
-//     return m_GetByteValue(MLR_GET_CONTACT_FUNCTION_STRING, pContactFunction, MLR_SET_CONTACT_FUNCTION_RESPONSE_PREFIX, MLR_SET_CONTACT_FUNCTION_RESPONSE_LEN);
-// }
-
-// MLR_Modem_Error MLR_Modem::SetContactFunction(uint8_t contactFunction, bool saveValue)
-// {
-//     return m_SetByteValue(MLR_SET_CONTACT_FUNCTION_PREFIX_STRING, contactFunction, saveValue, MLR_SET_CONTACT_FUNCTION_RESPONSE_PREFIX, MLR_SET_CONTACT_FUNCTION_RESPONSE_LEN);
-// }
+MLR_Modem_Error MLR_Modem::SoftReset()
+{
+    return enqueueCommand("@SR\r\n", CommandType::Simple);
+}
 
 MLR_Modem_Error MLR_Modem::SendRawCommand(const char *command, char *responseBuffer, size_t bufferSize, uint32_t timeoutMs)
 {
-    if (!command || !responseBuffer || bufferSize == 0)
-    {
-        MLR_DEBUG_PRINTLN("[MLR_Modem] SendRawCommand: Invalid args.");
-        return MLR_Modem_Error::InvalidArg;
-    }
-
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
-    {
-        MLR_DEBUG_PRINTLN("[MLR_Modem] SendRawCommand: Busy with async command.");
-        return MLR_Modem_Error::Busy;
-    }
-
-    MLR_DEBUG_PRINTF("[MLR_Modem] SendRawCommand: Sending raw command (timeout=%lu ms)...\n", timeoutMs);
-    m_WriteString(command);
-
-    MLR_Modem_Error rv = m_WaitCmdResponse(timeoutMs);
-
-    if (rv != MLR_Modem_Error::Ok)
-    {
-        MLR_DEBUG_PRINTF("[MLR_Modem] SendRawCommand: Failed waiting for response. err=%d\n", (int)rv);
-        responseBuffer[0] = '\0';
-        return rv;
-    }
-
-    if (m_rxIdx >= bufferSize)
-    {
-        MLR_DEBUG_PRINTF("[MLR_Modem] SendRawCommand: Response length (%u) exceeds buffer size (%zu).\n", m_rxIdx, bufferSize);
-        responseBuffer[0] = '\0';
-        return MLR_Modem_Error::BufferTooSmall;
-    }
-
-    memcpy(responseBuffer, m_rxMessage, m_rxIdx);
-    responseBuffer[m_rxIdx] = '\0';
-    MLR_DEBUG_PRINTF("[MLR_Modem] SendRawCommand: Response received: %s\n", responseBuffer);
-
-    return MLR_Modem_Error::Ok;
+    return sendRawCommand(command, responseBuffer, bufferSize, timeoutMs);
 }
 
 MLR_Modem_Error MLR_Modem::SendRawCommandAsync(const char *command, uint32_t timeoutMs)
 {
-    if (!command)
-    {
-        return MLR_Modem_Error::InvalidArg;
-    }
-
     if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
     {
         return MLR_Modem_Error::Busy;
     }
 
-    m_WriteString(command);
     m_asyncExpectedResponse = MLR_Modem_Response::GenericResponse;
-    m_StartTimeout(timeoutMs); // Start the async timeout
-
-    return MLR_Modem_Error::Ok;
+    return enqueueCommand(command, CommandType::Simple, timeoutMs);
 }
 
 MLR_Modem_Error MLR_Modem::TransmitData(const uint8_t *pMsg, uint8_t len)
 {
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
+    m_irMessagePresent = false;
+
+    char cmdHeader[16];
+    char *p = appendStr(cmdHeader, cmdHeader, MLR_TRANSMISSION_PREFIX_STRING);
+    appendHex2(cmdHeader, p, len);
+
+    MLR_Modem_Error err = enqueueTxCommand(cmdHeader, pMsg, len);
+    if (err != MLR_Modem_Error::Ok) return err;
+
+    // 1. Wait for *DT=len (Transmission accepted)
+    err = waitForSyncComplete(2000);
+    if (err != MLR_Modem_Error::Ok) return err;
+
+    uint8_t txResp{};
+    err = m_HandleMessageHexByte(&txResp, MLR_TRANSMISSION_RESPONSE_LEN, MLR_TRANSMISSION_RESPONSE_PREFIX);
+    if (err != MLR_Modem_Error::Ok) return err;
+    if (txResp != len) return MLR_Modem_Error::Fail;
+
+    // 2. Wait for *IR=xx (Transmission complete / result)
+    uint32_t waitTime = (m_mode == MLR_ModemMode::LoRaCmd) ? 15000 : 200;
+    uint32_t start = millis();
+    while (!m_irMessagePresent && (millis() - start < waitTime))
     {
-        return MLR_Modem_Error::Busy;
+        update();
+        delay(1);
     }
 
-    std::array<char, 6> cmdHeader;
-    snprintf(cmdHeader.data(), cmdHeader.size(), "%s%02X", MLR_TRANSMISSION_PREFIX_STRING, static_cast<unsigned>(len));
-    m_WriteString(cmdHeader.data(), true);
-    m_WriteData(pMsg, len);
-    m_WriteString("\r\n", false);
-
-    MLR_Modem_Error rv = m_WaitCmdResponse();
-
-    // check transmission response
-    uint8_t transmissionResponse{};
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessageHexByte(&transmissionResponse, MLR_TRANSMISSION_RESPONSE_LEN, MLR_TRANSMISSION_RESPONSE_PREFIX);
-    }
-
-    // check if length of data in response is correct
-    if (rv == MLR_Modem_Error::Ok && transmissionResponse != len)
-    {
-        rv = MLR_Modem_Error::Fail;
-    }
-
-    // check information response
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        if (m_mode == MLR_ModemMode::LoRaCmd)
-        {
-            rv = m_WaitCmdResponse(15000);
-        }
-        else
-        {
-            rv = m_WaitCmdResponse(11);
-        }
-    }
-
-    // check if transmission has been completed
-    uint8_t informationResponse{};
     if (m_mode == MLR_ModemMode::LoRaCmd)
     {
-        if (rv == MLR_Modem_Error::Ok)
-        {
-            rv = m_HandleMessageHexByte(&informationResponse, MLR_INFORMATION_RESPONSE_LEN, MLR_INFORMATION_RESPONSE_PREFIX);
-        }
-
-        if (rv != MLR_Modem_Error::Ok)
-        {
-            rv = MLR_Modem_Error::Fail;
-        }
-        else
-        {
-            switch (informationResponse)
-            {
-                // fallthrough
-            case MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES:
-            case MLR_INFORMATION_RESPONSE_ERR_NO_TX:
-                rv = MLR_Modem_Error::FailLbt;
-                break;
-            default:
-                break;
-            }
-        }
+        if (!m_irMessagePresent) return MLR_Modem_Error::Timeout;
+        if (m_irValue == MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES || m_irValue == MLR_INFORMATION_RESPONSE_ERR_NO_TX)
+            return MLR_Modem_Error::FailLbt;
     }
-    else
+    else // FSK
     {
-        // FSK mode:
-        //  if send OK, no *IR response. Carrier sense error results in *IR=01
-        if (rv != MLR_Modem_Error::Ok)
-        {
-            // timeout mean send ok!
-            rv = MLR_Modem_Error::Ok;
-        }
-        else
-        {
-            rv = m_HandleMessageHexByte(&informationResponse, MLR_INFORMATION_RESPONSE_LEN, MLR_INFORMATION_RESPONSE_PREFIX);
-            if (rv != MLR_Modem_Error::Ok)
-            {
-                rv = MLR_Modem_Error::Fail;
-            }
-            else
-            {
-                switch (informationResponse)
-                {
-                case MLR_INFORMATION_RESPONSE_ERR_NO_TX:
-                    rv = MLR_Modem_Error::FailLbt;
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
+        if (m_irMessagePresent && m_irValue == MLR_INFORMATION_RESPONSE_ERR_NO_TX)
+            return MLR_Modem_Error::FailLbt;
     }
 
-    return rv;
+    return MLR_Modem_Error::Ok;
 }
 
-MLR_Modem_Error MLR_Modem::TransmitDataFireAndForget(const uint8_t *pMsg, uint8_t len)
+MLR_Modem_Error MLR_Modem::TransmitDataAsync(const uint8_t *pMsg, uint8_t len)
 {
-    if (!pMsg || len == 0)
-    {
-        return MLR_Modem_Error::InvalidArg;
-    }
+    if (!pMsg || len == 0) return MLR_Modem_Error::InvalidArg;
+    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle) return MLR_Modem_Error::Busy;
 
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
-    {
-        return MLR_Modem_Error::Busy;
-    }
+    char cmdHeader[16];
+    char *p = appendStr(cmdHeader, cmdHeader, MLR_TRANSMISSION_PREFIX_STRING);
+    appendHex2(cmdHeader, p, len);
 
-    std::array<char, 6> cmdHeader;
-    snprintf(cmdHeader.data(), cmdHeader.size(), "%s%02X", MLR_TRANSMISSION_PREFIX_STRING, static_cast<unsigned>(len));
-    m_WriteString(cmdHeader.data(), true);
-    m_WriteData(pMsg, len);
-    m_WriteString("\r\n", false);
-
-    MLR_Modem_Error rv = m_WaitCmdResponse();
-
-    uint8_t transmissionResponse{};
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessageHexByte(&transmissionResponse, MLR_TRANSMISSION_RESPONSE_LEN, MLR_TRANSMISSION_RESPONSE_PREFIX);
-    }
-
-    if (rv == MLR_Modem_Error::Ok && transmissionResponse != len)
-    {
-        rv = MLR_Modem_Error::Fail;
-    }
-
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        m_asyncExpectedResponse = MLR_Modem_Response::MLR_Modem_DtIr;
-    }
-
-    return rv;
+    m_asyncExpectedResponse = MLR_Modem_Response::MLR_Modem_DtIr;
+    return enqueueTxCommand(cmdHeader, pMsg, len);
 }
 
 MLR_Modem_Error MLR_Modem::GetRssiCurrentChannelAsync()
 {
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
-    {
-        return MLR_Modem_Error::Busy;
-    }
+    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle) return MLR_Modem_Error::Busy;
 
-    std::array<char, 10> cmdBuf;
-    snprintf(cmdBuf.data(), cmdBuf.size(), "%s\r\n", MLR_GET_RSSI_CURRENT_CHANNEL_STRING);
-    m_WriteString(cmdBuf.data());
+    char buf[16];
+    char *p = appendStr(buf, buf, MLR_GET_RSSI_CURRENT_CHANNEL_STRING);
+    appendStr(buf, p, "\r\n");
+
     m_asyncExpectedResponse = MLR_Modem_Response::RssiCurrentChannel;
-    MLR_Modem_Error rv = MLR_Modem_Error::Ok;
-
-    return rv;
+    return enqueueCommand(buf, CommandType::Simple);
 }
 
 MLR_Modem_Error MLR_Modem::GetSerialNumberAsync()
 {
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
-    {
-        return MLR_Modem_Error::Busy;
-    }
+    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle) return MLR_Modem_Error::Busy;
 
-    std::array<char, 10> cmdBuf;
-    snprintf(cmdBuf.data(), cmdBuf.size(), "%s\r\n", MLR_GET_SERIAL_NUMBER_STRING);
-    m_WriteString(cmdBuf.data());
+    char buf[16];
+    char *p = appendStr(buf, buf, MLR_GET_SERIAL_NUMBER_STRING);
+    appendStr(buf, p, "\r\n");
+
     m_asyncExpectedResponse = MLR_Modem_Response::SerialNumber;
-
-    return MLR_Modem_Error::Ok;
+    return enqueueCommand(buf, CommandType::Simple);
 }
 
 MLR_Modem_Error MLR_Modem::GetPacket(const uint8_t **ppData, uint8_t *len)
@@ -654,749 +427,342 @@ MLR_Modem_Error MLR_Modem::GetPacket(const uint8_t **ppData, uint8_t *len)
         *len = m_drMessageLen;
         return MLR_Modem_Error::Ok;
     }
+    return MLR_Modem_Error::Fail;
+}
+
+// --- SerialModemBase Virtual Implementation ---
+
+void MLR_Modem::onRxDataReceived()
+{
+    if (m_drMessagePresent)
+    {
+        dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::DataReceived, 0, &m_drMessage[0], m_drMessageLen);
+        m_drMessagePresent = false;
+    }
     else
-        return MLR_Modem_Error::Fail;
-}
-
-void MLR_Modem::Work()
-{
-    switch (m_Parse())
     {
-    case MLR_ModemCmdState::Parsing:
-        // nop
-        break;
-
-    case MLR_ModemCmdState::Garbage:
-        MLR_DEBUG_PRINTLN("[MLR Work] Work: Parser encountered garbage.");
-        if (m_pCallback)
+        // Check for *IR= information response
+        uint8_t irVal;
+        if (m_HandleMessageHexByte(&irVal, MLR_INFORMATION_RESPONSE_LEN, MLR_INFORMATION_RESPONSE_PREFIX) == ModemError::Ok)
         {
-            // Garbage
-        }
-        break;
-    case MLR_ModemCmdState::Overflow:
-        MLR_DEBUG_PRINTLN("[MLR Work] Work: Parser encountered overflow.");
-        if (m_pCallback)
-        {
-            // Overflow
-        }
-        break;
-    case MLR_ModemCmdState::FinishedCmdResponse:
-        MLR_DEBUG_PRINTF("[MLR Work] Work: Finished CMD response, dispatching async.\n");
-        m_DispatchCmdResponseAsync();
-        break;
-    case MLR_ModemCmdState::FinishedDrResponse:
-        MLR_DEBUG_PRINTF("[MLR Work] Work: Finished DR response (Len=%u). Calling callback.\n", m_drMessageLen);
-        if (m_pCallback)
-        {
-            // FinishedDrResponse
-            m_pCallback(MLR_Modem_Error::Ok, MLR_Modem_Response::DataReceived, 0, &m_drMessage[0], m_drMessageLen);
-        }
-        break;
-    default:
-        MLR_DEBUG_PRINTLN(""); // Final newline for RX log
-        break;
-    }
-}
-
-void MLR_Modem::m_WriteString(const char *pString, bool printPrefix)
-{
-    size_t len = strlen(pString);
-    if (printPrefix)
-    {
-        MLR_DEBUG_PRINT("[MLR TX]: ");
-    }
-    MLR_DEBUG_WRITE(reinterpret_cast<const uint8_t *>(pString), len);
-    m_pUart->write(reinterpret_cast<const uint8_t *>(pString), len);
-    m_debugRxNewLine = true;
-}
-
-void MLR_Modem::m_WriteData(const uint8_t *pData, uint8_t len)
-{
-    MLR_DEBUG_WRITE(pData, len);
-    m_pUart->write(pData, len);
-}
-
-uint8_t MLR_Modem::m_ReadByte()
-{
-    if (m_oneByteBuf != -1)
-    {
-        int rcv_int = m_oneByteBuf;
-        m_oneByteBuf = -1;
-        uint8_t rcv = static_cast<uint8_t>(rcv_int);
-
-        if (m_debugRxNewLine)
-        {
-            MLR_DEBUG_PRINT("[MLR RX]: ");
-            m_debugRxNewLine = false;
-        }
-
-        if (rcv >= 32 && rcv <= 126)
-        {
-            MLR_DEBUG_WRITE(rcv);
-        }
-        else if (rcv == '\r')
-        {
-            MLR_DEBUG_PRINT("<CR>");
-        }
-        else if (rcv == '\n')
-        {
-            MLR_DEBUG_PRINT("<LF>\n");
-            m_debugRxNewLine = true;
-        }
-        else
-        {
-            MLR_DEBUG_PRINTF("<%02X>", rcv);
-        }
-        return rcv;
-    }
-
-    if (m_pUart->available())
-    {
-        int rcv_int = m_pUart->read();
-        if (rcv_int != -1)
-        {
-            uint8_t rcv = static_cast<uint8_t>(rcv_int);
-
-            if (m_debugRxNewLine)
+            m_irMessagePresent = true;
+            m_irValue = irVal;
+            // Only notify if we were specifically waiting for it (Async flow)
+            if (m_asyncExpectedResponse == MLR_Modem_Response::MLR_Modem_DtIr)
             {
-                MLR_DEBUG_PRINT("[MLR RX]: ");
-                m_debugRxNewLine = false;
-            }
-
-            if (rcv >= 32 && rcv <= 126)
-            {
-                MLR_DEBUG_WRITE(rcv);
-            }
-            else if (rcv == '\r')
-            {
-                MLR_DEBUG_PRINT("<CR>");
-            }
-            else if (rcv == '\n')
-            {
-                MLR_DEBUG_PRINT("<LF>\n");
-                m_debugRxNewLine = true;
-            }
-            else
-            {
-                MLR_DEBUG_PRINTF("<%02X>", rcv);
-            }
-            return rcv;
-        }
-    }
-
-    // Should not happen if available() is checked, but as a fallback.
-    return 0;
-}
-
-void MLR_Modem::m_UnreadByte(uint8_t unreadByte)
-{
-    m_oneByteBuf = unreadByte;
-}
-
-void MLR_Modem::m_ClearUnreadByte()
-{
-    m_oneByteBuf = -1;
-}
-
-uint32_t MLR_Modem::m_Read(uint8_t *pDst, uint32_t count)
-{
-    if (m_oneByteBuf != -1)
-    {
-        *pDst++ = static_cast<uint8_t>(m_oneByteBuf);
-        m_oneByteBuf = -1;
-        --count;
-    }
-
-    return m_pUart->readBytes(pDst, count);
-}
-
-void MLR_Modem::m_ResetParser()
-{
-    m_parserState = MLR_ModemParserState::Start;
-    m_ClearUnreadByte();
-}
-
-void MLR_Modem::m_ClearOneLine()
-{
-    m_pUart->setTimeout(500);
-    m_pUart->readStringUntil('\n');
-}
-
-void MLR_Modem::m_FlushGarbage()
-{
-    MLR_DEBUG_PRINT("[MLR Flush]: Flushing garbage... ");
-    // remove all remaining garbage from the pipeline, except '*' implies a valid message will follow
-    // don't care about special cases
-    if (m_oneByteBuf == -1)
-    {
-        while (m_pUart->available())
-        {
-            if ('*' == m_ReadByte())
-            {
-                m_UnreadByte('*');
-                MLR_DEBUG_PRINT(" Found '*'.");
-                break;
+                dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::MLR_Modem_DtIr, (int32_t)irVal);
+                m_asyncExpectedResponse = MLR_Modem_Response::Idle;
             }
         }
     }
-    m_parserState = MLR_ModemParserState::Start;
-    MLR_DEBUG_PRINTLN(" Flushed & Reset.");
 }
 
-MLR_ModemCmdState MLR_Modem::m_Parse()
+void MLR_Modem::onCommandComplete(ModemError result)
 {
-    while (m_pUart->available())
+    if (m_asyncExpectedResponse == MLR_Modem_Response::Idle) return;
+
+    MLR_Modem_Response respType = m_asyncExpectedResponse;
+    int32_t value = 0;
+    const uint8_t *pPayload = nullptr;
+    uint16_t len = 0;
+
+    if (result == ModemError::Ok)
     {
+        switch (respType)
+        {
+        case MLR_Modem_Response::SerialNumber:
+        {
+            uint32_t sn;
+            if (m_HandleMessage_SN(&sn) == ModemError::Ok) value = (int32_t)sn;
+            else result = ModemError::Fail;
+            break;
+        }
+        case MLR_Modem_Response::RssiCurrentChannel:
+        {
+            int16_t rssi;
+            if (m_HandleMessage_RA(&rssi) == ModemError::Ok) value = (int32_t)rssi;
+            else result = ModemError::Fail;
+            break;
+        }
+        case MLR_Modem_Response::GenericResponse:
+            pPayload = _rxBuffer;
+            len = _rxIndex;
+            break;
+        case MLR_Modem_Response::MLR_Modem_DtIr:
+            // For @DT, the first response is *DT=len. We keep waiting for *IR in onRxDataReceived.
+            return; 
+        default:
+            break;
+        }
+    }
+
+    dispatchAsyncEvent(result, respType, value, pPayload, len);
+    m_asyncExpectedResponse = MLR_Modem_Response::Idle;
+}
+
+ModemParseResult MLR_Modem::parse()
+{
+    while (_uart->available() || _oneByteBuf != -1)
+    {
+        ModemParseResult result = ModemParseResult::Parsing;
         switch (m_parserState)
         {
-        case MLR_ModemParserState::Start:
-            m_rxIdx = 0;
-            m_rxMessage[m_rxIdx] = m_ReadByte();
-
-            if (m_rxMessage[m_rxIdx] == '*')
-            {
-                ++m_rxIdx;
-                m_parserState = MLR_ModemParserState::ReadCmdFirstLetter;
-            }
-#if 0 
-            // TODO discuss whether we want to read the non CMD-Formatted messages, or just delete them silently
-            else if (isupper(m_rxMessage[m_rxIdx]))
-            {
-               ++m_rxIdx;
-               m_parserState = MLR_ModemParserState::ReadRawString;
-            }
-#endif
-            else // garbage
-            {
-                MLR_DEBUG_PRINTF("\n[MLR Parse]: Expected '*', got 0x%02X. Flushing.\n", m_rxMessage[m_rxIdx]);
-                m_FlushGarbage();
-                // clearing the pipeline is not reported as error
-                return MLR_ModemCmdState::Parsing;
-            }
-            break;
-
-        case MLR_ModemParserState::ReadCmdFirstLetter:
-            m_rxMessage[m_rxIdx] = m_ReadByte();
-
-            if (isupper(m_rxMessage[m_rxIdx]))
-            {
-                ++m_rxIdx;
-                m_parserState = MLR_ModemParserState::ReadCmdSecondLetter;
-            }
-            else
-            {
-                if (m_rxMessage[m_rxIdx] == '*') // two '*' in a row, ignore first
-                {
-                    m_UnreadByte('*');
-                }
-                MLR_DEBUG_PRINTF("\n[MLR Parse]: Expected A-Z, got 0x%02X. Flushing.\n", m_rxMessage[m_rxIdx]);
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            break;
-
-        case MLR_ModemParserState::ReadCmdSecondLetter:
-            m_rxMessage[m_rxIdx] = m_ReadByte();
-
-            if (isupper(m_rxMessage[2]))
-            {
-                ++m_rxIdx;
-                m_parserState = MLR_ModemParserState::ReadCmdParam;
-            }
-            else
-            {
-                if (m_rxMessage[2] == '*')
-                {
-                    m_UnreadByte('*'); // keep unexpected '*' for next message
-                }
-                MLR_DEBUG_PRINTF("\n[MLR Parse]: Expected A-Z, got 0x%02X. Flushing.\n", m_rxMessage[m_rxIdx]);
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            break;
-
-        case MLR_ModemParserState::ReadCmdParam:
-            m_rxMessage[m_rxIdx] = m_ReadByte();
-
-            if ((m_rxMessage[1] == 'D') && (m_rxMessage[2] == 'R') && (m_rxMessage[3] == '='))
-            {
-                // @DR telegram
-                ++m_rxIdx;
-                m_parserState = MLR_ModemParserState::RadioDrSize;
-            }
-            else if (isupper(m_rxMessage[1]) && isupper(m_rxMessage[2]) && (m_rxMessage[3] == '='))
-            {
-                ++m_rxIdx;
-                m_parserState = MLR_ModemParserState::ReadCmdUntilCR;
-            }
-            else
-            {
-                if (m_rxMessage[m_rxIdx] == '*') // another '*', ignore the three read characters
-                {
-                    m_UnreadByte('*');
-                }
-                MLR_DEBUG_PRINTF("\n[MLR Parse]: Unexpected param char 0x%02X. Flushing.\n", m_rxMessage[m_rxIdx]);
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            break;
-
-        case MLR_ModemParserState::RadioDrSize:
-            m_rxMessage[m_rxIdx] = m_ReadByte();
-            ++m_rxIdx;
-            if (m_rxIdx < 6)
-            {
-                // parser cannot continue until there are at least two characters
-                return MLR_ModemCmdState::Parsing;
-            }
-
-            if (isxdigit(m_rxMessage[4]) && isxdigit(m_rxMessage[5]))
-            {
-                m_drMessagePresent = false;
-                uint32_t msgLen = 0;
-                s_ParseHex(&m_rxMessage[4], 2, &msgLen);
-                m_drMessageLen = msgLen;
-                m_rxIdx = 0; // now m_rxIdx to m_drMessage Buffer
-                m_parserState = MLR_ModemParserState::RadioDrPayload;
-            }
-            else
-            {
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            break;
-
-        case MLR_ModemParserState::RadioDrPayload:
-        {
-            // example DR:
-            // *DR=05hallo\r\n
-
-            m_drMessage[m_rxIdx] = m_ReadByte();
-            ++m_rxIdx;
-
-            if ((m_drMessageLen + 2 - m_rxIdx) == 0)
-            {
-                if ((m_drMessage[m_rxIdx - 2] == '\r') && m_drMessage[m_rxIdx - 1] == '\n')
-                {
-                    m_drMessage[m_rxIdx - 2] = 0; // set null at end of the message
-                    m_rxIdx = 0;
-                    m_rxMessage[0] = 0; // "destroy" the old CMD message, so nobody will expect the new message to be a regular command response instead of a radio packet
-                    m_drMessagePresent = true;
-                    m_parserState = MLR_ModemParserState::Start;
-                    return MLR_ModemCmdState::FinishedDrResponse;
-                }
-                else
-                {
-                    m_FlushGarbage();
-                    return MLR_ModemCmdState::Garbage;
-                }
-            }
-
-            break;
+        case MLR_ModemParserState::Start: result = m_HandleReadStart(); break;
+        case MLR_ModemParserState::ReadCmdFirstLetter: result = m_HandleReadCmdFirstLetter(); break;
+        case MLR_ModemParserState::ReadCmdSecondLetter: result = m_HandleReadCmdSecondLetter(); break;
+        case MLR_ModemParserState::ReadCmdParam: result = m_HandleReadCmdParam(); break;
+        case MLR_ModemParserState::RadioDrSize: result = m_HandleRadioDrSize(); break;
+        case MLR_ModemParserState::RadioDrPayload: result = m_HandleRadioDrPayload(); break;
+        case MLR_ModemParserState::ReadCmdUntilCR: result = m_HandleReadCmdUntilCR(); break;
+        case MLR_ModemParserState::ReadCmdUntilLF: result = m_HandleReadCmdUntilLF(); break;
+        default: m_parserState = MLR_ModemParserState::Start; break;
         }
 
-        case MLR_ModemParserState::ReadCmdUntilCR:
-            m_rxMessage[m_rxIdx] = m_ReadByte();
+        if (result != ModemParseResult::Parsing) return result;
+    }
+    return ModemParseResult::Parsing;
+}
 
-            if (m_rxMessage[m_rxIdx] == '\r')
-            {
-                ++m_rxIdx;
-                if (m_rxIdx == sizeof(m_rxMessage))
-                {
-                    m_parserState = MLR_ModemParserState::Start;
-                    return MLR_ModemCmdState::Overflow;
-                }
-                else
-                {
-                    m_parserState = MLR_ModemParserState::ReadCmdUntilLF;
-                }
-            }
-            else if (m_rxMessage[m_rxIdx] == '\n') // unexpected end of command, reset parser
-            {
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            else if (m_rxMessage[m_rxIdx] == '*') // another '*', ignore already read characters
-            {
-                m_UnreadByte('*');
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            else
-            {
-                ++m_rxIdx;
-                if (m_rxIdx == sizeof(m_rxMessage))
-                {
-                    m_parserState = MLR_ModemParserState::Start;
-                    return MLR_ModemCmdState::Overflow;
-                }
-            }
-            break;
+// --- Internal Parser Handlers ---
 
-        case MLR_ModemParserState::ReadCmdUntilLF:
-            m_rxMessage[m_rxIdx] = m_ReadByte();
-            if (m_rxMessage[m_rxIdx] == '\n')
-            {
-                // decrease index pointer to compensate for increasing with CR;
-                // CR\LF is not considered part of message
-                --m_rxIdx;
-                m_parserState = MLR_ModemParserState::Start;
-                return MLR_ModemCmdState::FinishedCmdResponse;
-            }
-            else // garbage
-            {
-                if (m_rxMessage[m_rxIdx] == '*') // another '*', ignore already read characters
-                {
-                    m_UnreadByte('*');
-                }
-                m_FlushGarbage();
-                return MLR_ModemCmdState::Garbage;
-            }
-            break;
+ModemParseResult MLR_Modem::m_HandleReadStart()
+{
+    _rxIndex = 0;
+    _rxBuffer[_rxIndex] = readByte();
+    if (_rxBuffer[_rxIndex] == '*')
+    {
+        ++_rxIndex;
+        m_parserState = MLR_ModemParserState::ReadCmdFirstLetter;
+    }
+    else flushGarbage();
+    return ModemParseResult::Parsing;
+}
 
-        default:
-            // this should never be reached
+ModemParseResult MLR_Modem::m_HandleReadCmdFirstLetter()
+{
+    _rxBuffer[_rxIndex] = readByte();
+    if (isupper(_rxBuffer[_rxIndex]))
+    {
+        ++_rxIndex;
+        m_parserState = MLR_ModemParserState::ReadCmdSecondLetter;
+    }
+    else
+    {
+        if (_rxBuffer[_rxIndex] == '*') unreadByte('*');
+        flushGarbage();
+        return ModemParseResult::Garbage;
+    }
+    return ModemParseResult::Parsing;
+}
+
+ModemParseResult MLR_Modem::m_HandleReadCmdSecondLetter()
+{
+    _rxBuffer[_rxIndex] = readByte();
+    if (isupper(_rxBuffer[_rxIndex]))
+    {
+        ++_rxIndex;
+        m_parserState = MLR_ModemParserState::ReadCmdParam;
+    }
+    else
+    {
+        if (_rxBuffer[_rxIndex] == '*') unreadByte('*');
+        flushGarbage();
+        return ModemParseResult::Garbage;
+    }
+    return ModemParseResult::Parsing;
+}
+
+ModemParseResult MLR_Modem::m_HandleReadCmdParam()
+{
+    _rxBuffer[_rxIndex] = readByte();
+    if ((_rxBuffer[1] == 'D') && (_rxBuffer[2] == 'R') && (_rxBuffer[3] == '='))
+    {
+        ++_rxIndex;
+        m_parserState = MLR_ModemParserState::RadioDrSize;
+    }
+    else if (isupper(_rxBuffer[1]) && isupper(_rxBuffer[2]) && (_rxBuffer[3] == '='))
+    {
+        ++_rxIndex;
+        m_parserState = MLR_ModemParserState::ReadCmdUntilCR;
+    }
+    else
+    {
+        if (_rxBuffer[_rxIndex] == '*') unreadByte('*');
+        flushGarbage();
+        return ModemParseResult::Garbage;
+    }
+    return ModemParseResult::Parsing;
+}
+
+ModemParseResult MLR_Modem::m_HandleRadioDrSize()
+{
+    _rxBuffer[_rxIndex] = readByte();
+    ++_rxIndex;
+    if (_rxIndex < 6) return ModemParseResult::Parsing;
+
+    if (isxdigit(_rxBuffer[4]) && isxdigit(_rxBuffer[5]))
+    {
+        m_drMessagePresent = false;
+        uint32_t msgLen = 0;
+        parseHex(&_rxBuffer[4], 2, &msgLen);
+        m_drMessageLen = (uint8_t)msgLen;
+        _rxIndex = 0;
+        m_parserState = MLR_ModemParserState::RadioDrPayload;
+    }
+    else
+    {
+        flushGarbage();
+        return ModemParseResult::Garbage;
+    }
+    return ModemParseResult::Parsing;
+}
+
+ModemParseResult MLR_Modem::m_HandleRadioDrPayload()
+{
+    m_drMessage[_rxIndex] = readByte();
+    ++_rxIndex;
+    if ((m_drMessageLen + 2 - _rxIndex) == 0)
+    {
+        if ((m_drMessage[_rxIndex - 2] == '\r') && m_drMessage[_rxIndex - 1] == '\n')
+        {
+            m_drMessage[_rxIndex - 2] = 0;
+            // Note: We don't reset _rxIndex here so it reflects payload length + CRLF for debug prints in Base class.
+            // It will be reset to 0 in the next m_HandleReadStart().
+            m_drMessagePresent = true;
             m_parserState = MLR_ModemParserState::Start;
-            m_rxIdx = 0;
-            break;
-        }
-    }
-
-    return MLR_ModemCmdState::Parsing;
-}
-
-MLR_Modem_Error MLR_Modem::m_WaitCmdResponse(uint32_t ms)
-{
-    // We might just receiving a Dr Telegram, when sending a normal command to the modem.
-    // Thus while waiting for the command response, receiving a Dr message must be taken into account.
-    MLR_DEBUG_PRINTF("[MLR Wait]: Waiting up to %lu ms...\n", ms);
-    m_StartTimeout(ms);
-    while (!m_IsTimeout())
-    {
-        switch (m_Parse())
-        {
-        case MLR_ModemCmdState::Parsing:
-            // nothing to do
-            break;
-
-        case MLR_ModemCmdState::FinishedCmdResponse:
-            MLR_DEBUG_PRINTF("[MLR Wait]: Finished CMD response received: '%.*s'\n", m_rxIdx, m_rxMessage);
-            return MLR_Modem_Error::Ok;
-            break;
-
-        case MLR_ModemCmdState::FinishedDrResponse:
-            MLR_DEBUG_PRINTF("[MLR Wait]: Intervening DR received (Len=%u). Calling callback...\n", m_drMessageLen);
-            if (m_pCallback)
-            {
-                m_pCallback(MLR_Modem_Error::Ok, MLR_Modem_Response::DataReceived, 0, m_drMessage, m_drMessageLen);
-            }
-            MLR_DEBUG_PRINTLN("[MLR Wait]: Continuing to wait for original CMD response...");
-            break;
-
-        default:
-            MLR_DEBUG_PRINTLN("[MLR Wait]: Parser encountered error (Garbage/Overflow/Fail).");
-            return MLR_Modem_Error::Fail;
-        }
-
-        delay(1);
-    }
-    m_parserState = MLR_ModemParserState::Start;
-    MLR_DEBUG_PRINTLN("[MLR Wait]: Timeout.");
-    return MLR_Modem_Error::Fail;
-}
-
-void MLR_Modem::m_SetExpectedResponses(MLR_Modem_Response ep0, MLR_Modem_Response ep1, MLR_Modem_Response ep2)
-{
-    m_asyncExpectedResponses[0] = ep0;
-    m_asyncExpectedResponses[1] = ep1;
-    m_asyncExpectedResponses[2] = ep2;
-}
-
-MLR_Modem_Error MLR_Modem::m_DispatchCmdResponseAsync()
-{
-    MLR_Modem_Error err = MLR_Modem_Error::Fail;
-
-    switch (m_asyncExpectedResponse)
-    {
-    case MLR_Modem_Response::Idle:
-        MLR_DEBUG_PRINTLN("[MLR Async] Warning: Received response but no async command pending (or late sync response).");
-        break;
-    case MLR_Modem_Response::ParseError:
-        MLR_DEBUG_PRINTLN("[MLR Async] Error: Parse error during async command processing.");
-        break;
-    case MLR_Modem_Response::Timeout:
-        MLR_DEBUG_PRINTLN("[MLR Async] Error: Timeout during async command processing.");
-        break;
-    case MLR_Modem_Response::ShowMode:
-        break;
-    case MLR_Modem_Response::SaveValue:
-        break;
-    case MLR_Modem_Response::Channel:
-        break;
-    case MLR_Modem_Response::SerialNumber:
-        if (m_pCallback)
-        {
-            uint32_t sn{};
-            err = m_HandleMessage_SN(&sn);
-            int32_t value = static_cast<int32_t>(sn);
-            m_pCallback(err, MLR_Modem_Response::SerialNumber, value, nullptr, 0);
-        }
-        break;
-    case MLR_Modem_Response::MLR_Modem_DtIr:
-        if (m_pCallback)
-        {
-            uint8_t irValue{};
-            err = m_HandleMessageHexByte(&irValue, MLR_INFORMATION_RESPONSE_LEN, MLR_INFORMATION_RESPONSE_PREFIX);
-            m_pCallback(err, MLR_Modem_Response::MLR_Modem_DtIr, static_cast<int32_t>(irValue), nullptr, 0);
-        }
-        break;
-    case MLR_Modem_Response::DataReceived:
-        break;
-    case MLR_Modem_Response::RssiLastRx:
-        break;
-    case MLR_Modem_Response::RssiCurrentChannel:
-        if (m_pCallback)
-        {
-            int16_t rssi{};
-            err = m_HandleMessage_RA(&rssi);
-            m_pCallback(err, MLR_Modem_Response::RssiCurrentChannel, static_cast<int32_t>(rssi), nullptr, 0);
-        }
-        break;
-    case MLR_Modem_Response::UserID:
-        break;
-    case MLR_Modem_Response::CarrierSenseRssi:
-        break;
-    case MLR_Modem_Response::FactoryReset:
-        break;
-    case MLR_Modem_Response::BaudRate:
-        break;
-    case MLR_Modem_Response::GenericResponse:
-        if (m_pCallback)
-        {
-            const uint8_t *payloadPtr = m_rxMessage;
-            uint16_t payloadLen = m_rxIdx; // Length of the response (excluding CR/LF)
-            err = MLR_Modem_Error::Ok;     // Assume OK since we got a response
-            m_pCallback(err, MLR_Modem_Response::GenericResponse, 0, payloadPtr, payloadLen);
-        }
-        break;
-    default:
-        break;
-    }
-
-    m_asyncExpectedResponse = MLR_Modem_Response::Idle;
-    return err;
-}
-
-MLR_Modem_Error MLR_Modem::m_SetByteValue(const char *cmdPrefix, uint8_t value, bool saveValue, const char *respPrefix, size_t respLen)
-{
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
-    {
-        return MLR_Modem_Error::Busy;
-    }
-
-    std::array<char, 12> cmdStr;
-    snprintf(cmdStr.data(), cmdStr.size(), "%s%02X%s\r\n", cmdPrefix, static_cast<unsigned>(value), (saveValue ? ("/W") : ("")));
-    m_WriteString(cmdStr.data());
-
-    MLR_Modem_Error rv = m_WaitCmdResponse();
-    if (rv == MLR_Modem_Error::Ok && saveValue)
-    {
-        rv = m_HandleMessage_WR();
-        if (rv == MLR_Modem_Error::Ok)
-        {
-            rv = m_WaitCmdResponse();
-        }
-    }
-
-    uint8_t responseVal{};
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessageHexByte(&responseVal, respLen, respPrefix);
-    }
-
-    if (rv == MLR_Modem_Error::Ok && responseVal != value)
-    {
-        rv = MLR_Modem_Error::Fail;
-    }
-
-    return rv;
-}
-
-MLR_Modem_Error MLR_Modem::m_SendCmd(const char *cmd)
-{
-    if (m_asyncExpectedResponse != MLR_Modem_Response::Idle)
-    {
-        return MLR_Modem_Error::Busy;
-    }
-
-    std::array<char, 16> cmdBuf;
-    snprintf(cmdBuf.data(), cmdBuf.size(), "%s\r\n", cmd);
-    m_WriteString(cmdBuf.data());
-
-    return m_WaitCmdResponse();
-}
-
-MLR_Modem_Error MLR_Modem::m_GetByteValue(const char *cmdString, uint8_t *pValue, const char *respPrefix, size_t respLen)
-{
-    MLR_Modem_Error rv = m_SendCmd(cmdString);
-    if (rv == MLR_Modem_Error::Ok)
-    {
-        rv = m_HandleMessageHexByte(pValue, respLen, respPrefix);
-    }
-    return rv;
-}
-
-MLR_Modem_Error MLR_Modem::m_HandleMessage_WR()
-{
-    uint16_t messageLen = m_rxIdx;
-
-    if ((messageLen == MLR_WRITE_VALUE_RESPONSE_LEN) && !strncmp(MLR_WRITE_VALUE_RESPONSE_PREFIX, (char *)&m_rxMessage[0], MLR_WRITE_VALUE_RESPONSE_LEN))
-    {
-        return MLR_Modem_Error::Ok;
-    }
-
-    return MLR_Modem_Error::Fail;
-}
-
-MLR_Modem_Error MLR_Modem::m_ParseResponseHex(uint32_t *pValue, const char *prefix, size_t prefixLen, uint8_t hexDigits)
-{
-    if (m_rxIdx != prefixLen + hexDigits)
-    {
-        return MLR_Modem_Error::Fail;
-    }
-
-    if (strncmp(prefix, (char *)m_rxMessage, prefixLen) != 0)
-    {
-        return MLR_Modem_Error::Fail;
-    }
-
-    return s_ParseHex(&m_rxMessage[prefixLen], hexDigits, pValue) ? MLR_Modem_Error::Ok : MLR_Modem_Error::Fail;
-}
-
-MLR_Modem_Error MLR_Modem::m_ParseResponseDec(int16_t *pValue, const char *prefix, size_t prefixLen, const char *suffix, size_t suffixLen)
-{
-    if (m_rxIdx <= prefixLen + suffixLen)
-    {
-        return MLR_Modem_Error::Fail;
-    }
-
-    if (strncmp(prefix, (char *)m_rxMessage, prefixLen) != 0)
-    {
-        return MLR_Modem_Error::Fail;
-    }
-
-    if (strncmp(suffix, (char *)&m_rxMessage[m_rxIdx - suffixLen], suffixLen) != 0)
-    {
-        return MLR_Modem_Error::Fail;
-    }
-
-    // Null-terminate the number part for strtol
-    m_rxMessage[m_rxIdx - suffixLen] = 0;
-
-    char *pEnd;
-    long result = strtol((char *)&m_rxMessage[prefixLen], &pEnd, 10);
-
-    if (pEnd != (char *)&m_rxMessage[m_rxIdx - suffixLen])
-    {
-        return MLR_Modem_Error::Fail;
-    }
-
-    *pValue = (int16_t)result;
-    return MLR_Modem_Error::Ok;
-}
-
-MLR_Modem_Error MLR_Modem::m_HandleMessageHexByte(uint8_t *pValue, uint32_t responseLen, const char *responsePrefix)
-{
-    uint32_t val = 0;
-    size_t prefixLen = strlen(responsePrefix);
-    if (responseLen <= prefixLen)
-        return MLR_Modem_Error::Fail;
-
-    MLR_Modem_Error err = m_ParseResponseHex(&val, responsePrefix, prefixLen, (uint8_t)(responseLen - prefixLen));
-    if (err == MLR_Modem_Error::Ok)
-    {
-        *pValue = (uint8_t)val;
-    }
-    return err;
-}
-
-MLR_Modem_Error MLR_Modem::m_HandleMessageHexWord(uint16_t *pValue, uint32_t responseLen, const char *responsePrefix)
-{
-    uint32_t val = 0;
-    size_t prefixLen = strlen(responsePrefix);
-    if (responseLen <= prefixLen)
-        return MLR_Modem_Error::Fail;
-
-    MLR_Modem_Error err = m_ParseResponseHex(&val, responsePrefix, prefixLen, (uint8_t)(responseLen - prefixLen));
-    if (err == MLR_Modem_Error::Ok)
-    {
-        *pValue = (uint16_t)val;
-    }
-    return err;
-}
-
-MLR_Modem_Error MLR_Modem::m_HandleMessage_RS(int16_t *pRssi)
-{
-    return m_ParseResponseDec(pRssi, MLR_GET_RSSI_LAST_RX_RESPONSE_PREFIX, static_strlen(MLR_GET_RSSI_LAST_RX_RESPONSE_PREFIX), "dBm", 3);
-}
-
-// check if the received message is of RA format and fill the RSSI
-MLR_Modem_Error MLR_Modem::m_HandleMessage_RA(int16_t *pRssi)
-{
-    return m_ParseResponseDec(pRssi, MLR_GET_RSSI_CURRENT_CHANNEL_RESPONSE_PREFIX, static_strlen(MLR_GET_RSSI_CURRENT_CHANNEL_RESPONSE_PREFIX), "dBm", 3);
-}
-
-MLR_Modem_Error MLR_Modem::m_HandleMessage_SN(uint32_t *pSerialNumber)
-{
-    uint16_t messageLen = m_rxIdx;
-
-    uint16_t responsePrefixLen = static_strlen(MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX);
-    if ((messageLen == MLR_GET_SERIAL_NUMBER_RESPONSE_LEN) && !strncmp(MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX, (char *)&m_rxMessage[0], responsePrefixLen))
-    {
-        uint32_t serialNumber{};
-
-        // maybe leading "S" ahead of hex code, take into account! (*SN=S0000001 vs *SN=00000001)
-        uint8_t startIdx = 4;
-        uint8_t hexLen = 8;
-        if (!isdigit(m_rxMessage[4]))
-        {
-            startIdx = 5;
-            hexLen = 7;
-        }
-
-        if (!s_ParseDec(&m_rxMessage[startIdx], hexLen, &serialNumber))
-        {
-            return MLR_Modem_Error::Fail;
+            return ModemParseResult::FinishedDrResponse;
         }
         else
         {
-            if (pSerialNumber)
-            {
-                *pSerialNumber = serialNumber;
-            }
-
-            return MLR_Modem_Error::Ok;
+            flushGarbage();
+            return ModemParseResult::Garbage;
         }
     }
-
-    return MLR_Modem_Error::Fail;
+    return ModemParseResult::Parsing;
 }
 
-// check if the received message is "*IZ=OK"
-MLR_Modem_Error MLR_Modem::m_HandleMessage_IZ()
+ModemParseResult MLR_Modem::m_HandleReadCmdUntilCR()
 {
-    uint16_t messageLen = m_rxIdx;
-
-    if ((messageLen == MLR_SET_IZ_RESPONSE_LEN_OK) && !strncmp(MLR_SET_IZ_RESPONSE_PREFIX_OK, (char *)&m_rxMessage[0], MLR_SET_IZ_RESPONSE_LEN_OK))
+    _rxBuffer[_rxIndex] = readByte();
+    if (_rxBuffer[_rxIndex] == '\r')
     {
-        return MLR_Modem_Error::Ok;
+        ++_rxIndex;
+        if (_rxIndex >= RX_BUFFER_SIZE)
+        {
+            m_parserState = MLR_ModemParserState::Start;
+            return ModemParseResult::Overflow;
+        }
+        m_parserState = MLR_ModemParserState::ReadCmdUntilLF;
     }
-
-    // Note: This does not explicitly check for *IZ=NG [cite: 468]
-    return MLR_Modem_Error::Fail;
+    else if (_rxBuffer[_rxIndex] == '\n' || _rxBuffer[_rxIndex] == '*')
+    {
+        if (_rxBuffer[_rxIndex] == '*') unreadByte('*');
+        flushGarbage();
+        return ModemParseResult::Garbage;
+    }
+    else
+    {
+        ++_rxIndex;
+        if (_rxIndex >= RX_BUFFER_SIZE)
+        {
+            m_parserState = MLR_ModemParserState::Start;
+            return ModemParseResult::Overflow;
+        }
+    }
+    return ModemParseResult::Parsing;
 }
 
-void MLR_Modem::setDebugStream(Stream *debugStream)
+ModemParseResult MLR_Modem::m_HandleReadCmdUntilLF()
 {
-    m_pDebugStream = debugStream;
+    _rxBuffer[_rxIndex] = readByte();
+    if (_rxBuffer[_rxIndex] == '\n')
+    {
+        --_rxIndex;
+        _rxBuffer[_rxIndex] = 0;
+        m_parserState = MLR_ModemParserState::Start;
+
+        // Information Response (*IR=) is treated as unsolicited to trigger onRxDataReceived
+        if (_rxBuffer[1] == 'I' && _rxBuffer[2] == 'R')
+        {
+            return ModemParseResult::FinishedDrResponse;
+        }
+        return ModemParseResult::FinishedCmdResponse;
+    }
+    else
+    {
+        if (_rxBuffer[_rxIndex] == '*') unreadByte('*');
+        flushGarbage();
+        return ModemParseResult::Garbage;
+    }
+    return ModemParseResult::Parsing;
+}
+
+// --- Internal Logic ---
+
+void MLR_Modem::dispatchAsyncEvent(ModemError error, MLR_Modem_Response responseType, int32_t value, const uint8_t *pPayload, uint16_t len)
+{
+    if (m_pCallback)
+    {
+        m_pCallback(MLR_Modem_Event(error, responseType, value, pPayload, len));
+    }
+}
+
+ModemError MLR_Modem::m_HandleMessageHexByte(uint8_t *pValue, uint32_t responseLen, const char *responsePrefix)
+{
+    uint32_t val;
+    ModemError err = parseResponseHex(_rxBuffer, _rxIndex, responsePrefix, (uint8_t)(responseLen - strlen(responsePrefix)), &val);
+    if (err == ModemError::Ok && pValue) *pValue = (uint8_t)val;
+    return err;
+}
+
+ModemError MLR_Modem::m_HandleMessageHexWord(uint16_t *pValue, uint32_t responseLen, const char *responsePrefix)
+{
+    uint32_t val;
+    ModemError err = parseResponseHex(_rxBuffer, _rxIndex, responsePrefix, (uint8_t)(responseLen - strlen(responsePrefix)), &val);
+    if (err == ModemError::Ok && pValue) *pValue = (uint16_t)val;
+    return err;
+}
+
+ModemError MLR_Modem::m_HandleMessage_RS(int16_t *pRssi)
+{
+    int32_t val;
+    ModemError err = parseResponseDec(_rxBuffer, _rxIndex, MLR_GET_RSSI_LAST_RX_RESPONSE_PREFIX, "dBm", 3, &val);
+    if (err == ModemError::Ok && pRssi) *pRssi = (int16_t)val;
+    return err;
+}
+
+ModemError MLR_Modem::m_HandleMessage_RA(int16_t *pRssi)
+{
+    int32_t val;
+    ModemError err = parseResponseDec(_rxBuffer, _rxIndex, MLR_GET_RSSI_CURRENT_CHANNEL_RESPONSE_PREFIX, "dBm", 3, &val);
+    if (err == ModemError::Ok && pRssi) *pRssi = (int16_t)val;
+    return err;
+}
+
+ModemError MLR_Modem::m_HandleMessage_SN(uint32_t *pSerialNumber)
+{
+    if (_rxIndex < MLR_GET_SERIAL_NUMBER_RESPONSE_LEN) return ModemError::Fail;
+    if (strncmp(MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX, (char *)_rxBuffer, strlen(MLR_GET_SERIAL_NUMBER_RESPONSE_PREFIX)) != 0) return ModemError::Fail;
+
+    uint8_t startIdx = 4;
+    uint8_t hexLen = 8;
+    if (!isdigit(_rxBuffer[4])) { startIdx = 5; hexLen = 7; }
+
+    uint32_t sn;
+    if (parseDec(&_rxBuffer[startIdx], hexLen, &sn))
+    {
+        if (pSerialNumber) *pSerialNumber = sn;
+        return ModemError::Ok;
+    }
+    return ModemError::Fail;
+}
+
+ModemError MLR_Modem::m_HandleMessage_IZ()
+{
+    if (_rxIndex == MLR_SET_IZ_RESPONSE_LEN_OK &&
+        strncmp(MLR_SET_IZ_RESPONSE_PREFIX_OK, (char *)_rxBuffer, MLR_SET_IZ_RESPONSE_LEN_OK) == 0)
+    {
+        return ModemError::Ok;
+    }
+    return ModemError::Fail;
 }

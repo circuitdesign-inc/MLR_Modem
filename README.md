@@ -19,9 +19,17 @@ https://circuitdesign-inc.github.io/MLR_Modem/
 
 ## インストール
 
-1.  GitHubリポジトリから最新のリリースをダウンロードします。
+1.  GitHubリポジトリの **[Releases](https://github.com/circuitdesign-inc/MLR_Modem/releases)** ページから、最新バージョンの **`MLR_Modem-XXXX.zip`** をダウンロードします。
+    - **重要**: GitHubが自動生成する `Source code (zip)` にはサブモジュールが含まれていません。必ず **`MLR_Modem-` で始まるZIPファイル** をダウンロードして使用してください。
 2.  Arduino IDEで、`スケッチ` > `ライブラリをインクルード` > `.ZIP形式のライブラリをインストール...` に移動します。
 3.  ダウンロードしたZIPファイルを選択します。
+
+> [!NOTE]
+> 本ライブラリはコードの一部にサブモジュール（`SerialModemBase`）を使用しています。
+> 開発のためにリポジトリをクローンする場合は、以下のコマンドを使用してサブモジュールを含めて取得してください：
+> ```bash
+> git clone --recursive https://github.com/circuitdesign-inc/MLR_Modem.git
+> ```
 
 ## 基本的な使い方
 
