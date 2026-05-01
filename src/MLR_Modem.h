@@ -13,7 +13,7 @@
 
 #pragma once
 #include <Arduino.h>
-#include "common/SerialModemBase.h"
+#include <SerialModemBase.h>
 
 /**
  * @brief Default baud rate for the MLR modem.
@@ -25,25 +25,37 @@ static constexpr uint32_t MLR_DEFAULT_BAUDRATE = 19200;
  */
 enum class MLR_Modem_Response
 {
-    // internal state of modem
+    // --- Internal state ---
     Idle,       //!< No message received or expected
-    ParseError, //!< Garbage characters Received
+    ParseError, //!< Garbage characters received
     Timeout,    //!< No response received
 
-    // serial commands
+    // --- TX result (aligned with MU_Modem_Response) ---
+    TxComplete, //!< Transmission successful (*IR=03 received after @DT)
+    TxFailed,   //!< Transmission failed (*IR=01 or *IR=02 received after @DT)
+
+    // --- Data reception ---
+    DataReceived, //!< Data received from another modem ("*DR=...")
+
+    // --- Command responses (common with MU_Modem_Response) ---
     ShowMode,           //!< Response to "@MO" (e.g., "FSK MODE", "LORA MODE")
-    SaveValue,          //!< Response to saving a value ("*WR=PS")
-    Channel,            //!< Response to "@CH" (Set frequency channel)
-    SerialNumber,       //!< Response to "@SN" (Acquire serial number)
-    MLR_Modem_DtIr,     //!< Information Response after "@DT" (LoRa only, e.g., *IR=03)
-    DataReceived,       //!< Data received from another modem ("*DR=...")
-    RssiLastRx,         //!< Response to "@RS" (Acquire RSSI for last reception)
-    RssiCurrentChannel, //!< Response to "@RA" (Acquire current RSSI)
-    UserID,             //!< "*UI=..." : Acquire User ID
-    CarrierSenseRssi,   //!< "*CI=..." : Get/Set Carrier Sense RSSI Output
-    FactoryReset,       //!< "*IZ=OK" : Factory Reset
-    BaudRate,           //!< "*BR=..." : Get/Set UART Baud Rate
-    GenericResponse     //!< Generic response from SendRawCommandAsync
+    SaveValue,          //!< Response to NVM save ("*WR=PS")
+    Channel,            //!< Response to "@CH" (frequency channel)
+    SerialNumber,       //!< Response to "@SN" (serial number)
+    GroupID,            //!< Response to "@GI" (group ID)
+    EquipmentID,        //!< Response to "@EI" (equipment ID)
+    DestinationID,      //!< Response to "@DI" (destination ID)
+    RssiCurrentChannel, //!< Response to "@RA" (current channel RSSI)
+
+    // --- MLR-specific responses ---
+    RssiLastRx,       //!< Response to "@RS" (RSSI of last received packet)
+    UserID,           //!< Response to "@UI" (user ID)
+    CarrierSenseRssi, //!< Response to "@CI" (carrier sense RSSI output)
+    FactoryReset,     //!< Response to "@IZ" (*IZ=OK)
+    BaudRate,         //!< Response to "@BR" (UART baud rate)
+
+    // --- Generic ---
+    GenericResponse //!< Generic response from SendRawCommandAsync
 };
 
 // Use common ModemError for compatibility
@@ -130,6 +142,8 @@ typedef void (*MLR_Modem_AsyncCallback)(const MLR_Modem_Event &event);
 class MLR_Modem : public SerialModemBase
 {
 public: // methods
+    MLR_Modem() : SerialModemBase("[MLR Modem] ") {}
+
     /**
      * \brief Initializes the modem driver.
      * \param pUart The Serial port connected to the modem.
@@ -423,7 +437,6 @@ protected:
     ModemParseResult parse() override;
     void onRxDataReceived() override;
     void onCommandComplete(ModemError result) override;
-    const char *getLogPrefix() const override { return "[MLR"; }
 
 private: // methods
     // Internal parser state machine handlers
@@ -455,18 +468,18 @@ private: // methods
     // check if the received message is "*IZ=OK"
     ModemError m_HandleMessage_IZ();
 
-private: // data
+private:                                        // data
     MLR_Modem_Response m_asyncExpectedResponse; //!< The expected response for an async call
     MLR_ModemParserState m_parserState;         //!< Current state of the parser
 
     // special receive buffer and data for '@DR' command
-    bool m_drMessagePresent;             //!< Flag indicating a *DR packet is ready
-    uint8_t m_drMessageLen;              //!< Length of the received *DR packet
-    uint8_t m_drMessage[300];            //!< Buffer for the received *DR packet payload
+    bool m_drMessagePresent;  //!< Flag indicating a *DR packet is ready
+    uint8_t m_drMessageLen;   //!< Length of the received *DR packet
+    uint8_t m_drMessage[300]; //!< Buffer for the received *DR packet payload
 
     // information response (*IR=...)
-    bool m_irMessagePresent;             //!< Flag indicating an *IR response is ready
-    uint8_t m_irValue;                   //!< The value of the *IR response
+    bool m_irMessagePresent; //!< Flag indicating an *IR response is ready
+    uint8_t m_irValue;       //!< The value of the *IR response
 
     MLR_ModemMode m_mode;                //!< Cached modem mode
     MLR_Modem_AsyncCallback m_pCallback; //!< Pointer to the user's callback function
