@@ -27,47 +27,26 @@ static constexpr uint8_t MLR_CHANNEL_MIN_429 = 0x07; //!< Minimum channel number
 static constexpr uint8_t MLR_CHANNEL_MAX_429 = 0x2E; //!< Maximum channel number for 429MHz
 
 /**
- * \brief Represents the type of response received from the modem.
+ * \brief Response/event type used by MLR_Modem callbacks.
+ *
+ * Aliased to the unified \ref ModemResponse defined in SerialModemBase.h
+ * so callbacks can be shared across modem drivers.
+ *
+ * MLR_Modem dispatches the following subset of values:
+ *   Idle, ParseError, Timeout, TxComplete, TxFailed, DataReceived,
+ *   ShowMode, SaveValue, Channel, SerialNumber, GroupID, EquipmentID,
+ *   DestinationID, RssiCurrentChannel, GenericResponse.
+ *
+ * \note For \c DataReceived events, \c event.value carries the packet's RSSI
+ *       in dBm, retrieved automatically via an internal "@RS" query
+ *       (auto-RSSI-on-RX). \c value is 0 if RSSI could not be obtained
+ *       (e.g., another async command was in-flight when the packet arrived).
  */
-enum class MLR_Modem_Response
-{
-    // --- Internal state ---
-    Idle,       //!< No message received or expected
-    ParseError, //!< Garbage characters received
-    Timeout,    //!< No response received
+using MLR_Modem_Response = ModemResponse;
 
-    // --- TX result (aligned with MU_Modem_Response) ---
-    TxComplete, //!< Transmission successful (*IR=03 received after @DT)
-    TxFailed,   //!< Transmission failed (*IR=01 or *IR=02 received after @DT)
-
-    // --- Data reception ---
-    DataReceived, //!< Data received from another modem ("*DR=..."). event.value carries
-                  //!< RSSI (dBm) of the packet, retrieved automatically via internal @RS.
-                  //!< value=0 if RSSI could not be obtained (e.g. another async command
-                  //!< was in-flight when the packet arrived).
-
-    // --- Command responses (common with MU_Modem_Response) ---
-    ShowMode,           //!< Response to "@MO" (e.g., "FSK MODE", "LORA MODE")
-    SaveValue,          //!< Response to NVM save ("*WR=PS")
-    Channel,            //!< Response to "@CH" (frequency channel)
-    SerialNumber,       //!< Response to "@SN" (serial number)
-    GroupID,            //!< Response to "@GI" (group ID)
-    EquipmentID,        //!< Response to "@EI" (equipment ID)
-    DestinationID,      //!< Response to "@DI" (destination ID)
-    RssiCurrentChannel, //!< Response to "@RA" (current channel RSSI)
-
-    // --- MLR-specific responses ---
-    RssiLastRx,       //!< Response to "@RS" (RSSI of last received packet)
-    UserID,           //!< Response to "@UI" (user ID)
-    CarrierSenseRssi, //!< Response to "@CI" (carrier sense RSSI output)
-    FactoryReset,     //!< Response to "@IZ" (*IZ=OK)
-    BaudRate,         //!< Response to "@BR" (UART baud rate)
-
-    // --- Generic ---
-    GenericResponse //!< Generic response from SendRawCommandAsync
-};
-
-// Use common ModemError for compatibility
+/**
+ * \brief Error type used by MLR_Modem APIs.
+ */
 using MLR_Modem_Error = ModemError;
 
 /**
@@ -113,37 +92,22 @@ enum class MLR_ModemParserState
 };
 
 /**
- * \brief Represents an event from the modem.
+ * \brief Event structure delivered to MLR_Modem async callbacks.
+ *
+ * Aliased to the unified \ref ModemEvent defined in SerialModemBase.h.
+ * The route-info fields (\c pRouteNodes / \c numRouteNodes) are MU-only
+ * and remain nullptr / 0 for events emitted by MLR_Modem.
  */
-struct MLR_Modem_Event
-{
-    MLR_Modem_Error error;   //!< Error code
-    MLR_Modem_Response type; //!< Type of response
-    int32_t value;           //!< Numerical value associated with the response
-    const uint8_t *pPayload; //!< Pointer to payload data (e.g., for DataReceived)
-    uint16_t payloadLen;     //!< Length of payload data
-
-    // --- Constructors ---
-    // 1. Default
-    MLR_Modem_Event() : error(ModemError::Ok), type(MLR_Modem_Response::Idle), value(0), pPayload(nullptr), payloadLen(0) {}
-
-    // 2. Helper for simple status events
-    MLR_Modem_Event(ModemError err, MLR_Modem_Response t)
-        : error(err), type(t), value(0), pPayload(nullptr), payloadLen(0) {}
-
-    // 3. Helper for events with a value (RSSI, SN, etc.)
-    MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val)
-        : error(err), type(t), value(val), pPayload(nullptr), payloadLen(0) {}
-
-    // 4. Helper for data reception
-    MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val, const uint8_t *p, uint16_t l)
-        : error(err), type(t), value(val), pPayload(p), payloadLen(l) {}
-};
+using MLR_Modem_Event = ModemEvent;
 
 /**
  * \brief Callback for asynchronous calls and Radio Message Received events.
+ *
+ * Aliased to the unified \ref ModemAsyncCallback. A single callback function
+ * can therefore be registered for both MU and MLR modems if the application
+ * uses both.
  */
-typedef void (*MLR_Modem_AsyncCallback)(const MLR_Modem_Event &event);
+using MLR_Modem_AsyncCallback = ModemAsyncCallback;
 
 /**
  * \brief Main class for interfacing with the MLR Modem.

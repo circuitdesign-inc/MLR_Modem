@@ -67,14 +67,10 @@ InvalidArg				LITERAL1
 Ok						LITERAL1
 ParseError				LITERAL1
 RssiCurrentChannel		LITERAL1
-RssiLastRx				LITERAL1
 SaveValue				LITERAL1
 SerialNumber			LITERAL1
 ShowMode				LITERAL1
 Timeout					LITERAL1
-UserID					LITERAL1
-CarrierSenseRssi		LITERAL1
-BaudRate				LITERAL1
 
 FskBin					LITERAL1
 FskCmd					LITERAL1
