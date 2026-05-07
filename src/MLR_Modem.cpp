@@ -25,8 +25,6 @@
 static constexpr char MLR_CMD_CHANNEL[] = "@CH";
 static constexpr char MLR_SET_CHANNEL_RESPONSE_PREFIX[] = "*CH=";
 static constexpr size_t MLR_SET_CHANNEL_RESPONSE_LEN = 6;
-static constexpr uint8_t MLR_SET_CHANNEL_MIN_VALUE_JP = 0x07;
-static constexpr uint8_t MLR_SET_CHANNEL_MAX_VALUE_JP = 0x2E;
 
 // @MO (Modem Mode)
 static constexpr char MLR_CMD_MODE[] = "@MO";
@@ -125,6 +123,7 @@ MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_AsyncCallback pCallbac
     m_drMessageLen = 0;
     m_irMessagePresent = false;
     m_irValue = 0;
+    m_autoRssiPending = false;
 
     SM_DEBUG_PRINTLN("begin: Getting current mode...");
 
@@ -141,7 +140,7 @@ MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_AsyncCallback pCallbac
 
 MLR_Modem_Error MLR_Modem::SetChannel(uint8_t channel, bool saveValue)
 {
-    if ((channel < MLR_SET_CHANNEL_MIN_VALUE_JP) || (channel > MLR_SET_CHANNEL_MAX_VALUE_JP))
+    if ((channel < MLR_CHANNEL_MIN_429) || (channel > MLR_CHANNEL_MAX_429))
     {
         return MLR_Modem_Error::InvalidArg;
     }
@@ -463,6 +462,29 @@ void MLR_Modem::onRxDataReceived()
 {
     if (m_drMessagePresent)
     {
+        // Enrich the DataReceived event with RSSI (dBm) by issuing an internal
+        // "@RS" query, deferring dispatch until *RS= arrives.
+        if (m_autoRssiPending)
+        {
+            // A previous *DR is still waiting for its @RS to return. The parser
+            // has overwritten the held buffer with this newer packet, so the
+            // older one is silently lost (m_drMessage holds only this packet now).
+            // Let the in-flight @RS resolve and dispatch this packet with its RSSI.
+            return;
+        }
+        if (m_asyncExpectedResponse == MLR_Modem_Response::Idle)
+        {
+            char buf[8];
+            char *p = appendStr(buf, buf, MLR_GET_RSSI_LAST_RX_STRING);
+            appendStr(buf, p, "\r\n");
+            if (enqueueCommand(buf, CommandType::Simple) == ModemError::Ok)
+            {
+                m_autoRssiPending = true;
+                return;
+            }
+        }
+        // Fallback: a user async command is in flight, or @RS could not be queued.
+        // Dispatch immediately without RSSI so the packet is not lost.
         dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::DataReceived, 0, &m_drMessage[0], m_drMessageLen);
         m_drMessagePresent = false;
         return;
@@ -504,6 +526,26 @@ void MLR_Modem::onRxDataReceived()
 
 void MLR_Modem::onCommandComplete(ModemError result)
 {
+    // Auto-RSSI-on-RX completion: handle the internal @RS issued by onRxDataReceived().
+    // Always processed before the user-async path, since m_asyncExpectedResponse stays
+    // Idle for this internally-issued command.
+    if (m_autoRssiPending)
+    {
+        m_autoRssiPending = false;
+        int16_t rssi = 0;
+        if (result == ModemError::Ok)
+        {
+            (void)m_HandleMessage_RS(&rssi);
+        }
+        if (m_drMessagePresent)
+        {
+            dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::DataReceived,
+                               (int32_t)rssi, &m_drMessage[0], m_drMessageLen);
+            m_drMessagePresent = false;
+        }
+        return;
+    }
+
     if (m_asyncExpectedResponse == MLR_Modem_Response::Idle) return;
 
     MLR_Modem_Response respType = m_asyncExpectedResponse;

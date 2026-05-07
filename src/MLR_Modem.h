@@ -21,6 +21,12 @@
 static constexpr uint32_t MLR_DEFAULT_BAUDRATE = 19200;
 
 /**
+ * @brief Channel range constants (429MHz JP band).
+ */
+static constexpr uint8_t MLR_CHANNEL_MIN_429 = 0x07; //!< Minimum channel number for 429MHz
+static constexpr uint8_t MLR_CHANNEL_MAX_429 = 0x2E; //!< Maximum channel number for 429MHz
+
+/**
  * \brief Represents the type of response received from the modem.
  */
 enum class MLR_Modem_Response
@@ -35,7 +41,10 @@ enum class MLR_Modem_Response
     TxFailed,   //!< Transmission failed (*IR=01 or *IR=02 received after @DT)
 
     // --- Data reception ---
-    DataReceived, //!< Data received from another modem ("*DR=...")
+    DataReceived, //!< Data received from another modem ("*DR=..."). event.value carries
+                  //!< RSSI (dBm) of the packet, retrieved automatically via internal @RS.
+                  //!< value=0 if RSSI could not be obtained (e.g. another async command
+                  //!< was in-flight when the packet arrived).
 
     // --- Command responses (common with MU_Modem_Response) ---
     ShowMode,           //!< Response to "@MO" (e.g., "FSK MODE", "LORA MODE")
@@ -357,7 +366,9 @@ public: // methods
 
     /**
      * \brief Transmits data over the wireless link asynchronously.
-     * The result will be delivered via the AsyncCallback as MLR_Modem_Response::MLR_Modem_DtIr.
+     * The result will be delivered via the AsyncCallback as
+     * MLR_Modem_Response::TxComplete on success, or MLR_Modem_Response::TxFailed
+     * on LBT/transmission failure.
      * \param pMsg Pointer to the data payload to send.
      * \param len Length of the data payload (0-255 bytes).
      * \return MLR_Modem_Error::Ok if the command was sent, MLR_Modem_Error::Busy if another async operation is pending.
@@ -480,6 +491,12 @@ private:                                        // data
     // information response (*IR=...)
     bool m_irMessagePresent; //!< Flag indicating an *IR response is ready
     uint8_t m_irValue;       //!< The value of the *IR response
+
+    // Auto-RSSI-on-RX state: an internal "@RS" is issued after each *DR
+    // reception. While true, DataReceived dispatch is deferred until *RS=
+    // arrives so the RSSI value can be attached. Mirrors MU_Modem's
+    // hardware-appended RSSI behavior (value=dBm in DataReceived events).
+    bool m_autoRssiPending;
 
     MLR_ModemMode m_mode;                //!< Cached modem mode
     MLR_Modem_AsyncCallback m_pCallback; //!< Pointer to the user's callback function

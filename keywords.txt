@@ -47,6 +47,8 @@ Work						KEYWORD2
 # Enums & Constants (LITERAL1)
 #######################################
 MLR_DEFAULT_BAUDRATE	LITERAL1
+MLR_CHANNEL_MIN_429		LITERAL1
+MLR_CHANNEL_MAX_429		LITERAL1
 
 MLR_Modem_Response		LITERAL1
 MLR_Modem_Error			LITERAL1
@@ -70,7 +72,6 @@ SaveValue				LITERAL1
 SerialNumber			LITERAL1
 ShowMode				LITERAL1
 Timeout					LITERAL1
-MLR_Modem_DtIr			LITERAL1
 UserID					LITERAL1
 CarrierSenseRssi		LITERAL1
 BaudRate				LITERAL1
