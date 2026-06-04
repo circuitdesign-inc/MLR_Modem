@@ -50,6 +50,17 @@ using MLR_Modem_Response = ModemResponse;
 using MLR_Modem_Error = ModemError;
 
 /**
+ * \brief Frequency model of the MLR modem.
+ *
+ * Only the 429MHz JP-band model is currently supported. Additional values
+ * may be added when other frequency-band variants are released.
+ */
+enum class MLR_Modem_FrequencyModel
+{
+    MHz_429 //!< 429 MHz JP band model
+};
+
+/**
  * \brief Wireless communication mode.
  */
 enum class MLR_ModemMode : uint8_t
@@ -119,11 +130,17 @@ public: // methods
 
     /**
      * \brief Initializes the modem driver.
+     *
+     * The frequency model must be specified explicitly to avoid silent
+     * misconfiguration when running on a different hardware variant.
+     *
      * \param pUart The Serial port connected to the modem.
+     * \param frequencyModel The frequency model of the modem.
      * \param pCallback The function to call for async responses and received data.
      * \return MLR_Modem_Error::Ok on success.
      */
-    MLR_Modem_Error begin(Stream &pUart, MLR_Modem_AsyncCallback pCallback = nullptr);
+    MLR_Modem_Error begin(Stream &pUart, MLR_Modem_FrequencyModel frequencyModel,
+                          MLR_Modem_AsyncCallback pCallback = nullptr);
 
     /**
      * \brief Sets the frequency channel.
@@ -393,13 +410,6 @@ public: // methods
     void DeletePacket() { m_drMessagePresent = false; }
 
     /**
-     * \brief Performs a software reset of the modem.
-     * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@SR" command.
-     */
-    MLR_Modem_Error SoftReset();
-
-    /**
      * \brief Main processing loop for the driver.
      * This function must be called regularly (e.g., in the Arduino loop())
      * to parse incoming serial data from the modem.
@@ -462,6 +472,7 @@ private:                                        // data
     // hardware-appended RSSI behavior (value=dBm in DataReceived events).
     bool m_autoRssiPending;
 
-    MLR_ModemMode m_mode;                //!< Cached modem mode
-    MLR_Modem_AsyncCallback m_pCallback; //!< Pointer to the user's callback function
+    MLR_ModemMode m_mode;                       //!< Cached modem mode
+    MLR_Modem_FrequencyModel m_frequencyModel;  //!< Configured frequency model (set in begin())
+    MLR_Modem_AsyncCallback m_pCallback;        //!< Pointer to the user's callback function
 };

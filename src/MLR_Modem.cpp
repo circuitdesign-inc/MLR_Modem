@@ -110,7 +110,8 @@ static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OK = 3;
 // If none arrives, the transmission is treated as successful.
 static constexpr uint32_t MLR_LBT_CHECK_TIMEOUT_MS = 60;
 
-MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_AsyncCallback pCallback)
+MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_FrequencyModel frequencyModel,
+                                 MLR_Modem_AsyncCallback pCallback)
 {
     initSerial(pUart); // Base class init
     setNvmConfig(MLR_NVM_SAVE_RESPONSE, MLR_NVM_SAVE_RESPONSE_LEN,
@@ -118,6 +119,7 @@ MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_AsyncCallback pCallbac
 
     m_asyncExpectedResponse = MLR_Modem_Response::Idle;
     m_pCallback = pCallback;
+    m_frequencyModel = frequencyModel;
     m_parserState = MLR_ModemParserState::Start;
     m_drMessagePresent = false;
     m_drMessageLen = 0;
@@ -328,11 +330,6 @@ MLR_Modem_Error MLR_Modem::SetBaudRate(uint32_t baudRate, bool saveValue)
     }
 
     return setByteValue(MLR_CMD_BAUDRATE, baudCode, saveValue, MLR_SET_BAUDRATE_RESPONSE_PREFIX, MLR_SET_BAUDRATE_RESPONSE_LEN);
-}
-
-MLR_Modem_Error MLR_Modem::SoftReset()
-{
-    return enqueueCommand("@SR\r\n", CommandType::Simple);
 }
 
 MLR_Modem_Error MLR_Modem::SendRawCommand(const char *command, char *responseBuffer, size_t bufferSize, uint32_t timeoutMs)

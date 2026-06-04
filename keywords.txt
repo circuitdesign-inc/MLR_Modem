@@ -52,8 +52,11 @@ MLR_CHANNEL_MAX_429		LITERAL1
 
 MLR_Modem_Response		LITERAL1
 MLR_Modem_Error			LITERAL1
+MLR_Modem_FrequencyModel	LITERAL1
 MLR_ModemMode			LITERAL1
 MLR_ModemSpreadFactor	LITERAL1
+
+MHz_429					LITERAL1
 
 Busy					LITERAL1
 BufferTooSmall			LITERAL1
