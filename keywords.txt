@@ -47,11 +47,16 @@ Work						KEYWORD2
 # Enums & Constants (LITERAL1)
 #######################################
 MLR_DEFAULT_BAUDRATE	LITERAL1
+MLR_CHANNEL_MIN_429		LITERAL1
+MLR_CHANNEL_MAX_429		LITERAL1
 
 MLR_Modem_Response		LITERAL1
 MLR_Modem_Error			LITERAL1
+MLR_Modem_FrequencyModel	LITERAL1
 MLR_ModemMode			LITERAL1
 MLR_ModemSpreadFactor	LITERAL1
+
+MHz_429					LITERAL1
 
 Busy					LITERAL1
 BufferTooSmall			LITERAL1
@@ -65,15 +70,10 @@ InvalidArg				LITERAL1
 Ok						LITERAL1
 ParseError				LITERAL1
 RssiCurrentChannel		LITERAL1
-RssiLastRx				LITERAL1
 SaveValue				LITERAL1
 SerialNumber			LITERAL1
 ShowMode				LITERAL1
 Timeout					LITERAL1
-MLR_Modem_DtIr			LITERAL1
-UserID					LITERAL1
-CarrierSenseRssi		LITERAL1
-BaudRate				LITERAL1
 
 FskBin					LITERAL1
 FskCmd					LITERAL1

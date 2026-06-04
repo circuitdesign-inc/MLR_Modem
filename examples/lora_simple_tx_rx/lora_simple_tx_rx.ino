@@ -36,7 +36,7 @@ void setup()
     Serial1.begin(MLR_DEFAULT_BAUDRATE);
 
     // モデムドライバを初期化
-    MLR_Modem_Error err = modem.begin(Serial1);
+    MLR_Modem_Error err = modem.begin(Serial1, MLR_Modem_FrequencyModel::MHz_429);
 
     if (err != MLR_Modem_Error::Ok)
     {

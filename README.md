@@ -10,32 +10,32 @@
 このライブラリは、Arduinoでサーキットデザイン社製MLR-429無線モデムを制御するためのインターフェースを提供します。
 シリアルコマンドインターフェースを介して、データの送受信やモデムの設定を簡単に行うことができます。
 
-API等は以下ドキュメントをご参照ください。<br>
-https://circuitdesign-inc.github.io/MLR_Modem/
 
 ## 対応ハードウェア
 
 *   Circuit Design MLR-429
+*   Circuit Design SLR-429M V2 (接点制御機能には非対応)
+
+## API
+API等は以下ドキュメントをご参照ください。<br>
+https://circuitdesign-inc.github.io/MLR_Modem/
 
 ## インストール
 
 1.  GitHubリポジトリの **[Releases](https://github.com/circuitdesign-inc/MLR_Modem/releases)** ページから、最新バージョンの **`MLR_Modem-XXXX.zip`** をダウンロードします。
-    - **重要**: GitHubが自動生成する `Source code (zip)` にはサブモジュールが含まれていません。必ず **`MLR_Modem-` で始まるZIPファイル** をダウンロードして使用してください。
 2.  Arduino IDEで、`スケッチ` > `ライブラリをインクルード` > `.ZIP形式のライブラリをインストール...` に移動します。
 3.  ダウンロードしたZIPファイルを選択します。
 
-> [!NOTE]
-> 本ライブラリはコードの一部にサブモジュール（`SerialModemBase`）を使用しています。
-> 開発のためにリポジトリをクローンする場合は、以下のコマンドを使用してサブモジュールを含めて取得してください：
-> ```bash
-> git clone --recursive https://github.com/circuitdesign-inc/MLR_Modem.git
-> ```
+> [!IMPORTANT]
+> 本ライブラリは **[SerialModemBaseライブラリ](https://github.com/circuitdesign-inc/SerialModemBase)** に依存しています。
+> 同じ手順で SerialModemBase もインストールしてください。<br>
+> 未インストールの場合、コンパイル時に `SerialModemBase.h: No such file or directory` 等のエラーが発生します。
 
 ## 基本的な使い方
 
 ### ハードウェアのセットアップ
 
-MLRモデムをArduinoなどのマイクロコントローラと接続するための基本的なセットアップ方法です。
+MLRモデムをArduinoなどのマイコンと接続するための基本的なセットアップ方法です。
 詳細は各モデムのデータシートを必ずご確認ください。
 
 #### Arduinoとの接続
@@ -55,7 +55,7 @@ MLRモデムをArduinoなどのマイクロコントローラと接続するた�
 
 ### プログラム
 以下は、MLRモデムを初期化し、データを受信し、10秒ごとにメッセージを送信する基本的なサンプルコードです。
-詳細なサンプルはexsamplesフォルダをご確認ください。
+詳細なサンプルはexamplesフォルダをご確認ください。
 
 ```cpp
 #include <MLR_Modem.h>
@@ -75,7 +75,8 @@ void setup() {
 
   // モデムを初期化
   // 第1引数: 通信に使うStreamオブジェクト
-  MLR_Modem_Error err = modem.begin(Serial1);
+  // 第2引数: 周波数モデル (現状はMHz_429のみ)
+  MLR_Modem_Error err = modem.begin(Serial1, MLR_Modem_FrequencyModel::MHz_429);
 
   if (err != MLR_Modem_Error::Ok) {
     Serial.println("MLRモデムの初期化に失敗しました。");
@@ -99,18 +100,18 @@ void loop() {
   modem.Work();
 
   // --- ポーリングによる受信処理 ---
+  // RSSI も併せて取得したい場合は、SetAsyncCallback() による非同期コールバック経路を
+  // 使用してください。DataReceived イベントの event.value に RSSI (dBm) が
+  // 自動的に付与されます。
   if (modem.HasPacket())
   {
       const uint8_t *pPayload;
       uint8_t len;
-      int16_t rssi;
 
       // 受信パケットの取得
-      if (modem.GetPacket(&pPayload, &len, &rssi) == MLR_Modem_Error::Ok)
+      if (modem.GetPacket(&pPayload, &len) == MLR_Modem_Error::Ok)
       {
-          Serial.print("パケット受信 (RSSI: ");
-          Serial.print(rssi);
-          Serial.print(" dBm, ");
+          Serial.print("パケット受信 (");
           Serial.print(len);
           Serial.print(" バイト): ");
 
@@ -138,19 +139,20 @@ void loop() {
 ```
 
 ## デバッグ
-ライブラリのデバッグ出力を有効にすることができます。
+ライブラリのデバッグ出力を有効にすることができます。<br>
+デバッグマクロは依存先の SerialModemBase ライブラリで定義されており、本ライブラリと SerialModemBase の両方のログが有効になります。
 
 ### PlatformIOの場合
 platformio.iniに以下のビルドフラグ追加してください:
 ```
-build_flags = -D ENABLE_MLR_MODEM_DEBUG
+build_flags = -D ENABLE_SERIAL_MODEM_DEBUG
 ```
 
 ### Arduino IDEの場合
-ビルドフラグを設定できない環境では、ライブラリのヘッダファイル(src/MLR_Modem.h)を直接編集してください。
-以下の行のコメントアウトを解除することで有効化されます。 
+ビルドフラグを設定できない環境では、SerialModemBase ライブラリのヘッダファイル(src/SerialModemBase.h)を直接編集してください。
+以下の行のコメントアウトを解除することで有効化されます。
 ```cpp
-// #define ENABLE_MLR_MODEM_DEBUG 
+// #define ENABLE_SERIAL_MODEM_DEBUG
 ```
 
 

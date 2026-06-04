@@ -25,8 +25,6 @@
 static constexpr char MLR_CMD_CHANNEL[] = "@CH";
 static constexpr char MLR_SET_CHANNEL_RESPONSE_PREFIX[] = "*CH=";
 static constexpr size_t MLR_SET_CHANNEL_RESPONSE_LEN = 6;
-static constexpr uint8_t MLR_SET_CHANNEL_MIN_VALUE_JP = 0x07;
-static constexpr uint8_t MLR_SET_CHANNEL_MAX_VALUE_JP = 0x2E;
 
 // @MO (Modem Mode)
 static constexpr char MLR_CMD_MODE[] = "@MO";
@@ -95,39 +93,56 @@ static constexpr size_t MLR_TRANSMISSION_RESPONSE_LEN = 6;
 
 // *IR (Information Response)
 static constexpr char MLR_INFORMATION_RESPONSE_PREFIX[] = "*IR=";
+
+// --- Circuit Design modem protocol strings (local to this driver) ---
+static constexpr char MLR_NVM_SAVE_RESPONSE[] = "*WR=PS";
+static constexpr size_t MLR_NVM_SAVE_RESPONSE_LEN = 6;
+static constexpr char MLR_CMD_WRITE_SUFFIX[] = "/W";
+static constexpr char MLR_VAL_ON[] = "ON";
+static constexpr char MLR_VAL_OFF[] = "OF";
 static constexpr size_t MLR_INFORMATION_RESPONSE_LEN = 6;
 static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_NO_TX = 1;
 static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES = 2;
 static constexpr uint8_t MLR_INFORMATION_RESPONSE_ERR_OK = 3;
 
-MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_AsyncCallback pCallback)
+// FSK mode does not return *IR=03 on success. After *DT=XX is accepted,
+// wait this many milliseconds for a possible *IR=01/02 (LBT failure).
+// If none arrives, the transmission is treated as successful.
+static constexpr uint32_t MLR_LBT_CHECK_TIMEOUT_MS = 60;
+
+MLR_Modem_Error MLR_Modem::begin(Stream &pUart, MLR_Modem_FrequencyModel frequencyModel,
+                                 MLR_Modem_AsyncCallback pCallback)
 {
     initSerial(pUart); // Base class init
+    setNvmConfig(MLR_NVM_SAVE_RESPONSE, MLR_NVM_SAVE_RESPONSE_LEN,
+                 MLR_CMD_WRITE_SUFFIX, MLR_VAL_ON, MLR_VAL_OFF);
 
     m_asyncExpectedResponse = MLR_Modem_Response::Idle;
     m_pCallback = pCallback;
+    m_frequencyModel = frequencyModel;
     m_parserState = MLR_ModemParserState::Start;
     m_drMessagePresent = false;
     m_drMessageLen = 0;
     m_irMessagePresent = false;
     m_irValue = 0;
+    m_autoRssiPending = false;
 
-    SM_DEBUG_PRINTLN(" Modem] begin: Getting current mode...");
+    SM_DEBUG_PRINTLN("begin: Getting current mode...");
 
     MLR_Modem_Error err = GetMode(&m_mode);
     if (err != MLR_Modem_Error::Ok)
     {
-        SM_DEBUG_PRINTF(" Modem] begin: GetMode failed! err=%d\n", (int)err);
+        SM_DEBUG_PRINTF("begin: GetMode failed! err=%d\n", (int)err);
         return err;
     }
 
-    SM_DEBUG_PRINTF(" Modem] begin: Initialization successful. Mode=%d\n", (int)m_mode);
+    SM_DEBUG_PRINTF("begin: Initialization successful. Mode=%d\n", (int)m_mode);
     return MLR_Modem_Error::Ok;
 }
 
 MLR_Modem_Error MLR_Modem::SetChannel(uint8_t channel, bool saveValue)
 {
-    if ((channel < MLR_SET_CHANNEL_MIN_VALUE_JP) || (channel > MLR_SET_CHANNEL_MAX_VALUE_JP))
+    if ((channel < MLR_CHANNEL_MIN_429) || (channel > MLR_CHANNEL_MAX_429))
     {
         return MLR_Modem_Error::InvalidArg;
     }
@@ -317,11 +332,6 @@ MLR_Modem_Error MLR_Modem::SetBaudRate(uint32_t baudRate, bool saveValue)
     return setByteValue(MLR_CMD_BAUDRATE, baudCode, saveValue, MLR_SET_BAUDRATE_RESPONSE_PREFIX, MLR_SET_BAUDRATE_RESPONSE_LEN);
 }
 
-MLR_Modem_Error MLR_Modem::SoftReset()
-{
-    return enqueueCommand("@SR\r\n", CommandType::Simple);
-}
-
 MLR_Modem_Error MLR_Modem::SendRawCommand(const char *command, char *responseBuffer, size_t bufferSize, uint32_t timeoutMs)
 {
     return sendRawCommand(command, responseBuffer, bufferSize, timeoutMs);
@@ -346,7 +356,7 @@ MLR_Modem_Error MLR_Modem::TransmitData(const uint8_t *pMsg, uint8_t len)
     char *p = appendStr(cmdHeader, cmdHeader, MLR_TRANSMISSION_PREFIX_STRING);
     appendHex2(cmdHeader, p, len);
 
-    MLR_Modem_Error err = enqueueTxCommand(cmdHeader, pMsg, len);
+    MLR_Modem_Error err = enqueueTxCommand(cmdHeader, pMsg, len, "\r\n");
     if (err != MLR_Modem_Error::Ok) return err;
 
     // 1. Wait for *DT=len (Transmission accepted)
@@ -358,25 +368,37 @@ MLR_Modem_Error MLR_Modem::TransmitData(const uint8_t *pMsg, uint8_t len)
     if (err != MLR_Modem_Error::Ok) return err;
     if (txResp != len) return MLR_Modem_Error::Fail;
 
-    // 2. Wait for *IR=xx (Transmission complete / result)
-    uint32_t waitTime = (m_mode == MLR_ModemMode::LoRaCmd) ? 15000 : 200;
-    uint32_t start = millis();
-    while (!m_irMessagePresent && (millis() - start < waitTime))
-    {
-        update();
-        delay(1);
-    }
-
+    // 2. Wait for *IR=xx
     if (m_mode == MLR_ModemMode::LoRaCmd)
     {
+        // LoRa returns *IR=03 on on-air success, or *IR=01/02 on LBT failure.
+        uint32_t start = millis();
+        while (!m_irMessagePresent && (millis() - start < 15000))
+        {
+            update();
+            delay(1);
+        }
         if (!m_irMessagePresent) return MLR_Modem_Error::Timeout;
-        if (m_irValue == MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES || m_irValue == MLR_INFORMATION_RESPONSE_ERR_NO_TX)
+        if (m_irValue == MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES ||
+            m_irValue == MLR_INFORMATION_RESPONSE_ERR_NO_TX)
             return MLR_Modem_Error::FailLbt;
     }
-    else // FSK
+    else
     {
-        if (m_irMessagePresent && m_irValue == MLR_INFORMATION_RESPONSE_ERR_NO_TX)
-            return MLR_Modem_Error::FailLbt;
+        // FSK does not emit *IR=03 on success. Poll for MLR_LBT_CHECK_TIMEOUT_MS
+        // and treat any *IR=01/02 within the window as LBT failure; otherwise OK.
+        uint32_t start = millis();
+        while (millis() - start < MLR_LBT_CHECK_TIMEOUT_MS)
+        {
+            update();
+            if (m_irMessagePresent &&
+                (m_irValue == MLR_INFORMATION_RESPONSE_ERR_NO_TX ||
+                 m_irValue == MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES))
+            {
+                return MLR_Modem_Error::FailLbt;
+            }
+            delay(1);
+        }
     }
 
     return MLR_Modem_Error::Ok;
@@ -391,8 +413,9 @@ MLR_Modem_Error MLR_Modem::TransmitDataAsync(const uint8_t *pMsg, uint8_t len)
     char *p = appendStr(cmdHeader, cmdHeader, MLR_TRANSMISSION_PREFIX_STRING);
     appendHex2(cmdHeader, p, len);
 
-    m_asyncExpectedResponse = MLR_Modem_Response::MLR_Modem_DtIr;
-    return enqueueTxCommand(cmdHeader, pMsg, len);
+
+    m_asyncExpectedResponse = MLR_Modem_Response::TxComplete;
+    return enqueueTxCommand(cmdHeader, pMsg, len, "\r\n");
 }
 
 MLR_Modem_Error MLR_Modem::GetRssiCurrentChannelAsync()
@@ -436,29 +459,90 @@ void MLR_Modem::onRxDataReceived()
 {
     if (m_drMessagePresent)
     {
+        // Enrich the DataReceived event with RSSI (dBm) by issuing an internal
+        // "@RS" query, deferring dispatch until *RS= arrives.
+        if (m_autoRssiPending)
+        {
+            // A previous *DR is still waiting for its @RS to return. The parser
+            // has overwritten the held buffer with this newer packet, so the
+            // older one is silently lost (m_drMessage holds only this packet now).
+            // Let the in-flight @RS resolve and dispatch this packet with its RSSI.
+            return;
+        }
+        if (m_asyncExpectedResponse == MLR_Modem_Response::Idle)
+        {
+            char buf[8];
+            char *p = appendStr(buf, buf, MLR_GET_RSSI_LAST_RX_STRING);
+            appendStr(buf, p, "\r\n");
+            if (enqueueCommand(buf, CommandType::Simple) == ModemError::Ok)
+            {
+                m_autoRssiPending = true;
+                return;
+            }
+        }
+        // Fallback: a user async command is in flight, or @RS could not be queued.
+        // Dispatch immediately without RSSI so the packet is not lost.
         dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::DataReceived, 0, &m_drMessage[0], m_drMessageLen);
         m_drMessagePresent = false;
+        return;
+    }
+
+    // Check for *IR= information response
+    uint8_t irVal;
+    if (m_HandleMessageHexByte(&irVal, MLR_INFORMATION_RESPONSE_LEN, MLR_INFORMATION_RESPONSE_PREFIX) != ModemError::Ok)
+        return;
+
+    m_irMessagePresent = true;
+    m_irValue = irVal;
+
+    if (m_mode == MLR_ModemMode::LoRaCmd)
+    {
+        // LoRa: TxComplete callback is deferred until *IR arrives.
+        // *IR=03 -> TxComplete, *IR=01/02 -> TxFailed.
+        if (m_asyncExpectedResponse == MLR_Modem_Response::TxComplete)
+        {
+            bool txOk = (irVal == MLR_INFORMATION_RESPONSE_ERR_OK);
+            ModemError txErr     = txOk ? ModemError::Ok      : ModemError::FailLbt;
+            MLR_Modem_Response t = txOk ? MLR_Modem_Response::TxComplete
+                                        : MLR_Modem_Response::TxFailed;
+            dispatchAsyncEvent(txErr, t, (int32_t)irVal);
+            m_asyncExpectedResponse = MLR_Modem_Response::Idle;
+        }
     }
     else
     {
-        // Check for *IR= information response
-        uint8_t irVal;
-        if (m_HandleMessageHexByte(&irVal, MLR_INFORMATION_RESPONSE_LEN, MLR_INFORMATION_RESPONSE_PREFIX) == ModemError::Ok)
+        // FSK: TxComplete was already dispatched on *DT=XX in onCommandComplete.
+        // *IR=01/02 here means LBT failure -> dispatch TxFailed (dual callback, MU pattern).
+        if (irVal == MLR_INFORMATION_RESPONSE_ERR_NO_TX ||
+            irVal == MLR_INFORMATION_RESPONSE_ERR_OTHER_WAVES)
         {
-            m_irMessagePresent = true;
-            m_irValue = irVal;
-            // Only notify if we were specifically waiting for it (Async flow)
-            if (m_asyncExpectedResponse == MLR_Modem_Response::MLR_Modem_DtIr)
-            {
-                dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::MLR_Modem_DtIr, (int32_t)irVal);
-                m_asyncExpectedResponse = MLR_Modem_Response::Idle;
-            }
+            dispatchAsyncEvent(ModemError::FailLbt, MLR_Modem_Response::TxFailed, (int32_t)irVal);
         }
     }
 }
 
 void MLR_Modem::onCommandComplete(ModemError result)
 {
+    // Auto-RSSI-on-RX completion: handle the internal @RS issued by onRxDataReceived().
+    // Always processed before the user-async path, since m_asyncExpectedResponse stays
+    // Idle for this internally-issued command.
+    if (m_autoRssiPending)
+    {
+        m_autoRssiPending = false;
+        int16_t rssi = 0;
+        if (result == ModemError::Ok)
+        {
+            (void)m_HandleMessage_RS(&rssi);
+        }
+        if (m_drMessagePresent)
+        {
+            dispatchAsyncEvent(ModemError::Ok, MLR_Modem_Response::DataReceived,
+                               (int32_t)rssi, &m_drMessage[0], m_drMessageLen);
+            m_drMessagePresent = false;
+        }
+        return;
+    }
+
     if (m_asyncExpectedResponse == MLR_Modem_Response::Idle) return;
 
     MLR_Modem_Response respType = m_asyncExpectedResponse;
@@ -488,9 +572,16 @@ void MLR_Modem::onCommandComplete(ModemError result)
             pPayload = _rxBuffer;
             len = _rxIndex;
             break;
-        case MLR_Modem_Response::MLR_Modem_DtIr:
-            // For @DT, the first response is *DT=len. We keep waiting for *IR in onRxDataReceived.
-            return; 
+        case MLR_Modem_Response::TxComplete:
+            // *DT=XX received (command accepted by modem).
+            if (m_mode == MLR_ModemMode::LoRaCmd)
+            {
+                // LoRa: keep waiting; on-air result arrives later as *IR (handled in onRxDataReceived).
+                return;
+            }
+            // FSK: no *IR=03 follows. Dispatch TxComplete now; if *IR=01/02 follows
+            // within MLR_LBT_CHECK_TIMEOUT_MS, a separate TxFailed will be dispatched.
+            break;
         default:
             break;
         }

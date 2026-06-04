@@ -13,7 +13,7 @@
 
 #pragma once
 #include <Arduino.h>
-#include "common/SerialModemBase.h"
+#include <SerialModemBase.h>
 
 /**
  * @brief Default baud rate for the MLR modem.
@@ -21,33 +21,44 @@
 static constexpr uint32_t MLR_DEFAULT_BAUDRATE = 19200;
 
 /**
- * \brief Represents the type of response received from the modem.
+ * @brief Channel range constants (429MHz JP band).
  */
-enum class MLR_Modem_Response
-{
-    // internal state of modem
-    Idle,       //!< No message received or expected
-    ParseError, //!< Garbage characters Received
-    Timeout,    //!< No response received
+static constexpr uint8_t MLR_CHANNEL_MIN_429 = 0x07; //!< Minimum channel number for 429MHz
+static constexpr uint8_t MLR_CHANNEL_MAX_429 = 0x2E; //!< Maximum channel number for 429MHz
 
-    // serial commands
-    ShowMode,           //!< Response to "@MO" (e.g., "FSK MODE", "LORA MODE")
-    SaveValue,          //!< Response to saving a value ("*WR=PS")
-    Channel,            //!< Response to "@CH" (Set frequency channel)
-    SerialNumber,       //!< Response to "@SN" (Acquire serial number)
-    MLR_Modem_DtIr,     //!< Information Response after "@DT" (LoRa only, e.g., *IR=03)
-    DataReceived,       //!< Data received from another modem ("*DR=...")
-    RssiLastRx,         //!< Response to "@RS" (Acquire RSSI for last reception)
-    RssiCurrentChannel, //!< Response to "@RA" (Acquire current RSSI)
-    UserID,             //!< "*UI=..." : Acquire User ID
-    CarrierSenseRssi,   //!< "*CI=..." : Get/Set Carrier Sense RSSI Output
-    FactoryReset,       //!< "*IZ=OK" : Factory Reset
-    BaudRate,           //!< "*BR=..." : Get/Set UART Baud Rate
-    GenericResponse     //!< Generic response from SendRawCommandAsync
-};
+/**
+ * \brief Response/event type used by MLR_Modem callbacks.
+ *
+ * Aliased to the unified \ref ModemResponse defined in SerialModemBase.h
+ * so callbacks can be shared across modem drivers.
+ *
+ * MLR_Modem dispatches the following subset of values:
+ *   Idle, ParseError, Timeout, TxComplete, TxFailed, DataReceived,
+ *   ShowMode, SaveValue, Channel, SerialNumber, GroupID, EquipmentID,
+ *   DestinationID, RssiCurrentChannel, GenericResponse.
+ *
+ * \note For \c DataReceived events, \c event.value carries the packet's RSSI
+ *       in dBm, retrieved automatically via an internal "@RS" query
+ *       (auto-RSSI-on-RX). \c value is 0 if RSSI could not be obtained
+ *       (e.g., another async command was in-flight when the packet arrived).
+ */
+using MLR_Modem_Response = ModemResponse;
 
-// Use common ModemError for compatibility
+/**
+ * \brief Error type used by MLR_Modem APIs.
+ */
 using MLR_Modem_Error = ModemError;
+
+/**
+ * \brief Frequency model of the MLR modem.
+ *
+ * Only the 429MHz JP-band model is currently supported. Additional values
+ * may be added when other frequency-band variants are released.
+ */
+enum class MLR_Modem_FrequencyModel
+{
+    MHz_429 //!< 429 MHz JP band model
+};
 
 /**
  * \brief Wireless communication mode.
@@ -92,37 +103,22 @@ enum class MLR_ModemParserState
 };
 
 /**
- * \brief Represents an event from the modem.
+ * \brief Event structure delivered to MLR_Modem async callbacks.
+ *
+ * Aliased to the unified \ref ModemEvent defined in SerialModemBase.h.
+ * The route-info fields (\c pRouteNodes / \c numRouteNodes) are MU-only
+ * and remain nullptr / 0 for events emitted by MLR_Modem.
  */
-struct MLR_Modem_Event
-{
-    MLR_Modem_Error error;   //!< Error code
-    MLR_Modem_Response type; //!< Type of response
-    int32_t value;           //!< Numerical value associated with the response
-    const uint8_t *pPayload; //!< Pointer to payload data (e.g., for DataReceived)
-    uint16_t payloadLen;     //!< Length of payload data
-
-    // --- Constructors ---
-    // 1. Default
-    MLR_Modem_Event() : error(ModemError::Ok), type(MLR_Modem_Response::Idle), value(0), pPayload(nullptr), payloadLen(0) {}
-
-    // 2. Helper for simple status events
-    MLR_Modem_Event(ModemError err, MLR_Modem_Response t)
-        : error(err), type(t), value(0), pPayload(nullptr), payloadLen(0) {}
-
-    // 3. Helper for events with a value (RSSI, SN, etc.)
-    MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val)
-        : error(err), type(t), value(val), pPayload(nullptr), payloadLen(0) {}
-
-    // 4. Helper for data reception
-    MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val, const uint8_t *p, uint16_t l)
-        : error(err), type(t), value(val), pPayload(p), payloadLen(l) {}
-};
+using MLR_Modem_Event = ModemEvent;
 
 /**
  * \brief Callback for asynchronous calls and Radio Message Received events.
+ *
+ * Aliased to the unified \ref ModemAsyncCallback. A single callback function
+ * can therefore be registered for both MU and MLR modems if the application
+ * uses both.
  */
-typedef void (*MLR_Modem_AsyncCallback)(const MLR_Modem_Event &event);
+using MLR_Modem_AsyncCallback = ModemAsyncCallback;
 
 /**
  * \brief Main class for interfacing with the MLR Modem.
@@ -130,13 +126,21 @@ typedef void (*MLR_Modem_AsyncCallback)(const MLR_Modem_Event &event);
 class MLR_Modem : public SerialModemBase
 {
 public: // methods
+    MLR_Modem() : SerialModemBase("[MLR Modem] ") {}
+
     /**
      * \brief Initializes the modem driver.
+     *
+     * The frequency model must be specified explicitly to avoid silent
+     * misconfiguration when running on a different hardware variant.
+     *
      * \param pUart The Serial port connected to the modem.
+     * \param frequencyModel The frequency model of the modem.
      * \param pCallback The function to call for async responses and received data.
      * \return MLR_Modem_Error::Ok on success.
      */
-    MLR_Modem_Error begin(Stream &pUart, MLR_Modem_AsyncCallback pCallback = nullptr);
+    MLR_Modem_Error begin(Stream &pUart, MLR_Modem_FrequencyModel frequencyModel,
+                          MLR_Modem_AsyncCallback pCallback = nullptr);
 
     /**
      * \brief Sets the frequency channel.
@@ -343,7 +347,9 @@ public: // methods
 
     /**
      * \brief Transmits data over the wireless link asynchronously.
-     * The result will be delivered via the AsyncCallback as MLR_Modem_Response::MLR_Modem_DtIr.
+     * The result will be delivered via the AsyncCallback as
+     * MLR_Modem_Response::TxComplete on success, or MLR_Modem_Response::TxFailed
+     * on LBT/transmission failure.
      * \param pMsg Pointer to the data payload to send.
      * \param len Length of the data payload (0-255 bytes).
      * \return MLR_Modem_Error::Ok if the command was sent, MLR_Modem_Error::Busy if another async operation is pending.
@@ -404,13 +410,6 @@ public: // methods
     void DeletePacket() { m_drMessagePresent = false; }
 
     /**
-     * \brief Performs a software reset of the modem.
-     * \return MLR_Modem_Error::Ok on success.
-     * \note Uses the "@SR" command.
-     */
-    MLR_Modem_Error SoftReset();
-
-    /**
      * \brief Main processing loop for the driver.
      * This function must be called regularly (e.g., in the Arduino loop())
      * to parse incoming serial data from the modem.
@@ -423,7 +422,6 @@ protected:
     ModemParseResult parse() override;
     void onRxDataReceived() override;
     void onCommandComplete(ModemError result) override;
-    const char *getLogPrefix() const override { return "[MLR"; }
 
 private: // methods
     // Internal parser state machine handlers
@@ -455,19 +453,26 @@ private: // methods
     // check if the received message is "*IZ=OK"
     ModemError m_HandleMessage_IZ();
 
-private: // data
+private:                                        // data
     MLR_Modem_Response m_asyncExpectedResponse; //!< The expected response for an async call
     MLR_ModemParserState m_parserState;         //!< Current state of the parser
 
     // special receive buffer and data for '@DR' command
-    bool m_drMessagePresent;             //!< Flag indicating a *DR packet is ready
-    uint8_t m_drMessageLen;              //!< Length of the received *DR packet
-    uint8_t m_drMessage[300];            //!< Buffer for the received *DR packet payload
+    bool m_drMessagePresent;  //!< Flag indicating a *DR packet is ready
+    uint8_t m_drMessageLen;   //!< Length of the received *DR packet
+    uint8_t m_drMessage[300]; //!< Buffer for the received *DR packet payload
 
     // information response (*IR=...)
-    bool m_irMessagePresent;             //!< Flag indicating an *IR response is ready
-    uint8_t m_irValue;                   //!< The value of the *IR response
+    bool m_irMessagePresent; //!< Flag indicating an *IR response is ready
+    uint8_t m_irValue;       //!< The value of the *IR response
 
-    MLR_ModemMode m_mode;                //!< Cached modem mode
-    MLR_Modem_AsyncCallback m_pCallback; //!< Pointer to the user's callback function
+    // Auto-RSSI-on-RX state: an internal "@RS" is issued after each *DR
+    // reception. While true, DataReceived dispatch is deferred until *RS=
+    // arrives so the RSSI value can be attached. Mirrors MU_Modem's
+    // hardware-appended RSSI behavior (value=dBm in DataReceived events).
+    bool m_autoRssiPending;
+
+    MLR_ModemMode m_mode;                       //!< Cached modem mode
+    MLR_Modem_FrequencyModel m_frequencyModel;  //!< Configured frequency model (set in begin())
+    MLR_Modem_AsyncCallback m_pCallback;        //!< Pointer to the user's callback function
 };
