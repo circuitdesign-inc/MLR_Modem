@@ -1,9 +1,14 @@
 var searchData=
 [
-  ['initserial_0',['initSerial',['../classSerialModemBase.html#a90001afb9989a22eef12a7bec84c0b92',1,'SerialModemBase']]],
-  ['isidle_1',['isIdle',['../classSerialModemBase.html#a2742096334dffac539fec2245d06b0e8',1,'SerialModemBase']]],
-  ['islastcommandcomplete_2',['isLastCommandComplete',['../classSerialModemBase.html#a569e64d66f8153d2ff5d1132f6113aa1',1,'SerialModemBase']]],
-  ['isqueueempty_3',['isQueueEmpty',['../classSerialModemBase.html#aa7b88289f19d571377fcd8f39a010d1d',1,'SerialModemBase']]],
-  ['isqueuefull_4',['isQueueFull',['../classSerialModemBase.html#a6b1dc4f0421d790972c5a9e61f577207',1,'SerialModemBase']]],
-  ['istimeout_5',['isTimeout',['../classSerialModemBase.html#aecf4e795e387b3b1e808cd007b0e042d',1,'SerialModemBase']]]
+  ['sendrawcommand_0',['SendRawCommand',['../classMLR__Modem.html#a6baab42aad184aa5001184ac3bdef85e',1,'MLR_Modem']]],
+  ['sendrawcommandasync_1',['SendRawCommandAsync',['../classMLR__Modem.html#a73a3885d9dcd437a00228b6edd87a0ef',1,'MLR_Modem']]],
+  ['setasynccallback_2',['SetAsyncCallback',['../classMLR__Modem.html#a5ed201314031193b8d95527493a27281',1,'MLR_Modem']]],
+  ['setbaudrate_3',['SetBaudRate',['../classMLR__Modem.html#ad36965b8160a115396f98f555381be4c',1,'MLR_Modem']]],
+  ['setcarriersenserssioutput_4',['SetCarrierSenseRssiOutput',['../classMLR__Modem.html#a35b84583c22f692755ecc23fdbb923f3',1,'MLR_Modem']]],
+  ['setchannel_5',['SetChannel',['../classMLR__Modem.html#ac3800e110ace3786dca235375a4dcfb1',1,'MLR_Modem']]],
+  ['setdestinationid_6',['SetDestinationID',['../classMLR__Modem.html#a9c8f8fe93316e407f6428924bd7bc72b',1,'MLR_Modem']]],
+  ['setequipmentid_7',['SetEquipmentID',['../classMLR__Modem.html#a5c01f29761b5f7dc1ab3ebea66c1e119',1,'MLR_Modem']]],
+  ['setgroupid_8',['SetGroupID',['../classMLR__Modem.html#a1c5a83d438682f5877b38f3067730929',1,'MLR_Modem']]],
+  ['setmode_9',['SetMode',['../classMLR__Modem.html#a4a165992cf69569629266c3f45a01ec1',1,'MLR_Modem']]],
+  ['setspreadfactor_10',['SetSpreadFactor',['../classMLR__Modem.html#a275eca46dfc1dbcaef6a0f25c86a21b7',1,'MLR_Modem']]]
 ];

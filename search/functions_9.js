@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mlr_5fmodem_5fevent_0',['MLR_Modem_Event',['../structMLR__Modem__Event.html#a443b9222f0e34cd89d9001dd54d85960',1,'MLR_Modem_Event::MLR_Modem_Event()'],['../structMLR__Modem__Event.html#a4d603189e7b4fdefa92dbdc5fe756435',1,'MLR_Modem_Event::MLR_Modem_Event(ModemError err, MLR_Modem_Response t)'],['../structMLR__Modem__Event.html#aaa208ba2db8da44ab19cd7428b3e43e2',1,'MLR_Modem_Event::MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val)'],['../structMLR__Modem__Event.html#a714dbff8c49cd66d8067280b211d5b04',1,'MLR_Modem_Event::MLR_Modem_Event(ModemError err, MLR_Modem_Response t, int32_t val, const uint8_t *p, uint16_t l)']]]
+  ['transmitdata_0',['TransmitData',['../classMLR__Modem.html#a5264ffe69b2523da5315056b0d7d87bb',1,'MLR_Modem']]],
+  ['transmitdataasync_1',['TransmitDataAsync',['../classMLR__Modem.html#acc1521b3d4b91b72be1d62637eb2e06b',1,'MLR_Modem']]]
 ];
